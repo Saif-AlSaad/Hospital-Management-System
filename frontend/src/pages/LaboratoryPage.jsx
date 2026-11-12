@@ -257,7 +257,7 @@ export default function LaboratoryPage({ user }) {
     { header: 'Category', accessor: 'category_name' },
     { header: 'Sample Type', accessor: 'sample_type' },
     { header: 'Normal Range', accessor: 'normal_range', render: row => row.normal_range ? `${row.normal_range} ${row.units || ''}` : '-' },
-    { header: 'Standard Fee', accessor: 'standard_fee', render: row => <span className="font-mono text-emerald-600 font-semibold">${parseFloat(row.standard_fee).toFixed(2)}</span> }
+    { header: 'Standard Fee', accessor: 'standard_fee', render: row => <span className="font-mono text-emerald-600 font-semibold">৳{parseFloat(row.standard_fee).toFixed(2)}</span> }
   ];
 
   return (

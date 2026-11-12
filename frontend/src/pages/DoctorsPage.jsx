@@ -71,7 +71,7 @@ export default function DoctorsPage({ user }) {
     { 
       header: 'Consultation Fee', 
       accessor: 'consultation_fee', 
-      render: row => <span className="font-mono font-semibold">${parseFloat(row.consultation_fee).toFixed(2)}</span> 
+      render: row => <span className="font-mono font-semibold">৳{parseFloat(row.consultation_fee).toFixed(2)}</span> 
     },
     { 
       header: 'Appointments Handled', 
@@ -178,7 +178,7 @@ export default function DoctorsPage({ user }) {
             <div className="grid grid-cols-2 gap-4 text-xs">
               <div className="p-3 bg-slate-50 rounded border border-border">
                 <span className="text-muted block">Consultation Fee</span>
-                <span className="font-mono font-bold text-base text-primary">${parseFloat(selectedDoc.doctor.consultation_fee).toFixed(2)}</span>
+                <span className="font-mono font-bold text-base text-primary">৳{parseFloat(selectedDoc.doctor.consultation_fee).toFixed(2)}</span>
               </div>
               <div className="p-3 bg-slate-50 rounded border border-border">
                 <span className="text-muted block">Direct Contact</span>

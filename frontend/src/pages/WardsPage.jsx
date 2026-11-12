@@ -228,7 +228,7 @@ export default function WardsPage() {
                             </div>
 
                             <div style={{ fontSize: '0.78rem', color: '#94a3b8', marginBottom: '0.5rem' }}>
-                              Rate: ${bed.daily_rate}/day
+                              Rate: ৳{bed.daily_rate}/day
                             </div>
 
                             {isOccupied && bed.current_patient_name && (

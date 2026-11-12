@@ -642,10 +642,10 @@ export default function PatientsPage() {
                     <tr key={inv.invoice_id}>
                       <td style={{ color: '#38bdf8', fontWeight: 600 }}>{inv.invoice_number}</td>
                       <td>{inv.issue_date}</td>
-                      <td>${parseFloat(inv.total_amount).toFixed(2)}</td>
-                      <td>${parseFloat(inv.paid_amount).toFixed(2)}</td>
+                      <td>৳{parseFloat(inv.total_amount).toFixed(2)}</td>
+                      <td>৳{parseFloat(inv.paid_amount).toFixed(2)}</td>
                       <td style={{ color: parseFloat(inv.balance_due) > 0 ? '#fb7185' : '#34d399', fontWeight: 600 }}>
-                        ${parseFloat(inv.balance_due).toFixed(2)}
+                        ৳{parseFloat(inv.balance_due).toFixed(2)}
                       </td>
                       <td><span className="badge badge-green">{inv.status}</span></td>
                     </tr>

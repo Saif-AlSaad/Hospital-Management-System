@@ -66,18 +66,18 @@ INSERT INTO lab_test_categories (category_name, description) VALUES
 ON CONFLICT (category_name) DO NOTHING;
 
 INSERT INTO lab_tests (category_id, test_code, test_name, description, standard_fee, normal_range, units, sample_type) VALUES
-((SELECT category_id FROM lab_test_categories WHERE category_name = 'Hematology'), 'CBC', 'Complete Blood Count', 'Hemoglobin, RBC, WBC count, and platelet differentiation', 25.00, '4.5 - 11.0', '10^3/mcL', 'Blood'),
-((SELECT category_id FROM lab_test_categories WHERE category_name = 'Hematology'), 'ESR', 'Erythrocyte Sedimentation Rate', 'Non-specific marker for systemic inflammation', 15.00, '0 - 20', 'mm/hr', 'Blood'),
-((SELECT category_id FROM lab_test_categories WHERE category_name = 'Biochemistry'), 'FBS', 'Fasting Blood Sugar', 'Serum glucose concentration after 8-hour fasting', 12.00, '70 - 99', 'mg/dL', 'Serum'),
-((SELECT category_id FROM lab_test_categories WHERE category_name = 'Biochemistry'), 'HBA1C', 'Glycated Hemoglobin (HbA1c)', 'Three-month average blood glucose control marker', 35.00, '4.0 - 5.6', '%', 'Blood'),
-((SELECT category_id FROM lab_test_categories WHERE category_name = 'Biochemistry'), 'LIPID', 'Lipid Profile Panel', 'Total cholesterol, HDL, LDL, and triglycerides', 45.00, 'Total < 200', 'mg/dL', 'Serum'),
-((SELECT category_id FROM lab_test_categories WHERE category_name = 'Biochemistry'), 'LFT', 'Liver Function Test', 'Bilirubin, SGOT/AST, SGPT/ALT, and alkaline phosphatase', 50.00, 'ALT: 7 - 56', 'U/L', 'Serum'),
-((SELECT category_id FROM lab_test_categories WHERE category_name = 'Biochemistry'), 'KFT', 'Kidney Function Test', 'Serum Creatinine, Blood Urea Nitrogen (BUN), and Uric Acid', 40.00, 'Creat: 0.7 - 1.3', 'mg/dL', 'Serum'),
-((SELECT category_id FROM lab_test_categories WHERE category_name = 'Biochemistry'), 'TSH', 'Thyroid Stimulating Hormone', 'Assessment of thyroid glandular hyperactivity or insufficiency', 30.00, '0.4 - 4.0', 'mIU/L', 'Serum'),
-((SELECT category_id FROM lab_test_categories WHERE category_name = 'Microbiology'), 'URINE_RE', 'Urine Routine Examination', 'Physical, chemical, and microscopic urine analysis', 15.00, 'Clear / Pale Yellow', 'Qualitative', 'Urine'),
-((SELECT category_id FROM lab_test_categories WHERE category_name = 'Radiology'), 'CXR', 'Chest X-Ray Posteroanterior (PA)', 'Plain radiographic view of thoracic cavity and cardiopulmonary structures', 40.00, 'Normal lung fields', 'Visual', 'None'),
-((SELECT category_id FROM lab_test_categories WHERE category_name = 'Radiology'), 'ECG', 'Electrocardiogram 12-Lead', 'Electro-cardiac rhythm tracing and ischemic changes', 25.00, 'Normal Sinus Rhythm', 'Visual', 'None'),
-((SELECT category_id FROM lab_test_categories WHERE category_name = 'Radiology'), 'USG_ABD', 'Ultrasonography of Whole Abdomen', 'High-frequency acoustic imaging of liver, spleen, kidneys, and pelvis', 65.00, 'Unremarkable scan', 'Visual', 'None')
+((SELECT category_id FROM lab_test_categories WHERE category_name = 'Hematology'), 'CBC', 'Complete Blood Count (CBC & ESR)', 'Hemoglobin, RBC, WBC count, and platelet differentiation', 400.00, '4.5 - 11.0', '10^3/mcL', 'Blood'),
+((SELECT category_id FROM lab_test_categories WHERE category_name = 'Hematology'), 'ESR', 'Erythrocyte Sedimentation Rate', 'Non-specific marker for systemic inflammation', 250.00, '0 - 20', 'mm/hr', 'Blood'),
+((SELECT category_id FROM lab_test_categories WHERE category_name = 'Biochemistry'), 'FBS', 'Fasting Blood Sugar (FBS)', 'Serum glucose concentration after 8-hour fasting', 200.00, '70 - 99', 'mg/dL', 'Serum'),
+((SELECT category_id FROM lab_test_categories WHERE category_name = 'Biochemistry'), 'HBA1C', 'Glycated Hemoglobin (HbA1c)', 'Three-month average blood glucose control marker', 1000.00, '4.0 - 5.6', '%', 'Blood'),
+((SELECT category_id FROM lab_test_categories WHERE category_name = 'Biochemistry'), 'LIPID', 'Lipid Profile Panel', 'Total cholesterol, HDL, LDL, and triglycerides', 1200.00, 'Total < 200', 'mg/dL', 'Serum'),
+((SELECT category_id FROM lab_test_categories WHERE category_name = 'Biochemistry'), 'LFT', 'Liver Function Test (LFT)', 'Bilirubin, SGOT/AST, SGPT/ALT, and alkaline phosphatase', 1400.00, 'ALT: 7 - 56', 'U/L', 'Serum'),
+((SELECT category_id FROM lab_test_categories WHERE category_name = 'Biochemistry'), 'KFT', 'Kidney Function Test (Serum Creatinine)', 'Serum Creatinine, Blood Urea Nitrogen (BUN), and Uric Acid', 1000.00, 'Creat: 0.7 - 1.3', 'mg/dL', 'Serum'),
+((SELECT category_id FROM lab_test_categories WHERE category_name = 'Biochemistry'), 'TSH', 'Thyroid Stimulating Hormone (TSH)', 'Assessment of thyroid glandular hyperactivity or insufficiency', 800.00, '0.4 - 4.0', 'mIU/L', 'Serum'),
+((SELECT category_id FROM lab_test_categories WHERE category_name = 'Microbiology'), 'URINE_RE', 'Urine Routine Examination (R/E)', 'Physical, chemical, and microscopic urine analysis', 300.00, 'Clear / Pale Yellow', 'Qualitative', 'Urine'),
+((SELECT category_id FROM lab_test_categories WHERE category_name = 'Radiology'), 'CXR', 'Chest X-Ray Posteroanterior (PA)', 'Plain radiographic view of thoracic cavity and cardiopulmonary structures', 800.00, 'Normal lung fields', 'Visual', 'None'),
+((SELECT category_id FROM lab_test_categories WHERE category_name = 'Radiology'), 'ECG', 'Electrocardiogram 12-Lead (ECG)', 'Electro-cardiac rhythm tracing and ischemic changes', 500.00, 'Normal Sinus Rhythm', 'Visual', 'None'),
+((SELECT category_id FROM lab_test_categories WHERE category_name = 'Radiology'), 'USG_ABD', 'Ultrasonography of Whole Abdomen (USG)', 'High-frequency acoustic imaging of liver, spleen, kidneys, and pelvis', 2200.00, 'Unremarkable scan', 'Visual', 'None')
 ON CONFLICT (test_code) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
@@ -99,35 +99,35 @@ ON CONFLICT (category_name) DO NOTHING;
 -- 6. SERVICES CATALOG
 -- ----------------------------------------------------------------------------
 INSERT INTO services (service_code, service_name, category, standard_fee) VALUES
-('CNS-GEN', 'General Outpatient Medical Consultation', 'Consultation', 30.00),
-('CNS-SPC', 'Specialist / Senior Consultant Consultation', 'Consultation', 60.00),
-('CNS-EMER', 'Emergency & Critical Care Consultation', 'Consultation', 75.00),
-('BED-GEN', 'General Inpatient Ward Bed Charge (Per Day)', 'Bed', 50.00),
-('BED-SEMI', 'Semi-Private Room Bed Charge (Per Day)', 'Bed', 120.00),
-('BED-DELUXE', 'Deluxe Private Suite Bed Charge (Per Day)', 'Bed', 250.00),
-('BED-ICU', 'Intensive Care Unit (ICU) Bed Charge (Per Day)', 'Bed', 500.00),
-('LAB-CBC', 'Complete Blood Count Laboratory Service', 'Lab', 25.00),
-('LAB-LIPID', 'Lipid Profile Panel Laboratory Service', 'Lab', 45.00),
-('LAB-LFT', 'Liver Function Panel Laboratory Service', 'Lab', 50.00),
-('LAB-KFT', 'Kidney Function Panel Laboratory Service', 'Lab', 40.00),
-('RAD-CXR', 'Chest X-Ray Diagnostic Service', 'Procedure', 40.00),
-('RAD-ECG', 'Electrocardiogram 12-Lead Diagnostic Service', 'Procedure', 25.00),
-('NUR-INJ', 'Nursing Intravenous / Intramuscular Administration', 'Nursing', 10.00),
-('NUR-DRESS', 'Surgical Wound Dressing & Cleansing', 'Nursing', 20.00),
-('PROC-NEB', 'Nebulization Therapy Session', 'Procedure', 15.00)
+('CNS-GEN', 'General Outpatient Medical Consultation', 'Consultation', 500.00),
+('CNS-SPC', 'Specialist / Senior Consultant Consultation', 'Consultation', 1000.00),
+('CNS-EMER', 'Emergency & Critical Care Consultation', 'Consultation', 1500.00),
+('BED-GEN', 'General Inpatient Ward Bed Charge (Per Day)', 'Bed', 500.00),
+('BED-SEMI', 'Semi-Private Room Bed Charge (Per Day)', 'Bed', 1500.00),
+('BED-DELUXE', 'Deluxe Private Suite Bed Charge (Per Day)', 'Bed', 3500.00),
+('BED-ICU', 'Intensive Care Unit (ICU) Bed Charge (Per Day)', 'Bed', 8000.00),
+('LAB-CBC', 'Complete Blood Count Laboratory Service', 'Lab', 400.00),
+('LAB-LIPID', 'Lipid Profile Panel Laboratory Service', 'Lab', 1200.00),
+('LAB-LFT', 'Liver Function Panel Laboratory Service', 'Lab', 1400.00),
+('LAB-KFT', 'Kidney Function Panel Laboratory Service', 'Lab', 1000.00),
+('RAD-CXR', 'Chest X-Ray Diagnostic Service', 'Procedure', 800.00),
+('RAD-ECG', 'Electrocardiogram 12-Lead Diagnostic Service', 'Procedure', 500.00),
+('NUR-INJ', 'Nursing Intravenous / Intramuscular Administration', 'Nursing', 100.00),
+('NUR-DRESS', 'Surgical Wound Dressing & Cleansing', 'Nursing', 300.00),
+('PROC-NEB', 'Nebulization Therapy Session', 'Procedure', 200.00)
 ON CONFLICT (service_code) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- 7. HOSPITAL SYSTEM SETTINGS
 -- ----------------------------------------------------------------------------
 INSERT INTO hospital_settings (setting_key, setting_value, description) VALUES
-('hospital_name', 'Metropolitan Apex Hospital & Medical Centre', 'Official registered healthcare facility name'),
-('hospital_code', 'APEX-HMS-2026', 'National accreditation code'),
-('address', '124 Healthcare Boulevard, Medical District, Suite 500', 'Facility physical address'),
-('currency', 'USD', 'Operational financial transaction currency'),
-('currency_symbol', '$', 'Financial display symbol'),
+('hospital_name', 'Apex Specialised Hospital & Medical Centre, Dhaka', 'Official registered healthcare facility name'),
+('hospital_code', 'APEX-BD-2026', 'National DGHS accreditation code'),
+('address', 'Plot 15, Road 27, Block A, Dhanmondi, Dhaka-1209, Bangladesh', 'Facility physical address'),
+('currency', 'BDT', 'Operational financial transaction currency'),
+('currency_symbol', '৳', 'Financial display symbol'),
 ('tax_rate_percent', '5.0', 'Applicable value-added tax percentage on hospital services'),
-('emergency_phone', '+1-800-999-APEX', '24/7 Rapid Emergency Response Helpline'),
+('emergency_phone', '+880-2-9660011', '24/7 Rapid Emergency Response Helpline'),
 ('inpatient_checkout_time', '12:00:00', 'Standard daily bed billing cutoff time'),
 ('version', '2.0.0', 'Hospital Management System Release Version')
 ON CONFLICT (setting_key) DO UPDATE 

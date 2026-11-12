@@ -195,8 +195,8 @@ export default function DashboardPage({ onNavigate }) {
         <div className="card stat-card" style={{ '--stat-color': '#10b981' }}>
           <div className="stat-info">
             <h3>Today's Collected Revenue</h3>
-            <div className="stat-value">${stats?.revenueToday ? stats.revenueToday.toLocaleString() : '0.00'}</div>
-            <div className="stat-subtext">Outstanding Debt: ${stats?.totalOutstandingDebt ? stats.totalOutstandingDebt.toLocaleString() : '0.00'}</div>
+            <div className="stat-value">৳{stats?.revenueToday ? stats.revenueToday.toLocaleString() : '0.00'}</div>
+            <div className="stat-subtext">Outstanding Debt: ৳{stats?.totalOutstandingDebt ? stats.totalOutstandingDebt.toLocaleString() : '0.00'}</div>
           </div>
           <div className="stat-icon-wrapper">
             <DollarSign size={24} />
@@ -269,8 +269,8 @@ export default function DashboardPage({ onNavigate }) {
                     <td style={{ fontWeight: 600, color: '#38bdf8' }}>{m.report_month}</td>
                     <td>{m.total_appointments}</td>
                     <td>{m.total_admissions}</td>
-                    <td style={{ color: '#f59e0b' }}>${parseFloat(m.gross_invoiced || 0).toLocaleString()}</td>
-                    <td style={{ color: '#10b981', fontWeight: 600 }}>${parseFloat(m.total_collected || 0).toLocaleString()}</td>
+                    <td style={{ color: '#f59e0b' }}>৳{parseFloat(m.gross_invoiced || 0).toLocaleString()}</td>
+                    <td style={{ color: '#10b981', fontWeight: 600 }}>৳{parseFloat(m.total_collected || 0).toLocaleString()}</td>
                   </tr>
                 ))}
               </tbody>

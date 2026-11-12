@@ -18,36 +18,33 @@ const pool = new Pool({
   max: 10,
 });
 
-// Helper utilities for realistic synthetic data
+// Helper utilities for realistic synthetic data (Bangladeshi Scenario)
 const FIRST_NAMES_MALE = [
-  'James', 'John', 'Robert', 'Michael', 'William', 'David', 'Richard', 'Joseph', 'Thomas', 'Charles',
-  'Daniel', 'Matthew', 'Anthony', 'Donald', 'Mark', 'Paul', 'Steven', 'Andrew', 'Kenneth', 'Joshua',
-  'Kevin', 'Brian', 'George', 'Edward', 'Ronald', 'Timothy', 'Jason', 'Jeffrey', 'Ryan', 'Jacob',
-  'Gary', 'Nicholas', 'Eric', 'Jonathan', 'Stephen', 'Larry', 'Justin', 'Scott', 'Brandon', 'Benjamin',
-  'Samuel', 'Gregory', 'Frank', 'Alexander', 'Raymond', 'Patrick', 'Jack', 'Dennis', 'Jerry', 'Tyler',
-  'Aaron', 'Jose', 'Adam', 'Nathan', 'Henry', 'Douglas', 'Zachary', 'Peter', 'Kyle', 'Walter'
+  'Mohammad', 'Md.', 'Tanvir', 'Mahmudul', 'Rafiqul', 'Kamrul', 'Arif', 'Tariqul', 'Saiful', 'Jashim',
+  'Nazmul', 'Ashiqur', 'Fahim', 'Shahriar', 'Rakib', 'Sabbir', 'Hasibul', 'Zubair', 'Imran', 'Mustafizur',
+  'Sajjad', 'Habibur', 'Shahadat', 'Zahid', 'Anisur', 'Mizanur', 'Farhan', 'Mahin', 'Shakib', 'Tamim',
+  'Mushfiqur', 'Tasnim', 'Asif', 'Nayeem', 'Rashed', 'Sharif', 'Monir', 'Sumon', 'Ripon', 'Al-Amin',
+  'Shamim', 'Golam', 'Biplob', 'Enamul', 'Ashraful', 'Mehedi', 'Sohan', 'Rubel', 'Sayed', 'Kabir'
 ];
 
 const FIRST_NAMES_FEMALE = [
-  'Mary', 'Patricia', 'Jennifer', 'Linda', 'Elizabeth', 'Barbara', 'Susan', 'Jessica', 'Sarah', 'Karen',
-  'Nancy', 'Lisa', 'Betty', 'Margaret', 'Sandra', 'Ashley', 'Kimberly', 'Emily', 'Donna', 'Michelle',
-  'Dorothy', 'Carol', 'Amanda', 'Melissa', 'Deborah', 'Stephanie', 'Rebecca', 'Sharon', 'Laura', 'Cynthia',
-  'Kathleen', 'Amy', 'Shirley', 'Angela', 'Helen', 'Anna', 'Brenda', 'Pamela', 'Nicole', 'Samantha',
-  'Katherine', 'Christine', 'Debra', 'Rachel', 'Carolyn', 'Janet', 'Maria', 'Heather', 'Diane', 'Julie',
-  'Joyce', 'Victoria', 'Kelly', 'Christina', 'Joan', 'Evelyn', 'Lauren', 'Judith', 'Olivia', 'Sophia'
+  'Nusrat', 'Sadia', 'Farhana', 'Sharmin', 'Tanjina', 'Ruma', 'Fatema', 'Ayesha', 'Tahmina', 'Shabnam',
+  'Afroza', 'Taslima', 'Nasrin', 'Jannatul', 'Sumaiya', 'Sabrina', 'Farzana', 'Maksuda', 'Rokeya', 'Hasina',
+  'Shirina', 'Roksana', 'Meherun', 'Salma', 'Monira', 'Shamima', 'Rehana', 'Sultana', 'Dilruba', 'Jesmin',
+  'Marufa', 'Khadija', 'Zinnat', 'Rumana', 'Shampa', 'Nargis', 'Parvin', 'Bilkis', 'Mahbuba', 'Rubina',
+  'Nazma', 'Rabeya', 'Shahnaz', 'Laila', 'Shirin', 'Shahana', 'Amena', 'Priyanka', 'Puja', 'Barnali'
 ];
 
 const LAST_NAMES = [
-  'Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez',
-  'Hernandez', 'Lopez', 'Gonzalez', 'Wilson', 'Anderson', 'Thomas', 'Taylor', 'Moore', 'Jackson', 'Martin',
-  'Lee', 'Perez', 'Thompson', 'White', 'Harris', 'Sanchez', 'Clark', 'Ramirez', 'Lewis', 'Robinson',
-  'Walker', 'Young', 'Allen', 'King', 'Wright', 'Scott', 'Torres', 'Nguyen', 'Hill', 'Flores',
-  'Green', 'Adams', 'Nelson', 'Baker', 'Hall', 'Rivera', 'Campbell', 'Mitchell', 'Carter', 'Roberts'
+  'Ahmed', 'Rahman', 'Islam', 'Hasan', 'Hossain', 'Khan', 'Chowdhury', 'Begum', 'Akter', 'Khatun',
+  'Siddique', 'Ali', 'Uddin', 'Miah', 'Molla', 'Bhuiyan', 'Talukder', 'Sarker', 'Sheikh', 'Dewan',
+  'Majumder', 'Kazi', 'Howlader', 'Biswas', 'Barua', 'Das', 'Roy', 'Chakraborty', 'Paul', 'Sen',
+  'Dutta', 'Saha', 'Gazi', 'Mallick', 'Munshi', 'Bhowmik', 'Nath', 'Samad', 'Karim', 'Patwary'
 ];
 
 const BLOOD_GROUPS = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
 const GENDERS = ['Male', 'Female'];
-const CITIES = ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix', 'Philadelphia', 'San Antonio', 'San Diego', 'Dallas', 'Austin'];
+const CITIES = ['Dhaka', 'Chattogram', 'Sylhet', 'Rajshahi', 'Khulna', 'Barishal', 'Rangpur', 'Mymensingh', 'Cumilla', 'Gazipur', 'Narayanganj', 'Bogura'];
 
 function getRandomItem(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
@@ -120,10 +117,10 @@ async function runSeed() {
 
     // Fixed default test accounts
     const testAccounts = [
-      { username: 'admin', role: 'Admin', email: 'admin@apex-hospital.org', dept: deptIds[0], fname: 'Arthur', lname: 'Pendleton' },
-      { username: 'doctor1', role: 'Doctor', email: 'dr.smith@apex-hospital.org', dept: deptIds[0], fname: 'Edward', lname: 'Smith' },
-      { username: 'receptionist1', role: 'Receptionist', email: 'reception@apex-hospital.org', dept: deptIds[0], fname: 'Emily', lname: 'Clark' },
-      { username: 'accountant1', role: 'Accountant', email: 'finance@apex-hospital.org', dept: deptIds[0], fname: 'Walter', lname: 'Finley' },
+      { username: 'admin', role: 'Admin', email: 'admin@apex-hospital.com.bd', dept: deptIds[0], fname: 'Saif', lname: 'Al Saad' },
+      { username: 'doctor1', role: 'Doctor', email: 'dr.tanvir@apex-hospital.com.bd', dept: deptIds[0], fname: 'Tanvir', lname: 'Ahmed' },
+      { username: 'receptionist1', role: 'Receptionist', email: 'reception@apex-hospital.com.bd', dept: deptIds[0], fname: 'Nusrat', lname: 'Jahan' },
+      { username: 'accountant1', role: 'Accountant', email: 'finance@apex-hospital.com.bd', dept: deptIds[0], fname: 'Kamrul', lname: 'Hasan' },
     ];
 
     const staffIds = [];
@@ -149,10 +146,10 @@ async function runSeed() {
 
       const sRes = await client.query(`
         INSERT INTO staff (user_id, department_id, first_name, last_name, gender, date_of_birth, phone, email, hire_date, employment_status)
-        VALUES ($1, $2, $3, $4, 'Male', '1980-05-15', $5, $6, '2020-01-10', 'Active')
+        VALUES ($1, $2, $3, $4, 'Male', '1982-05-15', $5, $6, '2020-01-10', 'Active')
         ON CONFLICT (email) DO UPDATE SET first_name = EXCLUDED.first_name
         RETURNING staff_id;
-      `, [uid, acc.dept, acc.fname, acc.lname, `+1-555-${getRandomInt(100, 999)}-${getRandomInt(1000, 9999)}`, acc.email]);
+      `, [uid, acc.dept, acc.fname, acc.lname, `+880-1712-${getRandomInt(100000, 999999)}`, acc.email]);
       
       const sid = sRes.rows[0].staff_id;
       staffIds.push(sid);
@@ -160,7 +157,7 @@ async function runSeed() {
       if (acc.role === 'Doctor') {
         const dRes = await client.query(`
           INSERT INTO doctors (staff_id, department_id, specialization, license_number, consultation_fee, bio)
-          VALUES ($1, $2, 'Consultant Cardiologist', 'MD-LIC-10001', 65.00, 'Chief Cardiologist with 15+ years experience in interventional cardiac care.')
+          VALUES ($1, $2, 'Consultant Cardiologist', 'BMDC-A-48291', 1000.00, 'Senior Consultant Cardiologist, FCPS (Cardiology), MBBS. 15+ years experience at National Institute of Cardiovascular Diseases (NICVD).')
           ON CONFLICT (license_number) DO NOTHING
           RETURNING doctor_id;
         `, [sid, acc.dept]);
@@ -168,7 +165,7 @@ async function runSeed() {
       }
     }
 
-    // Generate remaining 93 staff to reach 100 staff, with 29 more doctors to reach 30 doctors total
+    // Generate remaining staff to reach 100 staff, with 29 more doctors to reach 30 doctors total
     const SPECIALIZATIONS = [
       'Cardiology', 'Interventional Cardiology', 'Adult Neurology', 'Pediatric Neurology',
       'General Pediatrics', 'Pediatric Cardiology', 'Orthopedic Surgery', 'Joint Replacement',
@@ -181,10 +178,11 @@ async function runSeed() {
       const gender = getRandomItem(GENDERS);
       const fname = (gender === 'Male') ? getRandomItem(FIRST_NAMES_MALE) : getRandomItem(FIRST_NAMES_FEMALE);
       const lname = getRandomItem(LAST_NAMES);
-      const username = `staff_${i}_${fname.toLowerCase()}`;
-      const email = `${username}@apex-hospital.org`;
+      const cleanFname = fname.toLowerCase().replace(/[^a-z]/g, '');
+      const username = `staff_${i}_${cleanFname}`;
+      const email = `${username}@apex-hospital.com.bd`;
       const deptId = getRandomItem(deptIds);
-      const phone = `+1-555-${getRandomInt(100, 999)}-${String(i).padStart(4, '0')}`;
+      const phone = `+880-1${getRandomItem(['7', '8', '9', '6'])}${getRandomInt(10, 99)}-${String(i).padStart(6, '0')}`;
 
       const uRes = await client.query(`
         INSERT INTO users (username, email, password_hash, is_active)
@@ -220,15 +218,15 @@ async function runSeed() {
         staffIds.push(sid);
 
         if (isDoc && doctorIds.length < 30) {
-          const licNum = `MD-LIC-${10000 + i}`;
-          const fee = getRandomItem([40.00, 50.00, 60.00, 75.00, 90.00]);
+          const licNum = `BMDC-A-${20000 + i}`;
+          const fee = getRandomItem([600.00, 800.00, 1000.00, 1200.00, 1500.00]);
           const spec = getRandomItem(SPECIALIZATIONS);
           const dRes = await client.query(`
             INSERT INTO doctors (staff_id, department_id, specialization, license_number, consultation_fee, bio)
             VALUES ($1, $2, $3, $4, $5, $6)
             ON CONFLICT (license_number) DO NOTHING
             RETURNING doctor_id;
-          `, [sid, deptId, spec, licNum, fee, `Practicing specialist in ${spec} with board certification.`]);
+          `, [sid, deptId, spec, licNum, fee, `Consultant in ${spec} with FCPS/MD certification and BMDC accreditation.`]);
           if (dRes.rows.length > 0) doctorIds.push(dRes.rows[0].doctor_id);
         }
       }
@@ -304,7 +302,7 @@ async function runSeed() {
         for (let b = 1; b <= bedsInRoom; b++) {
           if (bedIds.length >= 150) break;
           const bedNum = `B-${r}${b}`;
-          const rate = (roomType === 'Deluxe') ? 250.00 : (w.type === 'ICU' ? 450.00 : 75.00);
+          const rate = (roomType === 'Deluxe') ? 3500.00 : (w.type === 'ICU' ? 8000.00 : (roomType === 'Semi-Private' ? 1500.00 : 500.00));
           const bRes = await client.query(`
             INSERT INTO beds (room_id, bed_number, daily_rate, status, is_active)
             VALUES ($1, $2, $3, 'Available', TRUE)
@@ -318,38 +316,41 @@ async function runSeed() {
     console.log(`✓ Seeded ${bedIds.length} hospital beds across wards.`);
 
     // ------------------------------------------------------------------------
-    // Step 5: Medicines & Batches (300 Medicines, 1,000 Batches)
+    // Step 5: Medicines & Batches (300 Medicines, 100 Batches)
     // ------------------------------------------------------------------------
-    console.log('5. Seeding Formulary: 300 Medicines and 1,000 Batches...');
+    console.log('5. Seeding Formulary: 300 Medicines and 100 Batches (Bangladeshi Brands)...');
     const medCatRes = await client.query('SELECT category_id FROM medicine_categories;');
     const medCatIds = medCatRes.rows.map(c => c.category_id);
 
     const DRUG_NAMES = [
-      { b: 'Amoxil', g: 'Amoxicillin', f: 'Capsule', s: '500mg', m: 'GlaxoSmithKline', p: 1.20 },
-      { b: 'Augmentin', g: 'Amoxicillin + Clavulanate', f: 'Tablet', s: '625mg', m: 'GlaxoSmithKline', p: 2.50 },
-      { b: 'Ciproxin', g: 'Ciprofloxacin', f: 'Tablet', s: '500mg', m: 'Bayer', p: 1.80 },
-      { b: 'Zithromax', g: 'Azithromycin', f: 'Tablet', s: '500mg', m: 'Pfizer', p: 3.00 },
-      { b: 'Panadol Extra', g: 'Paracetamol + Caffeine', f: 'Tablet', s: '500mg/65mg', m: 'GSK', p: 0.30 },
-      { b: 'Brufen', g: 'Ibuprofen', f: 'Tablet', s: '400mg', m: 'Abbott', p: 0.50 },
-      { b: 'Voltaren', g: 'Diclofenac Sodium', f: 'Tablet', s: '50mg', m: 'Novartis', p: 0.80 },
-      { b: 'Tramal', g: 'Tramadol HCl', f: 'Capsule', s: '50mg', m: 'Grünenthal', p: 1.50 },
-      { b: 'Lipitor', g: 'Atorvastatin', f: 'Tablet', s: '20mg', m: 'Pfizer', p: 1.40 },
-      { b: 'Crestor', g: 'Rosuvastatin', f: 'Tablet', s: '10mg', m: 'AstraZeneca', p: 2.10 },
-      { b: 'Norvasc', g: 'Amlodipine', f: 'Tablet', s: '5mg', m: 'Pfizer', p: 0.70 },
-      { b: 'Cozaar', g: 'Losartan Potassium', f: 'Tablet', s: '50mg', m: 'Merck', p: 0.90 },
-      { b: 'Tenormin', g: 'Atenolol', f: 'Tablet', s: '50mg', m: 'AstraZeneca', p: 0.60 },
-      { b: 'Glucophage', g: 'Metformin HCl', f: 'Tablet', s: '500mg', m: 'Merck Serono', p: 0.40 },
-      { b: 'Januvia', g: 'Sitagliptin', f: 'Tablet', s: '100mg', m: 'MSD', p: 3.50 },
-      { b: 'Amaryl', g: 'Glimepiride', f: 'Tablet', s: '2mg', m: 'Sanofi', p: 0.75 },
-      { b: 'Nexium', g: 'Esomeprazole', f: 'Capsule', s: '40mg', m: 'AstraZeneca', p: 1.80 },
-      { b: 'Losec', g: 'Omeprazole', f: 'Capsule', s: '20mg', m: 'AstraZeneca', p: 0.60 },
-      { b: 'Zantac', g: 'Famotidine', f: 'Tablet', s: '20mg', m: 'Boehringer', p: 0.50 },
-      { b: 'Zyrtec', g: 'Cetirizine HCl', f: 'Tablet', s: '10mg', m: 'UCB', p: 0.45 },
-      { b: 'Claritin', g: 'Loratadine', f: 'Tablet', s: '10mg', m: 'Bayer', p: 0.50 },
-      { b: 'Ventolin', g: 'Salbutamol', f: 'Inhaler', s: '100mcg', m: 'GSK', p: 8.50 },
-      { b: 'Seretide', g: 'Salmeterol + Fluticasone', f: 'Inhaler', s: '25/250mcg', m: 'GSK', p: 28.00 },
-      { b: 'Neurobion', g: 'Vitamin B1 + B6 + B12', f: 'Tablet', s: 'Forte', m: 'P&G Health', p: 0.60 },
-      { b: 'Centrum', g: 'Multivitamins + Minerals', f: 'Tablet', s: 'Adults', m: 'Pfizer', p: 0.40 },
+      { b: 'Napa Extra', g: 'Paracetamol + Caffeine', f: 'Tablet', s: '500mg/65mg', m: 'Beximco Pharmaceuticals Ltd.', p: 3.00 },
+      { b: 'Ace Plus', g: 'Paracetamol + Caffeine', f: 'Tablet', s: '500mg/65mg', m: 'Square Pharmaceuticals Ltd.', p: 3.00 },
+      { b: 'Seclo', g: 'Omeprazole', f: 'Capsule', s: '20mg', m: 'Square Pharmaceuticals Ltd.', p: 6.00 },
+      { b: 'Maxpro', g: 'Esomeprazole Magnesium', f: 'Capsule', s: '20mg', m: 'Beximco Pharmaceuticals Ltd.', p: 8.00 },
+      { b: 'Pantonix', g: 'Pantoprazole Sodium', f: 'Tablet', s: '20mg', m: 'Incepta Pharmaceuticals Ltd.', p: 7.00 },
+      { b: 'Ciprocin', g: 'Ciprofloxacin', f: 'Tablet', s: '500mg', m: 'Square Pharmaceuticals Ltd.', p: 15.00 },
+      { b: 'Zimax', g: 'Azithromycin', f: 'Tablet', s: '500mg', m: 'Square Pharmaceuticals Ltd.', p: 35.00 },
+      { b: 'Fexo', g: 'Fexofenadine HCl', f: 'Tablet', s: '120mg', m: 'Square Pharmaceuticals Ltd.', p: 9.00 },
+      { b: 'Alatrex', g: 'Cetirizine HCl', f: 'Tablet', s: '10mg', m: 'Square Pharmaceuticals Ltd.', p: 3.50 },
+      { b: 'Monas', g: 'Montelukast Sodium', f: 'Tablet', s: '10mg', m: 'Square Pharmaceuticals Ltd.', p: 16.00 },
+      { b: 'Bizoran', g: 'Amlodipine + Olmesartan', f: 'Tablet', s: '5/20mg', m: 'Square Pharmaceuticals Ltd.', p: 12.00 },
+      { b: 'Gluconor', g: 'Metformin HCl', f: 'Tablet', s: '500mg', m: 'Square Pharmaceuticals Ltd.', p: 4.00 },
+      { b: 'Compath', g: 'Metformin + Sitagliptin', f: 'Tablet', s: '50/500mg', m: 'Incepta Pharmaceuticals Ltd.', p: 18.00 },
+      { b: 'Sergel', g: 'Esomeprazole Magnesium', f: 'Capsule', s: '40mg', m: 'Healthcare Pharmaceuticals Ltd.', p: 12.00 },
+      { b: 'Filwel Gold', g: 'Multivitamins & Multiminerals', f: 'Tablet', s: 'A-Z Formula', m: 'Square Pharmaceuticals Ltd.', p: 6.00 },
+      { b: 'Bicozin', g: 'Vitamin B-Complex + Zinc', f: 'Syrup', s: '100ml', m: 'Square Pharmaceuticals Ltd.', p: 75.00 },
+      { b: 'D-Rise', g: 'Cholecalciferol (Vitamin D3)', f: 'Capsule', s: '20000 IU', m: 'Popular Pharmaceuticals Ltd.', p: 30.00 },
+      { b: 'Torax', g: 'Ketorolac Tromethamine', f: 'Tablet', s: '10mg', m: 'Square Pharmaceuticals Ltd.', p: 10.00 },
+      { b: 'Clofenac', g: 'Diclofenac Sodium', f: 'Tablet', s: '50mg', m: 'Square Pharmaceuticals Ltd.', p: 4.50 },
+      { b: 'Azmasol', g: 'Salbutamol HFA', f: 'Inhaler', s: '100mcg/puff', m: 'Beximco Pharmaceuticals Ltd.', p: 190.00 },
+      { b: 'Ipec', g: 'Iron Polymaltose + Folic Acid', f: 'Tablet', s: 'Complex', m: 'Square Pharmaceuticals Ltd.', p: 7.00 },
+      { b: 'Osartil', g: 'Losartan Potassium', f: 'Tablet', s: '50mg', m: 'Incepta Pharmaceuticals Ltd.', p: 8.00 },
+      { b: 'Finix', g: 'Rabeprazole Sodium', f: 'Tablet', s: '20mg', m: 'Opsonin Pharma Ltd.', p: 7.00 },
+      { b: 'Cef-3', g: 'Cefixime Trihydrate', f: 'Capsule', s: '200mg', m: 'Square Pharmaceuticals Ltd.', p: 40.00 },
+      { b: 'Moxaclav', g: 'Amoxicillin + Clavulanic Acid', f: 'Tablet', s: '625mg', m: 'Square Pharmaceuticals Ltd.', p: 32.00 },
+      { b: 'Rivotril', g: 'Clonazepam', f: 'Tablet', s: '0.5mg', m: 'Radiant Pharmaceuticals Ltd.', p: 7.50 },
+      { b: 'Telfast', g: 'Fexofenadine HCl', f: 'Tablet', s: '180mg', m: 'Sanofi Bangladesh Ltd.', p: 14.00 },
+      { b: 'Entacyd', g: 'Magaldrate + Simethicone', f: 'Suspension', s: '200ml', m: 'Square Pharmaceuticals Ltd.', p: 110.00 }
     ];
 
     const medicineIds = [];
@@ -382,8 +383,8 @@ async function runSeed() {
     for (let b = 1; b <= 100; b++) {
       const medId = medicineIds[b % medicineIds.length] || medicineIds[0];
       const batchNo = `LOT-${2025000 + b}`;
-      const cost = getRandomItem([0.20, 0.50, 1.00, 2.00, 5.00]);
-      const sell = cost * 1.5;
+      const cost = getRandomItem([2.50, 5.00, 10.00, 20.00, 45.00, 120.00]);
+      const sell = parseFloat((cost * 1.35).toFixed(2));
       const initialQty = getRandomInt(100, 500);
       const currentQty = getRandomInt(20, initialQty);
       const expDate = getRandomDate(2026, 2029);
@@ -408,7 +409,7 @@ async function runSeed() {
             batch_id, medicine_id, transaction_type, quantity, unit_price,
             total_amount, reference_type, reference_id, transaction_date, performed_by, notes
           )
-          VALUES ($1, $2, 'Purchase', $3, $4, $5, 'PurchaseOrder', 1000 + $6, CURRENT_TIMESTAMP - INTERVAL '60 days', $7, 'Initial stock import')
+          VALUES ($1, $2, 'Purchase', $3, $4, $5, 'PurchaseOrder', 1000 + $6, CURRENT_TIMESTAMP - INTERVAL '60 days', $7, 'Initial stock import from local pharmaceutical supplier')
           ON CONFLICT DO NOTHING;
         `, [bRes.rows[0].batch_id, medId, initialQty, cost, totalVal, b, adminUserId]);
       }
@@ -416,11 +417,13 @@ async function runSeed() {
     console.log(`✓ Seeded ${medicineIds.length} medicines and ${batchIds.length} active inventory batches.`);
 
     // ------------------------------------------------------------------------
-    // Step 6: Patients (50 Patients)
+    // Step 6: Patients (50 Patients - Bangladeshi Demographics)
     // ------------------------------------------------------------------------
     console.log('6. Seeding 50 Patients...');
     const patientIds = [];
     const patientValues = [];
+
+    const BD_LOCALITIES = ['Dhanmondi', 'Gulshan', 'Banani', 'Mirpur', 'Uttara', 'Mohammadpur', 'Badda', 'Chashara', 'Agrabad', 'Zindabazar', 'Shaheb Bazar', 'Kandirpar'];
 
     for (let p = 1; p <= 50; p++) {
       const gender = getRandomItem(GENDERS);
@@ -429,11 +432,12 @@ async function runSeed() {
       const pcode = `P-${10000 + p}`;
       const dob = getRandomDate(1945, 2018);
       const blood = getRandomItem(BLOOD_GROUPS);
-      const phone = `+1-${getRandomInt(200, 999)}-${getRandomInt(100, 999)}-${String(p).padStart(4, '0')}`;
-      const email = `patient.${p}.${fname.toLowerCase()}@example.com`;
-      const addr = `${getRandomInt(10, 999)} Oak Street, ${getRandomItem(CITIES)}`;
+      const phone = `+880-1${getRandomItem(['7', '8', '9', '6'])}${getRandomInt(10, 99)}-${String(p).padStart(6, '0')}`;
+      const cleanFname = fname.toLowerCase().replace(/[^a-z]/g, '');
+      const email = `patient.${p}.${cleanFname}@gmail.com`;
+      const addr = `House ${getRandomInt(1, 60)}, Road ${getRandomInt(1, 27)}, ${getRandomItem(BD_LOCALITIES)}, ${getRandomItem(CITIES)}`;
       const emName = `${getRandomItem(FIRST_NAMES_FEMALE)} ${lname}`;
-      const emPhone = `+1-555-${getRandomInt(100, 999)}-${getRandomInt(1000, 9999)}`;
+      const emPhone = `+880-1${getRandomItem(['7', '8', '9', '3'])}${getRandomInt(10, 99)}-${getRandomInt(100000, 999999)}`;
 
       patientValues.push(`('${pcode}', '${fname}', '${lname}', '${dob}', '${gender}', '${blood}', '${phone}', '${email}', '${addr}', '${emName}', '${emPhone}')`);
     }
@@ -499,22 +503,22 @@ async function runSeed() {
     const diagnosisIds = diagRes.rows.map(d => d.diagnosis_id);
 
     const SYMPTOMS_LIST = [
-      'Persistent dry cough and mild fever for 3 days.',
-      'Chest tightness on moderate exertion and occasional palpitations.',
-      'Severe lower back pain radiating down left thigh.',
-      'Recurrent headaches and photophobia in mornings.',
-      'Epigastric burning sensation worsening after fatty meals.',
-      'Polyuria, increased thirst, and unintentional weight loss.',
-      'Sore throat, difficulty swallowing, and cervical lymphadenopathy.',
-      'Joint stiffness and swelling in both knees on waking.'
+      'High intermittent fever (103°F) for 4 days with severe retro-orbital headache and joint arthralgia (suspected Dengue).',
+      'Persistent dry cough, wheezing, and seasonal bronchial asthma exacerbation due to winter dust and pollution.',
+      'Chest tightness on moderate exertion radiating to left arm with profuse sweating (angina).',
+      'Severe epigastric burning sensation, sour water brash, and postprandial nausea after spicy rich meals.',
+      'Frequent watery loose motions (6-8 times/day), abdominal griping pain, and moderate dehydration.',
+      'Elevated random blood sugar (14.2 mmol/L), polyuria, increased thirst, and unexplained weight loss.',
+      'Severe sore throat, high fever, and painful bilateral cervical lymphadenopathy.',
+      'Bilateral knee joint pain, morning stiffness lasting 45 minutes, and difficulty walking on stairs.'
     ];
 
     const PLANS = [
-      'Prescribed anti-inflammatory regimen; advised rest and hydration.',
-      'Initiated first-line antihypertensive therapy; scheduled follow-up in 14 days.',
-      'Ordered comprehensive metabolic panel and dietary lifestyle modification.',
-      'Recommended physical therapy twice weekly and ergonomic posture adjustments.',
-      'Started antimicrobial course for 7 days; advised emergency visit if fever spikes.'
+      'Advised oral rehydration salts (ORS), Paracetamol 500mg SOS, complete rest, and daily CBC monitoring for platelet count.',
+      'Prescribed Esomeprazole 20mg before breakfast, antacid suspension after meals, and strict dietary oil restriction.',
+      'Initiated Amlodipine 5mg + Olmesartan 20mg once daily; advised low sodium intake, morning walks, and weekly BP log.',
+      'Started Azithromycin 500mg once daily for 5 days with Salbutamol inhaler; scheduled follow-up in 7 days.',
+      'Adjusted Metformin to 500mg twice daily with meals; diabetic diet chart provided and HbA1c scheduled.'
     ];
 
     // Select completed appointments to link consultations
@@ -582,12 +586,12 @@ async function runSeed() {
     console.log('9. Seeding 10 Inpatient Admissions with 15 Bed Assignments...');
     const admissionIds = [];
     const REASONS = [
-      'Acute exacerbation of chronic obstructive pulmonary disease requiring IV steroids.',
-      'Hypertensive urgency with encephalopathy for monitored stabilization.',
-      'Elective laparoscopic cholecystectomy post-operative monitoring.',
-      'Severe acute pyelonephritis requiring intravenous antibiotics.',
-      'Unstable angina pectoris for telemetry observation and coronary workup.',
-      'Post-trauma closed fracture reduction and observation.'
+      'Severe Dengue fever with warning signs (platelet count < 50,000/mcL) for close inpatient fluid management.',
+      'Acute exacerbation of bronchial asthma with severe bronchospasm requiring continuous nebulization and IV steroids.',
+      'Hypertensive urgency with encephalopathy for monitored intravenous antihypertensive stabilization.',
+      'Acute watery diarrhea and severe gastroenteritis with electrolyte imbalance requiring IV fluid resuscitation.',
+      'Unstable angina pectoris admitted to CCU for continuous telemetry observation and coronary angiogram workup.',
+      'Post-operative care following elective laparoscopic cholecystectomy for symptomatic cholelithiasis.'
     ];
 
     for (let adm = 1; adm <= 10; adm++) {
@@ -773,8 +777,8 @@ async function runSeed() {
       const admId = (inv <= 10) ? admissionIds[(inv - 1) % admissionIds.length] : null;
       const conId = (inv > 10 && inv <= 50) ? consultationIds[(inv - 11) % consultationIds.length] : null;
       const daysAgo = getRandomInt(1, 180);
-      const subtotal = getRandomItem([50.00, 75.00, 120.00, 250.00, 480.00, 950.00]);
-      const discount = (inv % 5 === 0) ? 10.00 : 0.00;
+      const subtotal = getRandomItem([500.00, 800.00, 1200.00, 2500.00, 4500.00, 8500.00, 15000.00]);
+      const discount = (inv % 5 === 0) ? 200.00 : 0.00;
       const tax = parseFloat(((subtotal - discount) * 0.05).toFixed(2));
       const total = subtotal - discount + tax;
 
@@ -802,7 +806,7 @@ async function runSeed() {
         VALUES (
           $1, $2, $3, $4, CURRENT_DATE - INTERVAL '${daysAgo} days', (CURRENT_DATE - INTERVAL '${daysAgo} days') + INTERVAL '14 days',
           $5, $6, $7, $8, $9, $10,
-          $11, 'Standard patient billing statement', $12, CURRENT_TIMESTAMP - INTERVAL '${daysAgo} days'
+          $11, 'Patient billing statement (Apex Hospital Dhaka)', $12, CURRENT_TIMESTAMP - INTERVAL '${daysAgo} days'
         )
         ON CONFLICT (invoice_number) DO NOTHING
         RETURNING invoice_id;
@@ -818,7 +822,7 @@ async function runSeed() {
           INSERT INTO invoice_items (
             invoice_id, item_description, quantity, unit_price, discount, total_price, reference_type
           )
-          VALUES ($1, 'Clinical Healthcare & Diagnostic Hospital Services', 1, $2, $3, $4, 'Consultation')
+          VALUES ($1, 'Clinical Specialist Consultation & Hospital Services (Dhaka Facility)', 1, $2, $3, $4, 'Consultation')
           ON CONFLICT DO NOTHING;
         `, [invoiceId, subtotal, discount, itemNet]);
       }
@@ -827,7 +831,7 @@ async function runSeed() {
     // Generate 150 payment receipts
     console.log('12b. Generating 150 Payment Receipts...');
     let paymentCount = 0;
-    const PAYMENT_METHODS = ['Cash', 'Credit Card', 'Debit Card', 'MFS/bKash', 'Bank Transfer', 'Insurance'];
+    const PAYMENT_METHODS = ['Cash', 'bKash', 'Nagad', 'Rocket', 'Debit Card', 'Credit Card', 'Bank Transfer'];
 
     for (let p = 1; p <= 150; p++) {
       const invObj = invoiceIds[(p - 1) % invoiceIds.length];
@@ -835,18 +839,20 @@ async function runSeed() {
 
       const payNum = `PAY-${20260000 + p}`;
       const method = getRandomItem(PAYMENT_METHODS);
-      const payAmount = (invObj.paid > 0) ? (invObj.paid / (p % 2 === 0 ? 2 : 1)) : 25.00;
-      const amount = parseFloat(Math.max(10.00, Math.min(payAmount, 500.00)).toFixed(2));
-      const ref = `TXN-${getRandomInt(100000, 999999)}-${p}`;
+      const payAmount = (invObj.paid > 0) ? (invObj.paid / (p % 2 === 0 ? 2 : 1)) : 500.00;
+      const amount = parseFloat(Math.max(100.00, Math.min(payAmount, 15000.00)).toFixed(2));
+      const prefix = (method === 'bKash' ? 'BKH' : (method === 'Nagad' ? 'NGD' : (method === 'Rocket' ? 'RKT' : 'TXN')));
+      const ref = `${prefix}-${getRandomInt(100000, 999999)}-${p}`;
 
+      const payNotes = (method === 'Debit Card' ? 'Settlement receipt via DBBL NexusPay' : (method === 'Credit Card' ? 'Settlement receipt via Visa/Mastercard' : `Settlement receipt via ${method}`));
       await client.query(`
         INSERT INTO payments (
           payment_number, invoice_id, patient_id, payment_date,
           amount, payment_method, transaction_reference, received_by, notes
         )
-        VALUES ($1, $2, $3, CURRENT_TIMESTAMP - INTERVAL '${invObj.daysAgo} days', $4, $5, $6, $7, 'Settlement receipt')
+        VALUES ($1, $2, $3, CURRENT_TIMESTAMP - INTERVAL '${invObj.daysAgo} days', $4, $5, $6, $7, $8)
         ON CONFLICT (payment_number) DO NOTHING;
-      `, [payNum, invObj.id, invObj.patientId, amount, method, ref, adminUserId]);
+      `, [payNum, invObj.id, invObj.patientId, amount, method, ref, adminUserId, payNotes]);
 
       paymentCount++;
     }

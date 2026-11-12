@@ -6,10 +6,10 @@
 
 -- 1. Default Superuser & Clinical Accounts (Passwords are 'password123')
 INSERT INTO users (username, email, password_hash, is_active) VALUES
-('admin', 'admin@apex-hospital.org', '$2a$10$w82n58B0f0GZzJzGkZfVp.VpS9dZbX6qR9rS7p6Y5y6eZ9o0vN.2i', TRUE),
-('dr.edward', 'dr.smith@apex-hospital.org', '$2a$10$w82n58B0f0GZzJzGkZfVp.VpS9dZbX6qR9rS7p6Y5y6eZ9o0vN.2i', TRUE),
-('reception.emily', 'reception@apex-hospital.org', '$2a$10$w82n58B0f0GZzJzGkZfVp.VpS9dZbX6qR9rS7p6Y5y6eZ9o0vN.2i', TRUE),
-('finance.walter', 'finance@apex-hospital.org', '$2a$10$w82n58B0f0GZzJzGkZfVp.VpS9dZbX6qR9rS7p6Y5y6eZ9o0vN.2i', TRUE)
+('admin', 'admin@apex-hospital.com.bd', '$2a$10$w82n58B0f0GZzJzGkZfVp.VpS9dZbX6qR9rS7p6Y5y6eZ9o0vN.2i', TRUE),
+('dr.edward', 'dr.tanvir@apex-hospital.com.bd', '$2a$10$w82n58B0f0GZzJzGkZfVp.VpS9dZbX6qR9rS7p6Y5y6eZ9o0vN.2i', TRUE),
+('reception.emily', 'reception@apex-hospital.com.bd', '$2a$10$w82n58B0f0GZzJzGkZfVp.VpS9dZbX6qR9rS7p6Y5y6eZ9o0vN.2i', TRUE),
+('finance.walter', 'finance@apex-hospital.com.bd', '$2a$10$w82n58B0f0GZzJzGkZfVp.VpS9dZbX6qR9rS7p6Y5y6eZ9o0vN.2i', TRUE)
 ON CONFLICT (username) DO NOTHING;
 
 -- Map user roles

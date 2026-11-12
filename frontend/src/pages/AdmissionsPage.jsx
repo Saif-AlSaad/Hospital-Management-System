@@ -191,7 +191,7 @@ export default function AdmissionsPage() {
             {row.ward_name || 'Ward Assigned'} • Bed {row.bed_number || 'N/A'}
           </div>
           <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>
-            Room {row.room_number || '-'} ({row.room_type || 'Standard'}) • ${row.daily_rate}/day
+            Room {row.room_number || '-'} ({row.room_type || 'Standard'}) • ৳{row.daily_rate}/day
           </div>
         </div>
       ),
@@ -359,7 +359,7 @@ export default function AdmissionsPage() {
               <option value="">-- Select Available Hospital Bed --</option>
               {availableBeds.map((b) => (
                 <option key={b.bed_id} value={b.bed_id}>
-                  {b.ward_name} ({b.ward_type}) • Room {b.room_number} • Bed {b.bed_number} (${b.daily_rate}/day)
+                  {b.ward_name} ({b.ward_type}) • Room {b.room_number} • Bed {b.bed_number} (৳{b.daily_rate}/day)
                 </option>
               ))}
             </select>
@@ -446,7 +446,7 @@ export default function AdmissionsPage() {
                 <option value="">-- Select Destination Bed --</option>
                 {availableBeds.map((b) => (
                   <option key={b.bed_id} value={b.bed_id}>
-                    {b.ward_name} • Room {b.room_number} • Bed {b.bed_number} (${b.daily_rate}/day)
+                    {b.ward_name} • Room {b.room_number} • Bed {b.bed_number} (৳{b.daily_rate}/day)
                   </option>
                 ))}
               </select>

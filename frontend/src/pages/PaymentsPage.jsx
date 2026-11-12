@@ -246,13 +246,13 @@ export default function PaymentsPage({ user }) {
               </div>
               <div className="text-right">
                 <span className="text-muted block">Remaining Due</span>
-                <span className="font-bold text-danger font-mono">${parseFloat(selectedInvoice.balance_due).toFixed(2)}</span>
+                <span className="font-bold text-danger font-mono">৳{parseFloat(selectedInvoice.balance_due).toFixed(2)}</span>
               </div>
             </div>
           )}
 
           <div>
-            <label className="label">Payment Amount ($) *</label>
+            <label className="label">Payment Amount (৳) *</label>
             <input 
               type="number" 
               step="0.01" 

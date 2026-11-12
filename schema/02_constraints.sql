@@ -228,7 +228,7 @@ ALTER TABLE invoice_items
 
 ALTER TABLE payments
     ADD CONSTRAINT chk_payment_amount CHECK (amount > 0),
-    ADD CONSTRAINT chk_payment_method CHECK (payment_method IN ('Cash', 'Credit Card', 'Debit Card', 'MFS/bKash', 'Bank Transfer', 'Insurance'));
+    ADD CONSTRAINT chk_payment_method CHECK (payment_method IN ('Cash', 'Credit Card', 'Debit Card', 'MFS/bKash', 'bKash', 'Nagad', 'Rocket', 'Bank Transfer', 'Insurance'));
 
 ALTER TABLE audit_logs
     ADD CONSTRAINT chk_audit_action CHECK (action IN ('INSERT', 'UPDATE', 'DELETE'));

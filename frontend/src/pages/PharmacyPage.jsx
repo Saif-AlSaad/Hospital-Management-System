@@ -144,7 +144,7 @@ export default function PharmacyPage({ user }) {
     },
     { header: 'Category', accessor: 'category_name' },
     { header: 'Form & Strength', render: row => `${row.dosage_form} (${row.strength})` },
-    { header: 'Unit Price', accessor: 'unit_price', render: row => <span className="font-mono font-semibold">${parseFloat(row.unit_price).toFixed(2)}</span> },
+    { header: 'Unit Price', accessor: 'unit_price', render: row => <span className="font-mono font-semibold">৳{parseFloat(row.unit_price).toFixed(2)}</span> },
     { 
       header: 'Total Stock', 
       render: row => (
@@ -188,7 +188,7 @@ export default function PharmacyPage({ user }) {
       ) 
     },
     { header: 'Available Units', accessor: 'current_quantity', render: row => <span className="font-mono font-semibold">{row.current_quantity} / {row.initial_quantity}</span> },
-    { header: 'Cost / Sell', render: row => <span className="text-xs font-mono">${parseFloat(row.cost_price).toFixed(2)} / ${parseFloat(row.selling_price).toFixed(2)}</span> },
+    { header: 'Cost / Sell', render: row => <span className="text-xs font-mono">৳{parseFloat(row.cost_price).toFixed(2)} / ৳{parseFloat(row.selling_price).toFixed(2)}</span> },
     { 
       header: 'Expiry Date', 
       render: row => {

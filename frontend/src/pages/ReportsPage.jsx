@@ -126,9 +126,9 @@ export default function ReportsPage({ user }) {
     },
     { header: 'Inpatient Admissions', accessor: 'total_admissions', render: row => <span className="font-mono font-medium">{row.total_admissions}</span> },
     { header: 'Appointments Completed', accessor: 'completed_appointments', render: row => <span className="font-mono font-medium">{row.completed_appointments}</span> },
-    { header: 'Total Invoiced', accessor: 'total_invoiced', render: row => <span className="font-mono font-semibold">${parseFloat(row.total_invoiced).toFixed(2)}</span> },
-    { header: 'Revenue Collected', accessor: 'total_revenue_collected', render: row => <span className="font-mono text-emerald-600 font-bold">${parseFloat(row.total_revenue_collected).toFixed(2)}</span> },
-    { header: 'Outstanding Balance', accessor: 'outstanding_balance', render: row => <span className="font-mono text-danger font-semibold">${parseFloat(row.outstanding_balance).toFixed(2)}</span> },
+    { header: 'Total Invoiced', accessor: 'total_invoiced', render: row => <span className="font-mono font-semibold">৳{parseFloat(row.total_invoiced).toFixed(2)}</span> },
+    { header: 'Revenue Collected', accessor: 'total_revenue_collected', render: row => <span className="font-mono text-emerald-600 font-bold">৳{parseFloat(row.total_revenue_collected).toFixed(2)}</span> },
+    { header: 'Outstanding Balance', accessor: 'outstanding_balance', render: row => <span className="font-mono text-danger font-semibold">৳{parseFloat(row.outstanding_balance).toFixed(2)}</span> },
     { 
       header: 'Bed Utilization', 
       accessor: 'bed_utilization_rate_pct', 
@@ -147,7 +147,7 @@ export default function ReportsPage({ user }) {
     { header: 'Physician', accessor: 'doctor_name', render: row => <span className="font-semibold">{row.doctor_name}</span> },
     { header: 'Department', accessor: 'department_name' },
     { header: 'Specialization', accessor: 'specialization' },
-    { header: 'Fee', accessor: 'consultation_fee', render: row => <span className="font-mono">${parseFloat(row.consultation_fee).toFixed(2)}</span> },
+    { header: 'Fee', accessor: 'consultation_fee', render: row => <span className="font-mono">৳{parseFloat(row.consultation_fee).toFixed(2)}</span> },
     { header: 'Total Appointments', accessor: 'total_appointments', render: row => <span className="font-mono font-semibold">{row.total_appointments}</span> },
     { header: 'Completed', accessor: 'completed_appointments', render: row => <span className="font-mono text-emerald-600 font-semibold">{row.completed_appointments}</span> },
     { 
@@ -158,7 +158,7 @@ export default function ReportsPage({ user }) {
     { 
       header: 'Est. Revenue', 
       accessor: 'estimated_revenue_generated', 
-      render: row => <span className="font-mono font-bold text-primary">${parseFloat(row.estimated_revenue_generated).toFixed(2)}</span> 
+      render: row => <span className="font-mono font-bold text-primary">৳{parseFloat(row.estimated_revenue_generated).toFixed(2)}</span> 
     }
   ];
 
@@ -173,19 +173,19 @@ export default function ReportsPage({ user }) {
       ) 
     },
     { header: 'Unpaid Invoices', accessor: 'unpaid_invoices_count', render: row => <span className="badge badge-warning">{row.unpaid_invoices_count}</span> },
-    { header: 'Total Balance Due', accessor: 'total_debt_due', render: row => <span className="font-mono font-bold text-danger text-sm">${parseFloat(row.total_debt_due).toFixed(2)}</span> },
-    { header: '0 - 30 Days', accessor: 'aging_0_to_30_days', render: row => <span className="font-mono text-xs">${parseFloat(row.aging_0_to_30_days).toFixed(2)}</span> },
-    { header: '31 - 60 Days', accessor: 'aging_31_to_60_days', render: row => <span className="font-mono text-xs">${parseFloat(row.aging_31_to_60_days).toFixed(2)}</span> },
-    { header: '61 - 90 Days', accessor: 'aging_61_to_90_days', render: row => <span className="font-mono text-xs font-semibold text-amber-600">${parseFloat(row.aging_61_to_90_days).toFixed(2)}</span> },
-    { header: '> 90 Days (Delinquent)', accessor: 'aging_over_90_days', render: row => <span className="font-mono text-xs font-bold text-danger">${parseFloat(row.aging_over_90_days).toFixed(2)}</span> }
+    { header: 'Total Balance Due', accessor: 'total_debt_due', render: row => <span className="font-mono font-bold text-danger text-sm">৳{parseFloat(row.total_debt_due).toFixed(2)}</span> },
+    { header: '0 - 30 Days', accessor: 'aging_0_to_30_days', render: row => <span className="font-mono text-xs">৳{parseFloat(row.aging_0_to_30_days).toFixed(2)}</span> },
+    { header: '31 - 60 Days', accessor: 'aging_31_to_60_days', render: row => <span className="font-mono text-xs">৳{parseFloat(row.aging_31_to_60_days).toFixed(2)}</span> },
+    { header: '61 - 90 Days', accessor: 'aging_61_to_90_days', render: row => <span className="font-mono text-xs font-semibold text-amber-600">৳{parseFloat(row.aging_61_to_90_days).toFixed(2)}</span> },
+    { header: '> 90 Days (Delinquent)', accessor: 'aging_over_90_days', render: row => <span className="font-mono text-xs font-bold text-danger">৳{parseFloat(row.aging_over_90_days).toFixed(2)}</span> }
   ];
 
   const revenueColumns = [
     { header: 'Date', accessor: 'payment_day', render: row => new Date(row.payment_day).toLocaleDateString() },
     { header: 'Payment Channel', accessor: 'payment_method', render: row => <span className="badge badge-info">{row.payment_method}</span> },
     { header: 'Transactions', accessor: 'total_transactions', render: row => <span className="font-mono font-semibold">{row.total_transactions}</span> },
-    { header: 'Avg Ticket Size', accessor: 'average_ticket_size', render: row => <span className="font-mono text-xs">${parseFloat(row.average_ticket_size).toFixed(2)}</span> },
-    { header: 'Revenue Collected', accessor: 'total_revenue_collected', render: row => <span className="font-mono font-bold text-emerald-600">${parseFloat(row.total_revenue_collected).toFixed(2)}</span> }
+    { header: 'Avg Ticket Size', accessor: 'average_ticket_size', render: row => <span className="font-mono text-xs">৳{parseFloat(row.average_ticket_size).toFixed(2)}</span> },
+    { header: 'Revenue Collected', accessor: 'total_revenue_collected', render: row => <span className="font-mono font-bold text-emerald-600">৳{parseFloat(row.total_revenue_collected).toFixed(2)}</span> }
   ];
 
   return (

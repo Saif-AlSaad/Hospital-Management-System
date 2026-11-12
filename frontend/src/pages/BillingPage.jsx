@@ -202,7 +202,7 @@ export default function BillingPage({ user }) {
     e.preventDefault();
     const inv = selectedInvoice.invoice;
     if (parseFloat(payForm.amount) <= 0 || parseFloat(payForm.amount) > parseFloat(inv.balance_due)) {
-      alert(`Payment amount must be between $0.01 and the remaining balance of $${parseFloat(inv.balance_due).toFixed(2)}.`);
+      alert(`Payment amount must be between ৳1.00 and the remaining balance of ৳${parseFloat(inv.balance_due).toFixed(2)}.`);
       return;
     }
 
@@ -514,7 +514,7 @@ export default function BillingPage({ user }) {
                           />
                         </td>
                         <td className="p-2 text-right font-mono font-semibold">
-                          ${lineTotal.toFixed(2)}
+                          ৳{lineTotal.toFixed(2)}
                         </td>
                         <td className="p-2 text-center">
                           {invoiceItems.length > 1 && (
@@ -543,19 +543,19 @@ export default function BillingPage({ user }) {
             <div className="w-64 space-y-1 text-right font-mono">
               <div className="flex justify-between text-muted">
                 <span>Subtotal:</span>
-                <span>${subtotal.toFixed(2)}</span>
+                <span>৳{subtotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-muted">
                 <span>Discount:</span>
-                <span>-${totalDiscount.toFixed(2)}</span>
+                <span>-৳{totalDiscount.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-muted">
                 <span>Tax (5%):</span>
-                <span>${tax.toFixed(2)}</span>
+                <span>৳{tax.toFixed(2)}</span>
               </div>
               <div className="flex justify-between font-bold text-base text-foreground pt-1 border-t border-border">
                 <span>Total Amount:</span>
-                <span className="text-primary">${grandTotal.toFixed(2)}</span>
+                <span className="text-primary">৳{grandTotal.toFixed(2)}</span>
               </div>
             </div>
           </div>
@@ -627,9 +627,9 @@ export default function BillingPage({ user }) {
                     <tr key={item.item_id}>
                       <td className="p-3 font-medium">{item.item_description}</td>
                       <td className="p-3 text-right font-mono">{item.quantity}</td>
-                      <td className="p-3 text-right font-mono">${parseFloat(item.unit_price).toFixed(2)}</td>
-                      <td className="p-3 text-right font-mono text-muted">${parseFloat(item.discount).toFixed(2)}</td>
-                      <td className="p-3 text-right font-mono font-semibold">${parseFloat(item.total_price).toFixed(2)}</td>
+                      <td className="p-3 text-right font-mono">৳{parseFloat(item.unit_price).toFixed(2)}</td>
+                      <td className="p-3 text-right font-mono text-muted">৳{parseFloat(item.discount).toFixed(2)}</td>
+                      <td className="p-3 text-right font-mono font-semibold">৳{parseFloat(item.total_price).toFixed(2)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -641,27 +641,27 @@ export default function BillingPage({ user }) {
               <div className="w-72 space-y-1.5 text-sm font-mono">
                 <div className="flex justify-between text-muted">
                   <span>Subtotal:</span>
-                  <span>${parseFloat(selectedInvoice.invoice.subtotal).toFixed(2)}</span>
+                  <span>৳{parseFloat(selectedInvoice.invoice.subtotal).toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-muted">
                   <span>Discount:</span>
-                  <span>-${parseFloat(selectedInvoice.invoice.discount_amount).toFixed(2)}</span>
+                  <span>-৳{parseFloat(selectedInvoice.invoice.discount_amount).toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-muted">
                   <span>Tax (5%):</span>
-                  <span>+${parseFloat(selectedInvoice.invoice.tax_amount).toFixed(2)}</span>
+                  <span>+৳{parseFloat(selectedInvoice.invoice.tax_amount).toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between font-bold text-foreground border-t border-border pt-1">
                   <span>Total Amount:</span>
-                  <span>${parseFloat(selectedInvoice.invoice.total_amount).toFixed(2)}</span>
+                  <span>৳{parseFloat(selectedInvoice.invoice.total_amount).toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-emerald-600 font-semibold">
                   <span>Total Paid:</span>
-                  <span>${parseFloat(selectedInvoice.invoice.paid_amount).toFixed(2)}</span>
+                  <span>৳{parseFloat(selectedInvoice.invoice.paid_amount).toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between font-bold text-danger border-t border-border pt-1">
                   <span>Balance Due:</span>
-                  <span>${parseFloat(selectedInvoice.invoice.balance_due).toFixed(2)}</span>
+                  <span>৳{parseFloat(selectedInvoice.invoice.balance_due).toFixed(2)}</span>
                 </div>
               </div>
             </div>
@@ -681,14 +681,14 @@ export default function BillingPage({ user }) {
                         <th className="p-2 text-right">Amount Paid</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-border">
+                    <tbody className="divide-y border-border">
                       {selectedInvoice.payments.map(p => (
                         <tr key={p.payment_id}>
                           <td className="p-2 font-mono font-semibold text-primary">{p.payment_number}</td>
                           <td className="p-2">{new Date(p.payment_date).toLocaleString()}</td>
                           <td className="p-2"><span className="badge badge-info">{p.payment_method}</span></td>
                           <td className="p-2 font-mono text-muted">{p.transaction_reference || '-'}</td>
-                          <td className="p-2 text-right font-mono font-bold text-emerald-600">${parseFloat(p.amount).toFixed(2)}</td>
+                          <td className="p-2 text-right font-mono font-bold text-emerald-600">৳{parseFloat(p.amount).toFixed(2)}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -723,16 +723,16 @@ export default function BillingPage({ user }) {
             <div className="p-3 bg-slate-50 border border-border rounded text-sm flex justify-between">
               <div>
                 <span className="text-xs text-muted block">Total Invoiced</span>
-                <span className="font-mono font-semibold">${parseFloat(selectedInvoice.invoice.total_amount).toFixed(2)}</span>
+                <span className="font-mono font-semibold">৳{parseFloat(selectedInvoice.invoice.total_amount).toFixed(2)}</span>
               </div>
               <div>
                 <span className="text-xs text-muted block">Remaining Balance</span>
-                <span className="font-mono font-bold text-danger">${parseFloat(selectedInvoice.invoice.balance_due).toFixed(2)}</span>
+                <span className="font-mono font-bold text-danger">৳{parseFloat(selectedInvoice.invoice.balance_due).toFixed(2)}</span>
               </div>
             </div>
 
             <div>
-              <label className="label">Payment Amount ($) *</label>
+              <label className="label">Payment Amount (৳) *</label>
               <input 
                 type="number" 
                 step="0.01" 
