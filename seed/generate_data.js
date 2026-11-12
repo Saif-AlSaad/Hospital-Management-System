@@ -122,7 +122,6 @@ async function runSeed() {
     const testAccounts = [
       { username: 'admin', role: 'Admin', email: 'admin@apex-hospital.org', dept: deptIds[0], fname: 'Arthur', lname: 'Pendleton' },
       { username: 'doctor1', role: 'Doctor', email: 'dr.smith@apex-hospital.org', dept: deptIds[0], fname: 'Edward', lname: 'Smith' },
-      { username: 'nurse1', role: 'Nurse', email: 'nurse.sarah@apex-hospital.org', dept: deptIds[0], fname: 'Sarah', lname: 'Jenkins' },
       { username: 'receptionist1', role: 'Receptionist', email: 'reception@apex-hospital.org', dept: deptIds[0], fname: 'Emily', lname: 'Clark' },
       { username: 'accountant1', role: 'Accountant', email: 'finance@apex-hospital.org', dept: deptIds[0], fname: 'Walter', lname: 'Finley' },
     ];
@@ -200,7 +199,7 @@ async function runSeed() {
         uid = existing.rows[0]?.user_id;
       }
 
-      const roleName = isDoc ? 'Doctor' : getRandomItem(['Nurse', 'Receptionist', 'Accountant']);
+      const roleName = isDoc ? 'Doctor' : getRandomItem(['Receptionist', 'Accountant']);
       if (uid && roleMap[roleName]) {
         await client.query(`
           INSERT INTO user_roles (user_id, role_id)

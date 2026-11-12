@@ -323,7 +323,6 @@ export default function StaffPage({ user }) {
                     >
                       <option value="1">Administrator</option>
                       <option value="2">Doctor</option>
-                      <option value="3">Nurse</option>
                       <option value="4">Receptionist</option>
                       <option value="7">Accountant</option>
                     </select>

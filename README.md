@@ -160,11 +160,6 @@ Connect to PostgreSQL (`hospital_db`, user: `postgres`, password: `postgres`):
 $env:PGPASSWORD="postgres"; & "C:\Program Files\PostgreSQL\18\bin\psql.exe" -U postgres -d hospital_db
 ```
 
-**Linux / macOS (or if `psql` is in PATH):**
-```bash
-psql -U postgres -d hospital_db
-```
-
 **Quick Commands:**
 * `\dt` — List all 37 tables
 * `\d <table_name>` — View table columns and constraints
@@ -180,9 +175,8 @@ The login page features **1-click quick-role switch buttons** for rapid viva dem
 | Role | Username | Password | Access Scope |
 | :--- | :--- | :--- | :--- |
 | **Administrator** | `admin` | `password123` | Full unrestricted access across all 18 modules, user administration, and materialized view refreshing |
-| **Doctor** | `doctor1` | `password123` | Outpatient appointments, consultations, diagnostic requisitions, test result recording, and e-prescribing |
-| **Nurse** | `nurse1` | `password123` | Inpatient admissions, bed transfers, ward occupancy tracking, and medication dispensing |
-| **Receptionist** | `receptionist1` | `password123` | Patient master registry, booking doctor appointments, and inpatient bed reservations |
+| **Doctor** | `doctor1` | `password123` | Outpatient appointments, consultations, diagnostic requisitions, inpatient bed management, and e-prescribing |
+| **Receptionist** | `receptionist1` | `password123` | Patient master registry, booking doctor appointments, inpatient admissions, and bed reservations |
 | **Accountant** | `accountant1` | `password123` | Itemized invoicing, payment receipts, fee tariffs, debt aging, and financial revenue reports |
 
 ---

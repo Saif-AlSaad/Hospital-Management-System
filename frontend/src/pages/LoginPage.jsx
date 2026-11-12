@@ -10,7 +10,6 @@ import { api, setAuthToken, setStoredUser } from '../services/api';
 const QUICK_ROLES = [
   { role: 'Admin', user: 'admin', desc: 'Full System Control' },
   { role: 'Doctor', user: 'doctor1', desc: 'Clinical & Encounters' },
-  { role: 'Nurse', user: 'nurse1', desc: 'Inpatient & Wards' },
   { role: 'Receptionist', user: 'receptionist1', desc: 'Scheduling & Patients' },
   { role: 'Accountant', user: 'accountant1', desc: 'Billing & Payments' },
 ];

@@ -10,7 +10,6 @@
 INSERT INTO roles (role_name, description) VALUES
 ('Admin', 'Full administrative authority and system management access'),
 ('Doctor', 'Clinical medical practitioner with patient encounter & prescription privileges'),
-('Nurse', 'Clinical inpatient care, bed management, and vitals administration'),
 ('Receptionist', 'Front-desk patient registration and appointment scheduling'),
 ('Accountant', 'Billing, invoicing, payments, and financial management')
 ON CONFLICT (role_name) DO NOTHING;

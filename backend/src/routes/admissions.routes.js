@@ -98,7 +98,7 @@ router.get('/', authenticateToken, async (req, res, next) => {
 
 // POST /api/admissions/admit - Stored Procedure sp_admit_patient
 // Creates admission, assigns bed, updates occupancy in an atomic database transaction.
-router.post('/admit', authenticateToken, requireRoles('Admin', 'Doctor', 'Nurse'), async (req, res, next) => {
+router.post('/admit', authenticateToken, requireRoles('Admin', 'Doctor', 'Receptionist'), async (req, res, next) => {
   try {
     const { patientId, doctorId, bedId, admissionReason } = req.body;
 
@@ -165,7 +165,7 @@ router.post('/:id/discharge', authenticateToken, requireRoles('Admin', 'Doctor')
 
 // POST /api/admissions/:id/transfer-bed - Multi-Table Bed Transfer Transaction
 // Atomically vacates previous bed and transfers patient to new bed
-router.post('/:id/transfer-bed', authenticateToken, requireRoles('Admin', 'Nurse', 'Doctor'), async (req, res, next) => {
+router.post('/:id/transfer-bed', authenticateToken, requireRoles('Admin', 'Doctor'), async (req, res, next) => {
   try {
     const admissionId = parseInt(req.params.id);
     const { newBedId, transferNotes } = req.body;

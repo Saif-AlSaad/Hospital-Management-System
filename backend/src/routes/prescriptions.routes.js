@@ -155,7 +155,7 @@ router.get('/:id', authenticateToken, async (req, res, next) => {
 
 // POST /api/prescriptions/:id/dispense - Multi-Table Dispensing Workflow
 // Atomically deducts inventory, records dispensing, updates prescription items and status
-router.post('/:id/dispense', authenticateToken, requireRoles('Admin', 'Doctor', 'Nurse'), async (req, res, next) => {
+router.post('/:id/dispense', authenticateToken, requireRoles('Admin', 'Doctor'), async (req, res, next) => {
   try {
     const prescriptionId = parseInt(req.params.id);
     const { items, notes } = req.body; // Array of { prescriptionItemId, batchId, quantity }
