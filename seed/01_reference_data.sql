@@ -12,8 +12,6 @@ INSERT INTO roles (role_name, description) VALUES
 ('Doctor', 'Clinical medical practitioner with patient encounter & prescription privileges'),
 ('Nurse', 'Clinical inpatient care, bed management, and vitals administration'),
 ('Receptionist', 'Front-desk patient registration and appointment scheduling'),
-('LaboratoryTechnician', 'Diagnostic lab order processing, testing, and report entry'),
-('Pharmacist', 'Pharmacy inventory oversight and prescription dispensing'),
 ('Accountant', 'Billing, invoicing, payments, and financial management')
 ON CONFLICT (role_name) DO NOTHING;
 

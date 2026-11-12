@@ -124,8 +124,6 @@ async function runSeed() {
       { username: 'doctor1', role: 'Doctor', email: 'dr.smith@apex-hospital.org', dept: deptIds[0], fname: 'Edward', lname: 'Smith' },
       { username: 'nurse1', role: 'Nurse', email: 'nurse.sarah@apex-hospital.org', dept: deptIds[0], fname: 'Sarah', lname: 'Jenkins' },
       { username: 'receptionist1', role: 'Receptionist', email: 'reception@apex-hospital.org', dept: deptIds[0], fname: 'Emily', lname: 'Clark' },
-      { username: 'labtech1', role: 'LaboratoryTechnician', email: 'lab@apex-hospital.org', dept: deptIds[0], fname: 'David', lname: 'Bannister' },
-      { username: 'pharmacist1', role: 'Pharmacist', email: 'pharmacy@apex-hospital.org', dept: deptIds[0], fname: 'Rachel', lname: 'Adams' },
       { username: 'accountant1', role: 'Accountant', email: 'finance@apex-hospital.org', dept: deptIds[0], fname: 'Walter', lname: 'Finley' },
     ];
 
@@ -202,7 +200,7 @@ async function runSeed() {
         uid = existing.rows[0]?.user_id;
       }
 
-      const roleName = isDoc ? 'Doctor' : getRandomItem(['Nurse', 'Receptionist', 'LaboratoryTechnician', 'Pharmacist', 'Accountant']);
+      const roleName = isDoc ? 'Doctor' : getRandomItem(['Nurse', 'Receptionist', 'Accountant']);
       if (uid && roleMap[roleName]) {
         await client.query(`
           INSERT INTO user_roles (user_id, role_id)
@@ -718,7 +716,7 @@ async function runSeed() {
             INSERT INTO lab_order_items (order_id, test_id, item_fee, status, performed_by, result_summary)
             VALUES ($1, $2, $3, $4, $5, 'Laboratory analysis completed with verified parameters.')
             RETURNING order_item_id;
-          `, [orderId, test.test_id, test.standard_fee, itemStatus, staffIds[4] || staffIds[0]]);
+          `, [orderId, test.test_id, test.standard_fee, itemStatus, staffIds[0]]);
 
           if (itRes.rows.length > 0 && status === 'Completed') {
             const orderItemId = itRes.rows[0].order_item_id;
@@ -739,7 +737,7 @@ async function runSeed() {
               test.normal_range || '70-99',
               isAbnormal,
               isAbnormal ? 'Value elevated above standard reference threshold.' : 'Within normal physiological limits.',
-              staffIds[4] || staffIds[0],
+              staffIds[0],
               docId
             ]);
           }

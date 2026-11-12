@@ -542,7 +542,7 @@ export default function LaboratoryPage({ user }) {
                           </span>
                         </td>
                         <td className="p-3 text-right">
-                          {['Admin', 'LaboratoryTechnician'].includes(user?.role) && item.item_status !== 'Completed' && (
+                          {['Admin', 'Doctor'].includes(user?.role) && item.item_status !== 'Completed' && (
                             <button 
                               className="btn btn-primary btn-sm"
                               onClick={() => openResultEntryModal(item)}
@@ -626,7 +626,7 @@ export default function LaboratoryPage({ user }) {
               </label>
             </div>
             <div>
-              <label className="label">Technician Remarks</label>
+              <label className="label">Diagnostic Remarks</label>
               <textarea 
                 className="input" 
                 rows="2" 

@@ -157,7 +157,7 @@ router.get('/batches', authenticateToken, async (req, res, next) => {
 });
 
 // POST /api/pharmacy/batches - Add Stock Batch & Record Purchase Transaction
-router.post('/batches', authenticateToken, requireRoles('Admin', 'Pharmacist'), async (req, res, next) => {
+router.post('/batches', authenticateToken, requireRoles('Admin', 'Doctor', 'Nurse'), async (req, res, next) => {
   try {
     const {
       medicineId, batchNumber, manufactureDate, expiryDate,

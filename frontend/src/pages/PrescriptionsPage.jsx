@@ -195,7 +195,7 @@ export default function PrescriptionsPage({ user }) {
           >
             <Eye size={14} /> View
           </button>
-          {['Admin', 'Pharmacist'].includes(user?.role) && row.status !== 'Dispensed' && (
+          {['Admin', 'Doctor', 'Nurse'].includes(user?.role) && row.status !== 'Dispensed' && (
             <button 
               className="btn btn-primary btn-sm"
               onClick={() => openDispense(row.prescription_id)}
@@ -326,7 +326,7 @@ export default function PrescriptionsPage({ user }) {
             </div>
 
             <div className="flex justify-between items-center pt-2">
-              {['Admin', 'Pharmacist'].includes(user?.role) && selectedRx.prescription.status !== 'Dispensed' ? (
+              {['Admin', 'Doctor', 'Nurse'].includes(user?.role) && selectedRx.prescription.status !== 'Dispensed' ? (
                 <button 
                   className="btn btn-primary"
                   onClick={() => { setShowDetailModal(false); openDispense(selectedRx.prescription.prescription_id); }}
@@ -418,7 +418,7 @@ export default function PrescriptionsPage({ user }) {
             </div>
 
             <div>
-              <label className="label">Pharmacist Dispensing Notes</label>
+              <label className="label">Dispensing Notes</label>
               <input 
                 type="text" 
                 className="input" 

@@ -325,8 +325,6 @@ export default function StaffPage({ user }) {
                       <option value="2">Doctor</option>
                       <option value="3">Nurse</option>
                       <option value="4">Receptionist</option>
-                      <option value="5">Laboratory Technician</option>
-                      <option value="6">Pharmacist</option>
                       <option value="7">Accountant</option>
                     </select>
                   </div>

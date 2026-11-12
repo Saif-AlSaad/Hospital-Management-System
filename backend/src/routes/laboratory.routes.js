@@ -240,7 +240,7 @@ router.post('/orders', authenticateToken, requireRoles('Admin', 'Doctor'), async
 });
 
 // POST /api/laboratory/orders/:orderId/items/:itemId/result - Record Measured Test Result
-router.post('/orders/:orderId/items/:itemId/result', authenticateToken, requireRoles('Admin', 'LaboratoryTechnician'), async (req, res, next) => {
+router.post('/orders/:orderId/items/:itemId/result', authenticateToken, requireRoles('Admin', 'Doctor'), async (req, res, next) => {
   try {
     const orderId = parseInt(req.params.orderId);
     const itemId = parseInt(req.params.itemId);

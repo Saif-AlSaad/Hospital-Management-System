@@ -12,8 +12,6 @@ const QUICK_ROLES = [
   { role: 'Doctor', user: 'doctor1', desc: 'Clinical & Encounters' },
   { role: 'Nurse', user: 'nurse1', desc: 'Inpatient & Wards' },
   { role: 'Receptionist', user: 'receptionist1', desc: 'Scheduling & Patients' },
-  { role: 'Lab Tech', user: 'labtech1', desc: 'Diagnostic Orders' },
-  { role: 'Pharmacist', user: 'pharmacist1', desc: 'Formulary & Dispensing' },
   { role: 'Accountant', user: 'accountant1', desc: 'Billing & Payments' },
 ];
 
