@@ -183,7 +183,19 @@ The login page features **1-click quick-role switch buttons** for rapid viva dem
 
 ## 🧪 Automated Testing & Verification
 
-Run the comprehensive end-to-end integration test suite verifying Workflows A through F against the live PostgreSQL database:
+Run the comprehensive Step 5 Stakeholder RBAC, Database Triggers & Exact Row Counts Audit Suite:
+```bash
+npm run test:db --prefix backend
+# OR directly via node:
+node tests/api_tests/step5_comprehensive_verification.js
+```
+
+Run the strict RBAC & physician data scoping test suite:
+```bash
+node tests/api_tests/rbac_enforcement.test.js
+```
+
+Run the end-to-end integration workflows suite against the live PostgreSQL database:
 ```bash
 node tests/api_tests/workflows.test.js
 ```

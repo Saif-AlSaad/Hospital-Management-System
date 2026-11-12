@@ -31,7 +31,8 @@ const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '24h';
 // ----------------------------------------------------------------------------
 router.post('/login', async (req, res, next) => {
   try {
-    const { usernameOrEmail, password } = req.body;
+    const usernameOrEmail = req.body.usernameOrEmail || req.body.username || req.body.email;
+    const { password } = req.body;
 
     if (!usernameOrEmail || !password) {
       return res.status(400).json({
