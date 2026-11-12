@@ -176,7 +176,7 @@ async function runSeed() {
       'Obstetrics & Gynecology', 'Fetal Medicine', 'Emergency Medicine', 'Critical Care'
     ];
 
-    for (let i = 8; i <= 100; i++) {
+    for (let i = 5; i <= 100; i++) {
       const isDoc = (i <= 36); // first 30 docs total
       const gender = getRandomItem(GENDERS);
       const fname = (gender === 'Male') ? getRandomItem(FIRST_NAMES_MALE) : getRandomItem(FIRST_NAMES_FEMALE);
@@ -374,12 +374,12 @@ async function runSeed() {
       }
     }
 
-    // Batches (500 batches)
+    // Batches (100 batches)
     const batchIds = [];
     const adminUserRes = await client.query("SELECT user_id FROM users WHERE username = 'admin' LIMIT 1;");
     const adminUserId = adminUserRes.rows[0]?.user_id || 1;
 
-    for (let b = 1; b <= 500; b++) {
+    for (let b = 1; b <= 100; b++) {
       const medId = medicineIds[b % medicineIds.length] || medicineIds[0];
       const batchNo = `LOT-${2025000 + b}`;
       const cost = getRandomItem([0.20, 0.50, 1.00, 2.00, 5.00]);
@@ -416,13 +416,13 @@ async function runSeed() {
     console.log(`✓ Seeded ${medicineIds.length} medicines and ${batchIds.length} active inventory batches.`);
 
     // ------------------------------------------------------------------------
-    // Step 6: Patients (750 Patients)
+    // Step 6: Patients (50 Patients)
     // ------------------------------------------------------------------------
-    console.log('6. Seeding 750 Patients...');
+    console.log('6. Seeding 50 Patients...');
     const patientIds = [];
     const patientValues = [];
 
-    for (let p = 1; p <= 750; p++) {
+    for (let p = 1; p <= 50; p++) {
       const gender = getRandomItem(GENDERS);
       const fname = (gender === 'Male') ? getRandomItem(FIRST_NAMES_MALE) : getRandomItem(FIRST_NAMES_FEMALE);
       const lname = getRandomItem(LAST_NAMES);
@@ -453,17 +453,16 @@ async function runSeed() {
     console.log(`✓ Seeded ${patientIds.length} patients.`);
 
     // ------------------------------------------------------------------------
-    // Step 7: Appointments (1,500 Appointments)
+    // Step 7: Appointments (50 Appointments)
     // ------------------------------------------------------------------------
-    console.log('7. Seeding 1,500 Appointments...');
+    console.log('7. Seeding 50 Appointments...');
     const appointmentIds = [];
     const apptValues = [];
     const APPT_TYPES = ['New', 'Follow-up', 'Routine', 'Emergency'];
-    const APPT_STATUSES = ['Completed', 'Completed', 'Completed', 'Scheduled', 'Confirmed', 'Cancelled', 'No-Show'];
 
-    for (let a = 1; a <= 1500; a++) {
+    for (let a = 1; a <= 50; a++) {
       const apptNum = `APT-${20260000 + a}`;
-      const pid = getRandomItem(patientIds);
+      const pid = patientIds[(a - 1) % patientIds.length];
       const docId = getRandomItem(doctorIds);
       const deptId = getRandomItem(deptIds);
       const apptDate = getRandomDate(2025, 2026);
@@ -472,7 +471,7 @@ async function runSeed() {
       const startTime = `${String(startHour).padStart(2, '0')}:${isHalf ? '30' : '00'}:00`;
       const endTime = isHalf ? `${String(startHour + 1).padStart(2, '0')}:00:00` : `${String(startHour).padStart(2, '0')}:30:00`;
       const apptType = getRandomItem(APPT_TYPES);
-      const status = (new Date(apptDate) < new Date('2026-03-01')) ? 'Completed' : getRandomItem(APPT_STATUSES);
+      const status = 'Completed';
 
       apptValues.push(`('${apptNum}', ${pid}, ${docId}, ${deptId}, '${apptDate}', '${startTime}', '${endTime}', '${apptType}', '${status}', 'Patient reported general discomfort and requested clinical review.', ${adminUserId})`);
     }
@@ -492,9 +491,9 @@ async function runSeed() {
     console.log(`✓ Seeded ${appointmentIds.length} appointments.`);
 
     // ------------------------------------------------------------------------
-    // Step 8: Consultations & Diagnoses (2,000 Consultations)
+    // Step 8: Consultations & Diagnoses (50 Consultations, 55 Diagnoses)
     // ------------------------------------------------------------------------
-    console.log('8. Seeding 2,000 Consultations with Diagnoses and Vitals...');
+    console.log('8. Seeding 50 Consultations with 55 Diagnoses and Vitals...');
     const consultationIds = [];
     const diagRes = await client.query('SELECT diagnosis_id FROM diagnoses;');
     const diagnosisIds = diagRes.rows.map(d => d.diagnosis_id);
@@ -523,7 +522,8 @@ async function runSeed() {
       SELECT appointment_id, patient_id, doctor_id, appointment_date 
       FROM appointments 
       WHERE status = 'Completed' 
-      LIMIT 1000;
+      ORDER BY appointment_id ASC
+      LIMIT 50;
     `);
 
     for (let c = 0; c < completedAppts.rows.length; c++) {
@@ -555,32 +555,31 @@ async function runSeed() {
         const conId = cRes.rows[0].consultation_id;
         consultationIds.push(conId);
 
-        // Assign 1-2 diagnoses
-        const diagId1 = getRandomItem(diagnosisIds);
+        // Assign primary diagnosis (1 per consultation = 50 total)
+        const diagId1 = diagnosisIds[c % diagnosisIds.length];
         await client.query(`
           INSERT INTO consultation_diagnoses (consultation_id, diagnosis_id, diagnosis_type, notes)
           VALUES ($1, $2, 'Primary', 'Clinical confirmation')
           ON CONFLICT DO NOTHING;
         `, [conId, diagId1]);
 
-        if (c % 2 === 0) {
-          const diagId2 = getRandomItem(diagnosisIds);
-          if (diagId2 !== diagId1) {
-            await client.query(`
-              INSERT INTO consultation_diagnoses (consultation_id, diagnosis_id, diagnosis_type, notes)
-              VALUES ($1, $2, 'Secondary', 'Associated condition')
-              ON CONFLICT DO NOTHING;
-            `, [conId, diagId2]);
-          }
+        // Assign secondary diagnosis for first 5 consultations (5 additional = 55 total)
+        if (c < 5) {
+          const diagId2 = diagnosisIds[(c + 7) % diagnosisIds.length];
+          await client.query(`
+            INSERT INTO consultation_diagnoses (consultation_id, diagnosis_id, diagnosis_type, notes)
+            VALUES ($1, $2, 'Secondary', 'Associated condition')
+            ON CONFLICT DO NOTHING;
+          `, [conId, diagId2]);
         }
       }
     }
     console.log(`✓ Seeded ${consultationIds.length} clinical consultations with linked diagnoses.`);
 
     // ------------------------------------------------------------------------
-    // Step 9: Inpatient Admissions & Bed Allocation (150 Admissions)
+    // Step 9: Inpatient Admissions & Bed Allocation (10 Admissions, 15 Bed Assignments)
     // ------------------------------------------------------------------------
-    console.log('9. Seeding 150 Inpatient Admissions with Bed Assignments...');
+    console.log('9. Seeding 10 Inpatient Admissions with 15 Bed Assignments...');
     const admissionIds = [];
     const REASONS = [
       'Acute exacerbation of chronic obstructive pulmonary disease requiring IV steroids.',
@@ -591,11 +590,11 @@ async function runSeed() {
       'Post-trauma closed fracture reduction and observation.'
     ];
 
-    for (let adm = 1; adm <= 150; adm++) {
+    for (let adm = 1; adm <= 10; adm++) {
       const admNum = `ADM-${20260000 + adm}`;
-      const pid = patientIds[adm % patientIds.length];
+      const pid = patientIds[(adm - 1) % patientIds.length];
       const docId = getRandomItem(doctorIds);
-      const isCurrent = (adm > 125); // last 25 are active inpatients
+      const isCurrent = (adm > 6); // last 4 are active inpatients
       const admDate = isCurrent ? getRandomTimestamp(15, 1) : getRandomTimestamp(180, 20);
       const disDate = isCurrent ? null : new Date(new Date(admDate).getTime() + getRandomInt(2, 8) * 86400000).toISOString();
       const status = isCurrent ? 'Admitted' : 'Discharged';
@@ -616,7 +615,18 @@ async function runSeed() {
         const admissionId = aRes.rows[0].admission_id;
         admissionIds.push(admissionId);
 
-        // Assign a bed
+        // Assign initial prior bed for first 5 admissions to record bed transfers (5 additional assignments)
+        if (adm <= 5) {
+          const prevBedId = bedIds[(adm + 30) % bedIds.length];
+          const prevDate = new Date(new Date(admDate).getTime() - 2 * 86400000).toISOString();
+          await client.query(`
+            INSERT INTO bed_assignments (admission_id, bed_id, assigned_at, released_at, is_current, assigned_by, notes)
+            VALUES ($1, $2, $3, $4, FALSE, $5, 'Initial bed before clinical ward transfer')
+            ON CONFLICT DO NOTHING;
+          `, [admissionId, prevBedId, prevDate, admDate, adminUserId]);
+        }
+
+        // Primary bed assignment (10 assignments total across all 10 admissions = 15 assignments total)
         const bedId = bedIds[(adm - 1) % bedIds.length];
         await client.query(`
           INSERT INTO bed_assignments (admission_id, bed_id, assigned_at, released_at, is_current, assigned_by, notes)
@@ -632,17 +642,17 @@ async function runSeed() {
     console.log(`✓ Seeded ${admissionIds.length} inpatient admissions with bed allocations.`);
 
     // ------------------------------------------------------------------------
-    // Step 10: Prescriptions & Items (500 Prescriptions, 1,250 Items)
+    // Step 10: Prescriptions & Items (50 Prescriptions, 55 Items)
     // ------------------------------------------------------------------------
-    console.log('10. Seeding 500 Prescriptions and 1,250 Prescription Items...');
+    console.log('10. Seeding 50 Prescriptions and 55 Prescription Items...');
     const prescriptionIds = [];
     const DOSAGES = ['500mg', '1 tablet', '20mg', '10ml', '1 capsule', '2 puffs'];
     const FREQS = ['1-0-1 after meals', '1-1-1 before meals', '0-0-1 at bedtime', '1-0-0 morning', 'SOS (as needed)'];
 
-    for (let rx = 1; rx <= 500; rx++) {
+    for (let rx = 1; rx <= 50; rx++) {
       const rxNum = `RX-${20260000 + rx}`;
       const conId = consultationIds[rx % consultationIds.length] || null;
-      const pid = patientIds[rx % patientIds.length];
+      const pid = patientIds[(rx - 1) % patientIds.length];
       const docId = getRandomItem(doctorIds);
       const status = getRandomItem(['Active', 'Dispensed', 'Dispensed', 'Partially Dispensed']);
 
@@ -657,41 +667,51 @@ async function runSeed() {
         const presId = rxRes.rows[0].prescription_id;
         prescriptionIds.push(presId);
 
-        // Add 2-3 items per prescription
-        const itemCount = getRandomInt(2, 3);
-        for (let it = 0; it < itemCount; it++) {
-          const medId = getRandomItem(medicineIds);
-          const duration = getRandomItem([5, 7, 10, 14, 30]);
-          const presQty = (duration === 30) ? 30 : getRandomInt(10, 20);
-          const dispQty = (status === 'Dispensed') ? presQty : (status === 'Partially Dispensed' ? Math.floor(presQty / 2) : 0);
+        // 1st item for each prescription (50 items total)
+        const medId1 = medicineIds[(rx - 1) % medicineIds.length];
+        const duration = getRandomItem([5, 7, 10, 14, 30]);
+        const presQty = (duration === 30) ? 30 : getRandomInt(10, 20);
+        const dispQty = (status === 'Dispensed') ? presQty : (status === 'Partially Dispensed' ? Math.floor(presQty / 2) : 0);
 
+        await client.query(`
+          INSERT INTO prescription_items (
+            prescription_id, medicine_id, dosage, frequency, duration_days,
+            prescribed_quantity, dispensed_quantity, instructions
+          )
+          VALUES ($1, $2, $3, $4, $5, $6, $7, 'Follow doctor dosage advice')
+          ON CONFLICT DO NOTHING;
+        `, [presId, medId1, getRandomItem(DOSAGES), getRandomItem(FREQS), duration, presQty, dispQty]);
+
+        // 2nd item for first 5 prescriptions (5 additional items = 55 total)
+        if (rx <= 5) {
+          const medId2 = medicineIds[(rx + 20) % medicineIds.length];
           await client.query(`
             INSERT INTO prescription_items (
               prescription_id, medicine_id, dosage, frequency, duration_days,
               prescribed_quantity, dispensed_quantity, instructions
             )
-            VALUES ($1, $2, $3, $4, $5, $6, $7, 'Follow doctor dosage advice')
+            VALUES ($1, $2, $3, $4, 7, 14, 0, 'Follow doctor dosage advice')
             ON CONFLICT DO NOTHING;
-          `, [presId, medId, getRandomItem(DOSAGES), getRandomItem(FREQS), duration, presQty, dispQty]);
+          `, [presId, medId2, getRandomItem(DOSAGES), getRandomItem(FREQS)]);
         }
       }
     }
     console.log(`✓ Seeded ${prescriptionIds.length} prescriptions with items.`);
 
     // ------------------------------------------------------------------------
-    // Step 11: Laboratory Orders, Items, and Results (250 Orders, 600 Items)
+    // Step 11: Laboratory Orders, Items, and Results (20 Orders, 20 Items, 20 Results)
     // ------------------------------------------------------------------------
-    console.log('11. Seeding 250 Lab Orders with Items and Results...');
+    console.log('11. Seeding 20 Lab Orders, 20 Items, and 20 Test Results...');
     const labTestRes = await client.query('SELECT test_id, test_code, test_name, standard_fee, normal_range, units FROM lab_tests;');
     const labTests = labTestRes.rows;
     const labOrderIds = [];
 
-    for (let lo = 1; lo <= 250; lo++) {
+    for (let lo = 1; lo <= 20; lo++) {
       const orderNum = `LBO-${20260000 + lo}`;
-      const pid = patientIds[lo % patientIds.length];
+      const pid = patientIds[(lo - 1) % patientIds.length];
       const docId = getRandomItem(doctorIds);
       const conId = consultationIds[lo % consultationIds.length] || null;
-      const status = (lo < 200) ? 'Completed' : getRandomItem(['Ordered', 'In Progress']);
+      const status = 'Completed';
       const priority = getRandomItem(['Routine', 'Routine', 'Urgent', 'Emergency']);
 
       const oRes = await client.query(`
@@ -705,57 +725,53 @@ async function runSeed() {
         const orderId = oRes.rows[0].order_id;
         labOrderIds.push(orderId);
 
-        // Add 1-3 test items
-        const numTests = getRandomInt(1, 3);
-        for (let t = 0; t < numTests; t++) {
-          const test = getRandomItem(labTests);
-          const itemStatus = (status === 'Completed') ? 'Completed' : 'Pending';
+        // Exactly 1 test per order = 20 items total
+        const test = labTests[(lo - 1) % labTests.length];
 
-          const itRes = await client.query(`
-            INSERT INTO lab_order_items (order_id, test_id, item_fee, status, performed_by, result_summary)
-            VALUES ($1, $2, $3, $4, $5, 'Laboratory analysis completed with verified parameters.')
-            RETURNING order_item_id;
-          `, [orderId, test.test_id, test.standard_fee, itemStatus, staffIds[0]]);
+        const itRes = await client.query(`
+          INSERT INTO lab_order_items (order_id, test_id, item_fee, status, performed_by, result_summary)
+          VALUES ($1, $2, $3, 'Completed', $4, 'Laboratory analysis completed with verified parameters.')
+          RETURNING order_item_id;
+        `, [orderId, test.test_id, test.standard_fee, staffIds[0]]);
 
-          if (itRes.rows.length > 0 && status === 'Completed') {
-            const orderItemId = itRes.rows[0].order_item_id;
-            const isAbnormal = (Math.random() < 0.2); // 20% abnormal rate
+        if (itRes.rows.length > 0) {
+          const orderItemId = itRes.rows[0].order_item_id;
+          const isAbnormal = (lo % 4 === 0);
 
-            await client.query(`
-              INSERT INTO lab_results (
-                order_item_id, parameter_name, measured_value, unit,
-                reference_range, is_abnormal, remarks, technician_id, verified_by
-              )
-              VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-              ON CONFLICT DO NOTHING;
-            `, [
-              orderItemId,
-              test.test_name,
-              isAbnormal ? '142.5 (High)' : '85.0 (Normal)',
-              test.units || 'mg/dL',
-              test.normal_range || '70-99',
-              isAbnormal,
-              isAbnormal ? 'Value elevated above standard reference threshold.' : 'Within normal physiological limits.',
-              staffIds[0],
-              docId
-            ]);
-          }
+          await client.query(`
+            INSERT INTO lab_results (
+              order_item_id, parameter_name, measured_value, unit,
+              reference_range, is_abnormal, remarks, technician_id, verified_by
+            )
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+            ON CONFLICT DO NOTHING;
+          `, [
+            orderItemId,
+            test.test_name,
+            isAbnormal ? '142.5 (High)' : '85.0 (Normal)',
+            test.units || 'mg/dL',
+            test.normal_range || '70-99',
+            isAbnormal,
+            isAbnormal ? 'Value elevated above standard reference threshold.' : 'Within normal physiological limits.',
+            staffIds[0],
+            docId
+          ]);
         }
       }
     }
     console.log(`✓ Seeded ${labOrderIds.length} laboratory orders and test results.`);
 
     // ------------------------------------------------------------------------
-    // Step 12: Invoices & Payments (1,000 Invoices, 1,500 Payments)
+    // Step 12: Invoices & Payments (100 Invoices, 100 Items, 150 Payments)
     // ------------------------------------------------------------------------
-    console.log('12. Seeding 1,000 Invoices and 1,500 Payment Records...');
+    console.log('12. Seeding 100 Invoices and 150 Payment Records...');
     const invoiceIds = [];
 
-    for (let inv = 1; inv <= 1000; inv++) {
+    for (let inv = 1; inv <= 100; inv++) {
       const invNum = `INV-${20260000 + inv}`;
-      const pid = patientIds[inv % patientIds.length];
-      const admId = (inv <= 125) ? admissionIds[inv % admissionIds.length] : null;
-      const conId = (inv > 125 && inv <= 750) ? consultationIds[inv % consultationIds.length] : null;
+      const pid = patientIds[(inv - 1) % patientIds.length];
+      const admId = (inv <= 10) ? admissionIds[(inv - 1) % admissionIds.length] : null;
+      const conId = (inv > 10 && inv <= 50) ? consultationIds[(inv - 11) % consultationIds.length] : null;
       const daysAgo = getRandomInt(1, 180);
       const subtotal = getRandomItem([50.00, 75.00, 120.00, 250.00, 480.00, 950.00]);
       const discount = (inv % 5 === 0) ? 10.00 : 0.00;
@@ -796,7 +812,7 @@ async function runSeed() {
         const invoiceId = invRes.rows[0].invoice_id;
         invoiceIds.push({ id: invoiceId, patientId: pid, total, paid, status, daysAgo });
 
-        // Add line item
+        // Add exactly 1 line item per invoice = 100 invoice_items total
         const itemNet = parseFloat((subtotal - discount).toFixed(2));
         await client.query(`
           INSERT INTO invoice_items (
@@ -808,13 +824,13 @@ async function runSeed() {
       }
     }
 
-    // Generate 1,500 payment receipts
-    console.log('12b. Generating 1,500 Payment Receipts...');
+    // Generate 150 payment receipts
+    console.log('12b. Generating 150 Payment Receipts...');
     let paymentCount = 0;
     const PAYMENT_METHODS = ['Cash', 'Credit Card', 'Debit Card', 'MFS/bKash', 'Bank Transfer', 'Insurance'];
 
-    for (let p = 1; p <= 1500; p++) {
-      const invObj = invoiceIds[p % invoiceIds.length];
+    for (let p = 1; p <= 150; p++) {
+      const invObj = invoiceIds[(p - 1) % invoiceIds.length];
       if (!invObj) continue;
 
       const payNum = `PAY-${20260000 + p}`;
