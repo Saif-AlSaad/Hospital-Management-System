@@ -16,7 +16,7 @@ A comprehensive, production-grade Hospital Management System demonstrating advan
 
 * **Zero ORM / Query Builders:** **100% Raw Parameterized SQL** using the plain `pg` (node-postgres) driver. No Prisma, Sequelize, Knex, or Drizzle.
 * **37 Normalized Relational Tables:** Modeled across 6 clinical and operational clusters adhering to strict 3NF normalization.
-* **~14,000 Realistic Seeded Records:** Synthetic dataset spanning patients, physicians, appointments, clinical encounters, admissions, diagnostics, batches, prescriptions, and financial ledgers.
+* **~7,000 Realistic Seeded Records:** Synthetic dataset spanning patients, physicians, appointments, clinical encounters, admissions, diagnostics, batches, prescriptions, and financial ledgers.
 * **7 Active Database Triggers:** Automated scheduling conflict prevention, bed occupancy synchronization, inventory stock control, invoice re-balancing, and JSONB audit logging.
 * **4 Stored Procedures:** Transactional inpatient admissions, discharges, payment processing with INOUT parameters, and bulk analytics generation.
 * **4 Database Functions:** Balance calculations, bed availability queries, invoice totals, and real-time physician schedule checks.
@@ -52,7 +52,7 @@ hospital-management-system/
 ├── seed/                                   # Data Generation & Seeding
 │   ├── 01_reference_data.sql               # Departments, diagnoses, lab tests, medicines
 │   ├── 02_sample_data.sql                  # Core user accounts & staff
-│   └── generate_data.js                    # High-speed synthetic data generator (~14,000 rows)
+│   └── generate_data.js                    # High-speed synthetic data generator (~7,000 rows)
 │
 ├── backend/                                # Node.js / Express Backend
 │   ├── src/
@@ -122,7 +122,7 @@ psql -U postgres -d hospital_db -f routines/triggers.sql
 # 4. Insert baseline reference catalog
 psql -U postgres -d hospital_db -f seed/01_reference_data.sql
 
-# 5. Populate ~14,000 synthetic records across all 37 tables (~7 seconds)
+# 5. Populate ~7,000 synthetic records across all 37 tables (~4 seconds)
 node seed/generate_data.js
 ```
 

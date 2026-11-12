@@ -374,12 +374,12 @@ async function runSeed() {
       }
     }
 
-    // Batches (1,000 batches)
+    // Batches (500 batches)
     const batchIds = [];
     const adminUserRes = await client.query("SELECT user_id FROM users WHERE username = 'admin' LIMIT 1;");
     const adminUserId = adminUserRes.rows[0]?.user_id || 1;
 
-    for (let b = 1; b <= 1000; b++) {
+    for (let b = 1; b <= 500; b++) {
       const medId = medicineIds[b % medicineIds.length] || medicineIds[0];
       const batchNo = `LOT-${2025000 + b}`;
       const cost = getRandomItem([0.20, 0.50, 1.00, 2.00, 5.00]);
@@ -416,13 +416,13 @@ async function runSeed() {
     console.log(`✓ Seeded ${medicineIds.length} medicines and ${batchIds.length} active inventory batches.`);
 
     // ------------------------------------------------------------------------
-    // Step 6: Patients (1,500 Patients)
+    // Step 6: Patients (750 Patients)
     // ------------------------------------------------------------------------
-    console.log('6. Seeding 1,500 Patients...');
+    console.log('6. Seeding 750 Patients...');
     const patientIds = [];
     const patientValues = [];
 
-    for (let p = 1; p <= 1500; p++) {
+    for (let p = 1; p <= 750; p++) {
       const gender = getRandomItem(GENDERS);
       const fname = (gender === 'Male') ? getRandomItem(FIRST_NAMES_MALE) : getRandomItem(FIRST_NAMES_FEMALE);
       const lname = getRandomItem(LAST_NAMES);
@@ -453,15 +453,15 @@ async function runSeed() {
     console.log(`✓ Seeded ${patientIds.length} patients.`);
 
     // ------------------------------------------------------------------------
-    // Step 7: Appointments (3,000 Appointments)
+    // Step 7: Appointments (1,500 Appointments)
     // ------------------------------------------------------------------------
-    console.log('7. Seeding 3,000 Appointments...');
+    console.log('7. Seeding 1,500 Appointments...');
     const appointmentIds = [];
     const apptValues = [];
     const APPT_TYPES = ['New', 'Follow-up', 'Routine', 'Emergency'];
     const APPT_STATUSES = ['Completed', 'Completed', 'Completed', 'Scheduled', 'Confirmed', 'Cancelled', 'No-Show'];
 
-    for (let a = 1; a <= 3000; a++) {
+    for (let a = 1; a <= 1500; a++) {
       const apptNum = `APT-${20260000 + a}`;
       const pid = getRandomItem(patientIds);
       const docId = getRandomItem(doctorIds);
@@ -523,7 +523,7 @@ async function runSeed() {
       SELECT appointment_id, patient_id, doctor_id, appointment_date 
       FROM appointments 
       WHERE status = 'Completed' 
-      LIMIT 2000;
+      LIMIT 1000;
     `);
 
     for (let c = 0; c < completedAppts.rows.length; c++) {
@@ -578,9 +578,9 @@ async function runSeed() {
     console.log(`✓ Seeded ${consultationIds.length} clinical consultations with linked diagnoses.`);
 
     // ------------------------------------------------------------------------
-    // Step 9: Inpatient Admissions & Bed Allocation (300 Admissions)
+    // Step 9: Inpatient Admissions & Bed Allocation (150 Admissions)
     // ------------------------------------------------------------------------
-    console.log('9. Seeding 300 Inpatient Admissions with Bed Assignments...');
+    console.log('9. Seeding 150 Inpatient Admissions with Bed Assignments...');
     const admissionIds = [];
     const REASONS = [
       'Acute exacerbation of chronic obstructive pulmonary disease requiring IV steroids.',
@@ -591,11 +591,11 @@ async function runSeed() {
       'Post-trauma closed fracture reduction and observation.'
     ];
 
-    for (let adm = 1; adm <= 300; adm++) {
+    for (let adm = 1; adm <= 150; adm++) {
       const admNum = `ADM-${20260000 + adm}`;
       const pid = patientIds[adm % patientIds.length];
       const docId = getRandomItem(doctorIds);
-      const isCurrent = (adm > 250); // last 50 are active inpatients
+      const isCurrent = (adm > 125); // last 25 are active inpatients
       const admDate = isCurrent ? getRandomTimestamp(15, 1) : getRandomTimestamp(180, 20);
       const disDate = isCurrent ? null : new Date(new Date(admDate).getTime() + getRandomInt(2, 8) * 86400000).toISOString();
       const status = isCurrent ? 'Admitted' : 'Discharged';
@@ -632,14 +632,14 @@ async function runSeed() {
     console.log(`✓ Seeded ${admissionIds.length} inpatient admissions with bed allocations.`);
 
     // ------------------------------------------------------------------------
-    // Step 10: Prescriptions & Items (1,000 Prescriptions, 2,500 Items)
+    // Step 10: Prescriptions & Items (500 Prescriptions, 1,250 Items)
     // ------------------------------------------------------------------------
-    console.log('10. Seeding 1,000 Prescriptions and 2,500 Prescription Items...');
+    console.log('10. Seeding 500 Prescriptions and 1,250 Prescription Items...');
     const prescriptionIds = [];
     const DOSAGES = ['500mg', '1 tablet', '20mg', '10ml', '1 capsule', '2 puffs'];
     const FREQS = ['1-0-1 after meals', '1-1-1 before meals', '0-0-1 at bedtime', '1-0-0 morning', 'SOS (as needed)'];
 
-    for (let rx = 1; rx <= 1000; rx++) {
+    for (let rx = 1; rx <= 500; rx++) {
       const rxNum = `RX-${20260000 + rx}`;
       const conId = consultationIds[rx % consultationIds.length] || null;
       const pid = patientIds[rx % patientIds.length];
@@ -679,19 +679,19 @@ async function runSeed() {
     console.log(`✓ Seeded ${prescriptionIds.length} prescriptions with items.`);
 
     // ------------------------------------------------------------------------
-    // Step 11: Laboratory Orders, Items, and Results (500 Orders, 1,200 Items)
+    // Step 11: Laboratory Orders, Items, and Results (250 Orders, 600 Items)
     // ------------------------------------------------------------------------
-    console.log('11. Seeding 500 Lab Orders with Items and Results...');
+    console.log('11. Seeding 250 Lab Orders with Items and Results...');
     const labTestRes = await client.query('SELECT test_id, test_code, test_name, standard_fee, normal_range, units FROM lab_tests;');
     const labTests = labTestRes.rows;
     const labOrderIds = [];
 
-    for (let lo = 1; lo <= 500; lo++) {
+    for (let lo = 1; lo <= 250; lo++) {
       const orderNum = `LBO-${20260000 + lo}`;
       const pid = patientIds[lo % patientIds.length];
       const docId = getRandomItem(doctorIds);
       const conId = consultationIds[lo % consultationIds.length] || null;
-      const status = (lo < 400) ? 'Completed' : getRandomItem(['Ordered', 'In Progress']);
+      const status = (lo < 200) ? 'Completed' : getRandomItem(['Ordered', 'In Progress']);
       const priority = getRandomItem(['Routine', 'Routine', 'Urgent', 'Emergency']);
 
       const oRes = await client.query(`
@@ -746,16 +746,16 @@ async function runSeed() {
     console.log(`✓ Seeded ${labOrderIds.length} laboratory orders and test results.`);
 
     // ------------------------------------------------------------------------
-    // Step 12: Invoices & Payments (2,000 Invoices, 3,000 Payments)
+    // Step 12: Invoices & Payments (1,000 Invoices, 1,500 Payments)
     // ------------------------------------------------------------------------
-    console.log('12. Seeding 2,000 Invoices and 3,000 Payment Records...');
+    console.log('12. Seeding 1,000 Invoices and 1,500 Payment Records...');
     const invoiceIds = [];
 
-    for (let inv = 1; inv <= 2000; inv++) {
+    for (let inv = 1; inv <= 1000; inv++) {
       const invNum = `INV-${20260000 + inv}`;
       const pid = patientIds[inv % patientIds.length];
-      const admId = (inv <= 250) ? admissionIds[inv % admissionIds.length] : null;
-      const conId = (inv > 250 && inv <= 1500) ? consultationIds[inv % consultationIds.length] : null;
+      const admId = (inv <= 125) ? admissionIds[inv % admissionIds.length] : null;
+      const conId = (inv > 125 && inv <= 750) ? consultationIds[inv % consultationIds.length] : null;
       const daysAgo = getRandomInt(1, 180);
       const subtotal = getRandomItem([50.00, 75.00, 120.00, 250.00, 480.00, 950.00]);
       const discount = (inv % 5 === 0) ? 10.00 : 0.00;
@@ -808,12 +808,12 @@ async function runSeed() {
       }
     }
 
-    // Generate 3,000 payment receipts
-    console.log('12b. Generating 3,000 Payment Receipts...');
+    // Generate 1,500 payment receipts
+    console.log('12b. Generating 1,500 Payment Receipts...');
     let paymentCount = 0;
     const PAYMENT_METHODS = ['Cash', 'Credit Card', 'Debit Card', 'MFS/bKash', 'Bank Transfer', 'Insurance'];
 
-    for (let p = 1; p <= 3000; p++) {
+    for (let p = 1; p <= 1500; p++) {
       const invObj = invoiceIds[p % invoiceIds.length];
       if (!invObj) continue;
 
