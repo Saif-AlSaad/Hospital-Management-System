@@ -213,3 +213,4 @@ runRBACTests().catch(err => {
   console.error('RBAC test suite execution failed:', err);
   process.exit(1);
 });
+
