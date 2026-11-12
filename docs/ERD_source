@@ -1,0 +1,535 @@
+erDiagram
+    %% ========================================================
+    %% HOSPITAL MANAGEMENT SYSTEM (HMS) - COMPLETE ENTITY RELATIONSHIP DIAGRAM
+    %% ========================================================
+
+    ROLES ||--o{ USER_ROLES : "assigned to"
+    USERS ||--o{ USER_ROLES : "has"
+    USERS ||--o| STAFF : "profile for"
+    DEPARTMENTS ||--o{ STAFF : "employs"
+    STAFF ||--o| DOCTORS : "specializes as"
+    DEPARTMENTS ||--o{ DOCTORS : "belongs to"
+    DEPARTMENTS ||--o| DOCTORS : "headed by"
+    DOCTORS ||--o{ DOCTOR_SCHEDULES : "has weekly"
+
+    PATIENTS ||--o{ APPOINTMENTS : "books"
+    DOCTORS ||--o{ APPOINTMENTS : "attends"
+    DEPARTMENTS ||--o{ APPOINTMENTS : "categorized under"
+    
+    APPOINTMENTS ||--o| CONSULTATIONS : "results in"
+    PATIENTS ||--o{ CONSULTATIONS : "attends"
+    DOCTORS ||--o{ CONSULTATIONS : "conducts"
+    
+    CONSULTATIONS ||--o{ CONSULTATION_DIAGNOSES : "contains"
+    DIAGNOSES ||--o{ CONSULTATION_DIAGNOSES : "classified as"
+    
+    PATIENTS ||--o{ MEDICAL_RECORDS : "possesses"
+    USERS ||--o{ MEDICAL_RECORDS : "recorded by"
+
+    DEPARTMENTS ||--o{ WARDS : "manages"
+    WARDS ||--o{ ROOMS : "contains"
+    ROOMS ||--o{ BEDS : "contains"
+    
+    PATIENTS ||--o{ ADMISSIONS : "admitted as"
+    DOCTORS ||--o{ ADMISSIONS : "admitting physician"
+    ADMISSIONS ||--o{ BED_ASSIGNMENTS : "allocates"
+    BEDS ||--o{ BED_ASSIGNMENTS : "assigned to"
+
+    LAB_TEST_CATEGORIES ||--o{ LAB_TESTS : "groups"
+    PATIENTS ||--o{ LAB_ORDERS : "for patient"
+    DOCTORS ||--o{ LAB_ORDERS : "ordered by"
+    CONSULTATIONS ||--o{ LAB_ORDERS : "originated from"
+    LAB_ORDERS ||--o{ LAB_ORDER_ITEMS : "includes"
+    LAB_TESTS ||--o{ LAB_ORDER_ITEMS : "specifies"
+    LAB_ORDER_ITEMS ||--o{ LAB_RESULTS : "produces"
+    STAFF ||--o{ LAB_RESULTS : "tested by"
+
+    MEDICINE_CATEGORIES ||--o{ MEDICINES : "classifies"
+    MEDICINES ||--o{ MEDICINE_BATCHES : "stocked in"
+    MEDICINE_BATCHES ||--o{ INVENTORY_TRANSACTIONS : "tracked via"
+    
+    CONSULTATIONS ||--o| PRESCRIPTIONS : "generates"
+    PATIENTS ||--o{ PRESCRIPTIONS : "prescribed for"
+    DOCTORS ||--o{ PRESCRIPTIONS : "prescribed by"
+    PRESCRIPTIONS ||--o{ PRESCRIPTION_ITEMS : "contains"
+    MEDICINES ||--o{ PRESCRIPTION_ITEMS : "prescribes"
+    
+    PRESCRIPTIONS ||--o{ MEDICINE_DISPENSING : "dispenses"
+    STAFF ||--o{ MEDICINE_DISPENSING : "dispensed by"
+    MEDICINE_DISPENSING ||--o{ MEDICINE_DISPENSING_ITEMS : "includes"
+    PRESCRIPTION_ITEMS ||--o{ MEDICINE_DISPENSING_ITEMS : "fulfills"
+    MEDICINE_BATCHES ||--o{ MEDICINE_DISPENSING_ITEMS : "drawn from"
+
+    SERVICES ||--o{ INVOICE_ITEMS : "bills"
+    PATIENTS ||--o{ INVOICES : "billed to"
+    CONSULTATIONS ||--o| INVOICES : "linked to"
+    ADMISSIONS ||--o| INVOICES : "linked to"
+    INVOICES ||--o{ INVOICE_ITEMS : "comprises"
+    INVOICES ||--o{ PAYMENTS : "settled with"
+    PATIENTS ||--o{ PAYMENTS : "paid by"
+
+    USERS ||--o{ AUDIT_LOGS : "performed by"
+
+    %% ========================================================
+    %% ENTITY DEFINITIONS WITH KEY ATTRIBUTES
+    %% ========================================================
+
+    ROLES {
+        int role_id PK
+        string role_name UK "Admin, Doctor, Nurse, Pharmacist, LabTech, Receptionist, Accountant"
+        string description
+        timestamp created_at
+    }
+
+    USERS {
+        int user_id PK
+        string username UK
+        string email UK
+        string password_hash
+        boolean is_active
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    USER_ROLES {
+        int user_id PK, FK
+        int role_id PK, FK
+        timestamp assigned_at
+    }
+
+    DEPARTMENTS {
+        int department_id PK
+        string department_name UK
+        string code UK
+        string description
+        int head_doctor_id FK "nullable"
+        boolean is_active
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    STAFF {
+        int staff_id PK
+        int user_id FK "unique"
+        int department_id FK
+        string first_name
+        string last_name
+        string gender
+        date date_of_birth
+        string phone UK
+        string email UK
+        date hire_date
+        string employment_status
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    DOCTORS {
+        int doctor_id PK
+        int staff_id FK "unique"
+        int department_id FK
+        string specialization
+        string license_number UK
+        numeric consultation_fee
+        text bio
+        boolean is_active
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    DOCTOR_SCHEDULES {
+        int schedule_id PK
+        int doctor_id FK
+        int day_of_week "0=Sun to 6=Sat"
+        time start_time
+        time end_time
+        int slot_duration_minutes
+        int max_patients
+        boolean is_active
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    PATIENTS {
+        int patient_id PK
+        string patient_code UK "P-XXXXX"
+        string first_name
+        string last_name
+        date date_of_birth
+        string gender
+        string blood_group
+        string phone UK
+        string email
+        text address
+        string emergency_contact_name
+        string emergency_contact_phone
+        boolean is_active
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    APPOINTMENTS {
+        int appointment_id PK
+        string appointment_number UK "APT-XXXXX"
+        int patient_id FK
+        int doctor_id FK
+        int department_id FK
+        date appointment_date
+        time start_time
+        time end_time
+        string appointment_type "New, Follow-up, Routine, Emergency"
+        string status "Scheduled, Confirmed, Completed, Cancelled, No-Show"
+        text notes
+        int created_by FK
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    CONSULTATIONS {
+        int consultation_id PK
+        string consultation_number UK "CON-XXXXX"
+        int appointment_id FK "unique, nullable"
+        int patient_id FK
+        int doctor_id FK
+        timestamp consultation_date
+        text symptoms
+        text clinical_notes
+        text treatment_plan
+        date follow_up_date
+        jsonb vitals
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    DIAGNOSES {
+        int diagnosis_id PK
+        string icd_code UK
+        string diagnosis_name
+        text description
+        boolean is_active
+        timestamp created_at
+    }
+
+    CONSULTATION_DIAGNOSES {
+        int consultation_id PK, FK
+        int diagnosis_id PK, FK
+        string diagnosis_type "Primary, Secondary, Differential"
+        text notes
+        timestamp created_at
+    }
+
+    MEDICAL_RECORDS {
+        int record_id PK
+        int patient_id FK
+        string record_type "LabReport, DischargeSummary, Radiology, History"
+        string title
+        text description
+        string file_url
+        int recorded_by FK
+        timestamp recorded_at
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    WARDS {
+        int ward_id PK
+        string ward_name UK
+        string ward_type "General, ICU, Pediatric, Maternity, Surgical"
+        int department_id FK
+        int total_beds
+        string gender_preference "Any, Male, Female"
+        boolean is_active
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    ROOMS {
+        int room_id PK
+        int ward_id FK
+        string room_number
+        string room_type "Standard, Deluxe, Isolation, Semi-Private"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    BEDS {
+        int bed_id PK
+        int room_id FK
+        string bed_number
+        numeric daily_rate
+        string status "Available, Occupied, Maintenance, Reserved"
+        boolean is_active
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    ADMISSIONS {
+        int admission_id PK
+        string admission_number UK "ADM-XXXXX"
+        int patient_id FK
+        int admitting_doctor_id FK
+        timestamp admission_date
+        timestamp discharge_date "nullable"
+        text admission_reason
+        text discharge_summary
+        string status "Admitted, Discharged, Transferred, Cancelled"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    BED_ASSIGNMENTS {
+        int assignment_id PK
+        int admission_id FK
+        int bed_id FK
+        timestamp assigned_at
+        timestamp released_at "nullable"
+        boolean is_current
+        int assigned_by FK
+        text notes
+    }
+
+    LAB_TEST_CATEGORIES {
+        int category_id PK
+        string category_name UK
+        text description
+        timestamp created_at
+    }
+
+    LAB_TESTS {
+        int test_id PK
+        int category_id FK
+        string test_code UK
+        string test_name
+        text description
+        numeric standard_fee
+        string normal_range
+        string units
+        string sample_type
+        boolean is_active
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    LAB_ORDERS {
+        int order_id PK
+        string order_number UK "LBO-XXXXX"
+        int patient_id FK
+        int doctor_id FK
+        int consultation_id FK "nullable"
+        timestamp order_date
+        string status "Ordered, In Progress, Completed, Cancelled"
+        string priority "Routine, Urgent, Emergency"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    LAB_ORDER_ITEMS {
+        int order_item_id PK
+        int order_id FK
+        int test_id FK
+        numeric item_fee
+        string status "Pending, Sample Collected, Testing, Completed, Cancelled"
+        int performed_by FK "nullable"
+        text result_summary
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    LAB_RESULTS {
+        int result_id PK
+        int order_item_id FK
+        string parameter_name
+        string measured_value
+        string unit
+        string reference_range
+        boolean is_abnormal
+        text remarks
+        int technician_id FK
+        int verified_by FK "nullable"
+        timestamp completed_at
+        timestamp created_at
+    }
+
+    MEDICINE_CATEGORIES {
+        int category_id PK
+        string category_name UK
+        text description
+        boolean is_active
+        timestamp created_at
+    }
+
+    MEDICINES {
+        int medicine_id PK
+        int category_id FK
+        string brand_name
+        string generic_name
+        string dosage_form "Tablet, Capsule, Syrup, Injection, Ointment, Drops"
+        string strength
+        string manufacturer
+        numeric unit_price
+        int reorder_level
+        boolean is_prescription_required
+        boolean is_active
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    MEDICINE_BATCHES {
+        int batch_id PK
+        int medicine_id FK
+        string batch_number
+        date manufacture_date
+        date expiry_date
+        numeric cost_price
+        numeric selling_price
+        int initial_quantity
+        int current_quantity
+        boolean is_active
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    INVENTORY_TRANSACTIONS {
+        int transaction_id PK
+        int batch_id FK
+        int medicine_id FK
+        string transaction_type "Purchase, Dispense, Adjustment, Return, Disposal"
+        int quantity
+        numeric unit_price
+        numeric total_amount
+        string reference_type "Prescription, PurchaseOrder, AuditAdjustment"
+        int reference_id
+        timestamp transaction_date
+        int performed_by FK
+        text notes
+        timestamp created_at
+    }
+
+    PRESCRIPTIONS {
+        int prescription_id PK
+        string prescription_number UK "RX-XXXXX"
+        int consultation_id FK "nullable"
+        int patient_id FK
+        int doctor_id FK
+        date issue_date
+        string status "Active, Partially Dispensed, Dispensed, Cancelled"
+        text notes
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    PRESCRIPTION_ITEMS {
+        int item_id PK
+        int prescription_id FK
+        int medicine_id FK
+        string dosage "500mg, 1 tablet"
+        string frequency "1-0-1, 1-1-1"
+        int duration_days
+        int prescribed_quantity
+        int dispensed_quantity
+        text instructions
+        timestamp created_at
+    }
+
+    MEDICINE_DISPENSING {
+        int dispensing_id PK
+        string dispensing_number UK "DSP-XXXXX"
+        int prescription_id FK
+        int patient_id FK
+        int pharmacist_id FK
+        timestamp dispensing_date
+        numeric total_amount
+        string status "Completed, Reversed"
+        text notes
+        timestamp created_at
+    }
+
+    MEDICINE_DISPENSING_ITEMS {
+        int dispensing_item_id PK
+        int dispensing_id FK
+        int prescription_item_id FK
+        int batch_id FK
+        int medicine_id FK
+        int quantity
+        numeric unit_price
+        numeric subtotal
+    }
+
+    SERVICES {
+        int service_id PK
+        string service_code UK
+        string service_name
+        string category "Consultation, Lab, Bed, Pharmacy, Procedure, Nursing"
+        numeric standard_fee
+        boolean is_active
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    INVOICES {
+        int invoice_id PK
+        string invoice_number UK "INV-XXXXX"
+        int patient_id FK
+        int admission_id FK "nullable"
+        int consultation_id FK "nullable"
+        date issue_date
+        date due_date
+        numeric subtotal
+        numeric discount_amount
+        numeric tax_amount
+        numeric total_amount
+        numeric paid_amount
+        numeric balance_due
+        string status "Unpaid, Partially Paid, Paid, Cancelled"
+        text notes
+        int created_by FK
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    INVOICE_ITEMS {
+        int item_id PK
+        int invoice_id FK
+        int service_id FK "nullable"
+        string item_description
+        int quantity
+        numeric unit_price
+        numeric discount
+        numeric total_price
+        string reference_type "Consultation, LabOrderItem, BedDay, Dispensing, Other"
+        int reference_id "nullable"
+        timestamp created_at
+    }
+
+    PAYMENTS {
+        int payment_id PK
+        string payment_number UK "PAY-XXXXX"
+        int invoice_id FK
+        int patient_id FK
+        timestamp payment_date
+        numeric amount
+        string payment_method "Cash, Credit Card, Debit Card, MFS/bKash, Bank Transfer, Insurance"
+        string transaction_reference
+        int received_by FK
+        text notes
+        timestamp created_at
+    }
+
+    AUDIT_LOGS {
+        bigint log_id PK
+        string table_name
+        string record_id
+        string action "INSERT, UPDATE, DELETE"
+        jsonb old_values
+        jsonb new_values
+        int changed_by FK "nullable"
+        timestamp changed_at
+        string ip_address
+    }
+
+    HOSPITAL_SETTINGS {
+        string setting_key PK
+        text setting_value
+        text description
+        timestamp updated_at
+    }

@@ -1,0 +1,23 @@
+{
+  "name": "hospital-management-system-backend",
+  "version": "1.0.0",
+  "description": "Hospital Management System - Database-Centric Backend using plain pg driver",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "node --watch src/app.js",
+    "seed": "node ../seed/generate_data.js",
+    "test:db": "node ../tests/api_tests/run_tests.js"
+  },
+  "keywords": ["hospital", "database", "postgresql", "express", "sql"],
+  "author": "Antigravity Senior Database Engineer",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.13.3"
+  }
+}

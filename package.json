@@ -1,0 +1,29 @@
+{
+  "name": "hospital-management-system",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "concurrently -n \"backend,frontend\" -c \"blue,green\" \"npm --prefix backend run dev\" \"npm --prefix frontend run dev\"",
+    "start": "concurrently -n \"backend,frontend\" -c \"blue,green\" \"npm --prefix backend start\" \"npm --prefix frontend run dev\"",
+    "backend": "npm --prefix backend run dev",
+    "frontend": "npm --prefix frontend run dev",
+    "seed": "node seed/generate_data.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^18.0.4",
+    "pg": "^8.23.0"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.5"
+  }
+}

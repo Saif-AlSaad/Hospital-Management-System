@@ -1,0 +1,265 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200" width="100%" height="100%" style="background-color: #0f172a; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+  <defs>
+    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#0369a1" />
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#38bdf8"/>
+    </marker>
+  </defs>
+
+  <!-- Title Banner -->
+  <rect x="40" y="30" width="1520" height="70" rx="10" fill="url(#headerGrad)" filter="url(#shadow)"/>
+  <text x="70" y="74" fill="#ffffff" font-size="26" font-weight="bold">HOSPITAL MANAGEMENT SYSTEM (HMS) - RELATIONAL ERD ARCHITECTURE</text>
+  <text x="1220" y="74" fill="#bae6fd" font-size="16">3NF Normalized • PostgreSQL 18</text>
+
+  <!-- CLUSTER 1: AUTH & ORG -->
+  <g transform="translate(50, 130)">
+    <rect width="340" height="420" rx="10" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect width="340" height="35" rx="10" fill="#0284c7"/>
+    <text x="15" y="24" fill="#ffffff" font-size="15" font-weight="bold">MODULE 1 & 3: AUTH & STAFF</text>
+    
+    <!-- Table: USERS -->
+    <rect x="15" y="50" width="310" height="75" rx="6" fill="#0f172a" stroke="#475569"/>
+    <text x="25" y="70" fill="#38bdf8" font-weight="bold" font-size="13">USERS (user_id PK)</text>
+    <text x="25" y="90" fill="#94a3b8" font-size="11">username UK, email UK, password_hash</text>
+    <text x="25" y="108" fill="#94a3b8" font-size="11">is_active, created_at, updated_at</text>
+
+    <!-- Table: ROLES & USER_ROLES -->
+    <rect x="15" y="135" width="310" height="70" rx="6" fill="#0f172a" stroke="#475569"/>
+    <text x="25" y="155" fill="#38bdf8" font-weight="bold" font-size="13">USER_ROLES (user_id PK/FK, role_id PK/FK)</text>
+    <text x="25" y="173" fill="#94a3b8" font-size="11">Composite PK • Junction Table M:N</text>
+    <text x="25" y="191" fill="#94a3b8" font-size="11">ROLES: Admin, Doctor, Nurse, Pharmacist, Lab, Acc</text>
+
+    <!-- Table: STAFF -->
+    <rect x="15" y="215" width="310" height="85" rx="6" fill="#0f172a" stroke="#475569"/>
+    <text x="25" y="235" fill="#38bdf8" font-weight="bold" font-size="13">STAFF (staff_id PK)</text>
+    <text x="25" y="253" fill="#94a3b8" font-size="11">user_id FK(UK), department_id FK</text>
+    <text x="25" y="271" fill="#94a3b8" font-size="11">first_name, last_name, phone UK, email UK</text>
+    <text x="25" y="289" fill="#94a3b8" font-size="11">hire_date, employment_status</text>
+
+    <!-- Table: DOCTORS -->
+    <rect x="15" y="310" width="310" height="95" rx="6" fill="#0f172a" stroke="#475569"/>
+    <text x="25" y="330" fill="#38bdf8" font-weight="bold" font-size="13">DOCTORS (doctor_id PK)</text>
+    <text x="25" y="348" fill="#94a3b8" font-size="11">staff_id FK(UK), department_id FK</text>
+    <text x="25" y="366" fill="#94a3b8" font-size="11">specialization, license_number UK</text>
+    <text x="25" y="384" fill="#94a3b8" font-size="11">consultation_fee, bio, is_active</text>
+  </g>
+
+  <!-- CLUSTER 2: PATIENTS & CLINICAL -->
+  <g transform="translate(420, 130)">
+    <rect width="370" height="520" rx="10" fill="#1e293b" stroke="#10b981" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect width="370" height="35" rx="10" fill="#059669"/>
+    <text x="15" y="24" fill="#ffffff" font-size="15" font-weight="bold">MODULE 2, 4, 5: PATIENTS &amp; CLINICAL</text>
+
+    <!-- PATIENTS -->
+    <rect x="15" y="50" width="340" height="100" rx="6" fill="#0f172a" stroke="#475569"/>
+    <text x="25" y="70" fill="#34d399" font-weight="bold" font-size="13">PATIENTS (patient_id PK)</text>
+    <text x="25" y="88" fill="#94a3b8" font-size="11">patient_code UK (e.g. P-10001)</text>
+    <text x="25" y="106" fill="#94a3b8" font-size="11">first_name, last_name, dob, gender, blood_group</text>
+    <text x="25" y="124" fill="#94a3b8" font-size="11">phone UK, emergency_contact, is_active</text>
+    <text x="25" y="142" fill="#94a3b8" font-size="11">created_at, updated_at</text>
+
+    <!-- APPOINTMENTS -->
+    <rect x="15" y="160" width="340" height="95" rx="6" fill="#0f172a" stroke="#475569"/>
+    <text x="25" y="180" fill="#34d399" font-weight="bold" font-size="13">APPOINTMENTS (appointment_id PK)</text>
+    <text x="25" y="198" fill="#94a3b8" font-size="11">appointment_number UK, patient_id FK, doctor_id FK</text>
+    <text x="25" y="216" fill="#94a3b8" font-size="11">appointment_date, start_time, end_time</text>
+    <text x="25" y="234" fill="#94a3b8" font-size="11">status: Scheduled, Confirmed, Completed, Cancelled</text>
+
+    <!-- CONSULTATIONS -->
+    <rect x="15" y="265" width="340" height="100" rx="6" fill="#0f172a" stroke="#475569"/>
+    <text x="25" y="285" fill="#34d399" font-weight="bold" font-size="13">CONSULTATIONS (consultation_id PK)</text>
+    <text x="25" y="303" fill="#94a3b8" font-size="11">consultation_number UK, appointment_id FK(UK)</text>
+    <text x="25" y="321" fill="#94a3b8" font-size="11">patient_id FK, doctor_id FK, consultation_date</text>
+    <text x="25" y="339" fill="#94a3b8" font-size="11">symptoms, clinical_notes, treatment_plan, vitals (JSONB)</text>
+
+    <!-- CONSULTATION DIAGNOSES -->
+    <rect x="15" y="375" width="340" height="65" rx="6" fill="#0f172a" stroke="#475569"/>
+    <text x="25" y="395" fill="#34d399" font-weight="bold" font-size="13">CONSULTATION_DIAGNOSES (Composite PK)</text>
+    <text x="25" y="413" fill="#94a3b8" font-size="11">consultation_id PK/FK, diagnosis_id PK/FK</text>
+    <text x="25" y="431" fill="#94a3b8" font-size="11">diagnosis_type (Primary/Secondary), notes</text>
+
+    <!-- MEDICAL RECORDS -->
+    <rect x="15" y="450" width="340" height="60" rx="6" fill="#0f172a" stroke="#475569"/>
+    <text x="25" y="470" fill="#34d399" font-weight="bold" font-size="13">MEDICAL_RECORDS (record_id PK)</text>
+    <text x="25" y="488" fill="#94a3b8" font-size="11">patient_id FK, record_type, title, file_url, recorded_by</text>
+  </g>
+
+  <!-- CLUSTER 3: INPATIENT & BEDS -->
+  <g transform="translate(820, 130)">
+    <rect width="360" height="520" rx="10" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect width="360" height="35" rx="10" fill="#d97706"/>
+    <text x="15" y="24" fill="#ffffff" font-size="15" font-weight="bold">MODULE 6: INPATIENT &amp; BEDS</text>
+
+    <!-- WARDS & ROOMS -->
+    <rect x="15" y="50" width="330" height="95" rx="6" fill="#0f172a" stroke="#475569"/>
+    <text x="25" y="70" fill="#fbbf24" font-weight="bold" font-size="13">WARDS &amp; ROOMS</text>
+    <text x="25" y="88" fill="#94a3b8" font-size="11">WARDS (ward_id PK, ward_name UK, department_id FK)</text>
+    <text x="25" y="106" fill="#94a3b8" font-size="11">ROOMS (room_id PK, ward_id FK, room_number)</text>
+    <text x="25" y="124" fill="#94a3b8" font-size="11">room_type: Standard, Deluxe, Isolation, ICU</text>
+
+    <!-- BEDS -->
+    <rect x="15" y="155" width="330" height="90" rx="6" fill="#0f172a" stroke="#475569"/>
+    <text x="25" y="175" fill="#fbbf24" font-weight="bold" font-size="13">BEDS (bed_id PK)</text>
+    <text x="25" y="193" fill="#94a3b8" font-size="11">room_id FK, bed_number, daily_rate</text>
+    <text x="25" y="211" fill="#94a3b8" font-size="11">status: Available, Occupied, Maintenance</text>
+    <text x="25" y="229" fill="#94a3b8" font-size="11">is_active, created_at, updated_at</text>
+
+    <!-- ADMISSIONS -->
+    <rect x="15" y="255" width="330" height="110" rx="6" fill="#0f172a" stroke="#475569"/>
+    <text x="25" y="275" fill="#fbbf24" font-weight="bold" font-size="13">ADMISSIONS (admission_id PK)</text>
+    <text x="25" y="293" fill="#94a3b8" font-size="11">admission_number UK, patient_id FK</text>
+    <text x="25" y="311" fill="#94a3b8" font-size="11">admitting_doctor_id FK, admission_date, discharge_date</text>
+    <text x="25" y="329" fill="#94a3b8" font-size="11">admission_reason, discharge_summary</text>
+    <text x="25" y="347" fill="#94a3b8" font-size="11">status: Admitted, Discharged, Transferred</text>
+
+    <!-- BED ASSIGNMENTS -->
+    <rect x="15" y="375" width="330" height="100" rx="6" fill="#0f172a" stroke="#475569"/>
+    <text x="25" y="395" fill="#fbbf24" font-weight="bold" font-size="13">BED_ASSIGNMENTS (assignment_id PK)</text>
+    <text x="25" y="413" fill="#94a3b8" font-size="11">admission_id FK, bed_id FK</text>
+    <text x="25" y="431" fill="#94a3b8" font-size="11">assigned_at, released_at, is_current (BOOLEAN)</text>
+    <text x="25" y="449" fill="#94a3b8" font-size="11">assigned_by FK, notes</text>
+  </g>
+
+  <!-- CLUSTER 4: LAB -->
+  <g transform="translate(1210, 130)">
+    <rect width="340" height="420" rx="10" fill="#1e293b" stroke="#a855f7" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect width="340" height="35" rx="10" fill="#7e22ce"/>
+    <text x="15" y="24" fill="#ffffff" font-size="15" font-weight="bold">MODULE 7: LABORATORY</text>
+
+    <!-- LAB_TESTS -->
+    <rect x="15" y="50" width="310" height="85" rx="6" fill="#0f172a" stroke="#475569"/>
+    <text x="25" y="70" fill="#c084fc" font-weight="bold" font-size="13">LAB_TESTS (test_id PK)</text>
+    <text x="25" y="88" fill="#94a3b8" font-size="11">category_id FK, test_code UK, test_name</text>
+    <text x="25" y="106" fill="#94a3b8" font-size="11">standard_fee, normal_range, units, sample_type</text>
+    <text x="25" y="124" fill="#94a3b8" font-size="11">is_active</text>
+
+    <!-- LAB_ORDERS -->
+    <rect x="15" y="145" width="310" height="85" rx="6" fill="#0f172a" stroke="#475569"/>
+    <text x="25" y="165" fill="#c084fc" font-weight="bold" font-size="13">LAB_ORDERS (order_id PK)</text>
+    <text x="25" y="183" fill="#94a3b8" font-size="11">order_number UK, patient_id FK, doctor_id FK</text>
+    <text x="25" y="201" fill="#94a3b8" font-size="11">consultation_id FK, order_date, priority</text>
+    <text x="25" y="219" fill="#94a3b8" font-size="11">status: Ordered, In Progress, Completed</text>
+
+    <!-- LAB_ORDER_ITEMS -->
+    <rect x="15" y="240" width="310" height="75" rx="6" fill="#0f172a" stroke="#475569"/>
+    <text x="25" y="260" fill="#c084fc" font-weight="bold" font-size="13">LAB_ORDER_ITEMS (order_item_id PK)</text>
+    <text x="25" y="278" fill="#94a3b8" font-size="11">order_id FK, test_id FK, item_fee</text>
+    <text x="25" y="296" fill="#94a3b8" font-size="11">status: Pending, Testing, Completed</text>
+
+    <!-- LAB_RESULTS -->
+    <rect x="15" y="325" width="310" height="85" rx="6" fill="#0f172a" stroke="#475569"/>
+    <text x="25" y="345" fill="#c084fc" font-weight="bold" font-size="13">LAB_RESULTS (result_id PK)</text>
+    <text x="25" y="363" fill="#94a3b8" font-size="11">order_item_id FK, parameter_name, measured_val</text>
+    <text x="25" y="381" fill="#94a3b8" font-size="11">reference_range, is_abnormal, technician_id FK</text>
+  </g>
+
+  <!-- CLUSTER 5: PHARMACY & INVENTORY -->
+  <g transform="translate(50, 680)">
+    <rect width="740" height="480" rx="10" fill="#1e293b" stroke="#ec4899" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect width="740" height="35" rx="10" fill="#db2777"/>
+    <text x="15" y="24" fill="#ffffff" font-size="15" font-weight="bold">MODULE 8 &amp; 9: PHARMACY, INVENTORY &amp; PRESCRIPTIONS</text>
+
+    <!-- MEDICINES & BATCHES -->
+    <rect x="15" y="50" width="345" height="105" rx="6" fill="#0f172a" stroke="#475569"/>
+    <text x="25" y="70" fill="#f472b6" font-weight="bold" font-size="13">MEDICINES (medicine_id PK)</text>
+    <text x="25" y="88" fill="#94a3b8" font-size="11">category_id FK, brand_name, generic_name</text>
+    <text x="25" y="106" fill="#94a3b8" font-size="11">dosage_form, strength, unit_price, reorder_level</text>
+    <text x="25" y="124" fill="#94a3b8" font-size="11">is_prescription_required, is_active</text>
+
+    <rect x="380" y="50" width="345" height="105" rx="6" fill="#0f172a" stroke="#475569"/>
+    <text x="390" y="70" fill="#f472b6" font-weight="bold" font-size="13">MEDICINE_BATCHES (batch_id PK)</text>
+    <text x="390" y="88" fill="#94a3b8" font-size="11">medicine_id FK, batch_number, expiry_date</text>
+    <text x="390" y="106" fill="#94a3b8" font-size="11">cost_price, selling_price, initial_qty, current_qty</text>
+    <text x="390" y="124" fill="#ef4444" font-size="11">CHECK (current_quantity &gt;= 0) Prevents Stockout</text>
+
+    <!-- PRESCRIPTIONS & ITEMS -->
+    <rect x="15" y="170" width="345" height="95" rx="6" fill="#0f172a" stroke="#475569"/>
+    <text x="25" y="190" fill="#f472b6" font-weight="bold" font-size="13">PRESCRIPTIONS (prescription_id PK)</text>
+    <text x="25" y="208" fill="#94a3b8" font-size="11">prescription_number UK, consultation_id FK</text>
+    <text x="25" y="226" fill="#94a3b8" font-size="11">patient_id FK, doctor_id FK, issue_date</text>
+    <text x="25" y="244" fill="#94a3b8" font-size="11">status: Active, Dispensed, Cancelled</text>
+
+    <rect x="380" y="170" width="345" height="95" rx="6" fill="#0f172a" stroke="#475569"/>
+    <text x="390" y="190" fill="#f472b6" font-weight="bold" font-size="13">PRESCRIPTION_ITEMS (item_id PK)</text>
+    <text x="390" y="208" fill="#94a3b8" font-size="11">prescription_id FK, medicine_id FK</text>
+    <text x="390" y="226" fill="#94a3b8" font-size="11">dosage, frequency, duration_days</text>
+    <text x="390" y="244" fill="#94a3b8" font-size="11">prescribed_quantity, dispensed_quantity</text>
+
+    <!-- DISPENSING & ITEMS -->
+    <rect x="15" y="280" width="345" height="95" rx="6" fill="#0f172a" stroke="#475569"/>
+    <text x="25" y="300" fill="#f472b6" font-weight="bold" font-size="13">MEDICINE_DISPENSING (dispensing_id PK)</text>
+    <text x="25" y="318" fill="#94a3b8" font-size="11">dispensing_number UK, prescription_id FK</text>
+    <text x="25" y="336" fill="#94a3b8" font-size="11">patient_id FK, pharmacist_id FK, dispensing_date</text>
+    <text x="25" y="354" fill="#94a3b8" font-size="11">total_amount, status: Completed</text>
+
+    <rect x="380" y="280" width="345" height="95" rx="6" fill="#0f172a" stroke="#475569"/>
+    <text x="390" y="300" fill="#f472b6" font-weight="bold" font-size="13">DISPENSING_ITEMS (dispensing_item_id PK)</text>
+    <text x="390" y="318" fill="#94a3b8" font-size="11">dispensing_id FK, prescription_item_id FK</text>
+    <text x="390" y="336" fill="#94a3b8" font-size="11">batch_id FK, medicine_id FK, quantity</text>
+    <text x="390" y="354" fill="#94a3b8" font-size="11">unit_price, subtotal</text>
+
+    <!-- INVENTORY TRANSACTIONS -->
+    <rect x="15" y="390" width="710" height="75" rx="6" fill="#0f172a" stroke="#475569"/>
+    <text x="25" y="410" fill="#f472b6" font-weight="bold" font-size="13">INVENTORY_TRANSACTIONS (transaction_id BIGSERIAL PK)</text>
+    <text x="25" y="428" fill="#94a3b8" font-size="11">batch_id FK, medicine_id FK, transaction_type (Purchase, Dispense, Adjustment, Return), quantity, unit_price, total_amount</text>
+    <text x="25" y="446" fill="#94a3b8" font-size="11">reference_type, reference_id, performed_by FK, notes, created_at (Immutable Audit Ledger)</text>
+  </g>
+
+  <!-- CLUSTER 6: BILLING & SYSTEM -->
+  <g transform="translate(820, 680)">
+    <rect width="730" height="480" rx="10" fill="#1e293b" stroke="#eab308" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect width="730" height="35" rx="10" fill="#ca8a04"/>
+    <text x="15" y="24" fill="#ffffff" font-size="15" font-weight="bold">MODULE 10 &amp; 11: BILLING, PAYMENTS &amp; AUDITING</text>
+
+    <!-- SERVICES & INVOICES -->
+    <rect x="15" y="50" width="340" height="110" rx="6" fill="#0f172a" stroke="#475569"/>
+    <text x="25" y="70" fill="#fde047" font-weight="bold" font-size="13">SERVICES CATALOG (service_id PK)</text>
+    <text x="25" y="88" fill="#94a3b8" font-size="11">service_code UK, service_name, category</text>
+    <text x="25" y="106" fill="#94a3b8" font-size="11">standard_fee, is_active</text>
+    <text x="25" y="126" fill="#38bdf8" font-weight="bold" font-size="12">HOSPITAL_SETTINGS (setting_key PK)</text>
+    <text x="25" y="144" fill="#94a3b8" font-size="11">setting_value, description, updated_at</text>
+
+    <rect x="375" y="50" width="340" height="110" rx="6" fill="#0f172a" stroke="#475569"/>
+    <text x="385" y="70" fill="#fde047" font-weight="bold" font-size="13">INVOICES (invoice_id PK)</text>
+    <text x="385" y="88" fill="#94a3b8" font-size="11">invoice_number UK, patient_id FK</text>
+    <text x="385" y="106" fill="#94a3b8" font-size="11">admission_id FK, consultation_id FK</text>
+    <text x="385" y="124" fill="#94a3b8" font-size="11">subtotal, discount, tax, total, paid, balance</text>
+    <text x="385" y="142" fill="#94a3b8" font-size="11">status: Unpaid, Partially Paid, Paid</text>
+
+    <!-- INVOICE ITEMS & PAYMENTS -->
+    <rect x="15" y="175" width="340" height="100" rx="6" fill="#0f172a" stroke="#475569"/>
+    <text x="25" y="195" fill="#fde047" font-weight="bold" font-size="13">INVOICE_ITEMS (item_id PK)</text>
+    <text x="25" y="213" fill="#94a3b8" font-size="11">invoice_id FK, service_id FK</text>
+    <text x="25" y="231" fill="#94a3b8" font-size="11">item_description, quantity, unit_price</text>
+    <text x="25" y="249" fill="#94a3b8" font-size="11">discount, total_price, reference_type/id</text>
+
+    <rect x="375" y="175" width="340" height="100" rx="6" fill="#0f172a" stroke="#475569"/>
+    <text x="385" y="195" fill="#fde047" font-weight="bold" font-size="13">PAYMENTS (payment_id PK)</text>
+    <text x="385" y="213" fill="#94a3b8" font-size="11">payment_number UK, invoice_id FK, patient_id FK</text>
+    <text x="385" y="231" fill="#94a3b8" font-size="11">amount, payment_method (Cash/Card/MFS/Ins)</text>
+    <text x="385" y="249" fill="#94a3b8" font-size="11">transaction_ref, received_by FK, payment_date</text>
+
+    <!-- AUDIT LOGS -->
+    <rect x="15" y="295" width="700" height="90" rx="6" fill="#0f172a" stroke="#475569"/>
+    <text x="25" y="315" fill="#fde047" font-weight="bold" font-size="13">AUDIT_LOGS (log_id BIGSERIAL PK)</text>
+    <text x="25" y="333" fill="#94a3b8" font-size="11">table_name, record_id, action (INSERT, UPDATE, DELETE)</text>
+    <text x="25" y="351" fill="#94a3b8" font-size="11">old_values (JSONB), new_values (JSONB), changed_by FK, changed_at, ip_address</text>
+    <text x="25" y="369" fill="#38bdf8" font-size="11">Automatically populated via PostgreSQL Triggers</text>
+
+    <!-- Viva Key Features Summary -->
+    <rect x="15" y="400" width="700" height="65" rx="6" fill="#0284c7" fill-opacity="0.2" stroke="#0284c7"/>
+    <text x="25" y="420" fill="#38bdf8" font-weight="bold" font-size="12">DATABASE HIGHLIGHTS FOR VIVA:</text>
+    <text x="25" y="438" fill="#e2e8f0" font-size="11">• 37 Tables in 3NF • Composite PKs (user_roles, consultation_diagnoses) • Stored Procedures (admit, discharge, process_payment)</text>
+    <text x="25" y="454" fill="#e2e8f0" font-size="11">• DB Triggers (stock control, audit logging, auto updated_at) • PL/pgSQL Functions (balance calculation, bed availability)</text>
+  </g>
+</svg>
