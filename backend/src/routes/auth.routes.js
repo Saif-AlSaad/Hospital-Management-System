@@ -1,16 +1,34 @@
 // ============================================================================
 // HOSPITAL MANAGEMENT SYSTEM (HMS)
-// Authentication Routes (Login, Profile, Credentials)
+// Authentication & Stakeholder Identity Router
+// Enterprise-Grade Identity Resolution, RBAC Tokens & Credential Management
 // ============================================================================
 
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 const { query } = require('../db/pool');
 const { authenticateToken } = require('../middleware/auth.middleware');
+const {
+  resolveUserIdentityByCredential,
+  resolveUserIdentityById,
+  verifyPassword,
+  buildStakeholderSession,
+  recordAuthAudit,
+} = require('../services/identity.service');
+const {
+  STAKEHOLDER_ROLES,
+  STAKEHOLDER_PROFILES,
+} = require('../config/roles.config');
 
+const JWT_SECRET = process.env.JWT_SECRET || 'super_secret_hospital_jwt_key_2026_dbms';
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '24h';
+
+// ----------------------------------------------------------------------------
 // POST /api/auth/login
+// Stakeholder Authentication & Session Initialization
+// ----------------------------------------------------------------------------
 router.post('/login', async (req, res, next) => {
   try {
     const { usernameOrEmail, password } = req.body;
@@ -22,93 +40,158 @@ router.post('/login', async (req, res, next) => {
       });
     }
 
-    // Explicit Parameterized SQL Query fetching user credentials and mapped roles
-    const userSql = `
-      SELECT 
-        u.user_id,
-        u.username,
-        u.email,
-        u.password_hash,
-        u.is_active,
-        s.staff_id,
-        s.first_name,
-        s.last_name,
-        s.department_id,
-        dept.department_name,
-        d.doctor_id,
-        ARRAY_AGG(r.role_name) AS roles
-      FROM users u
-      LEFT JOIN user_roles ur ON u.user_id = ur.user_id
-      LEFT JOIN roles r ON ur.role_id = r.role_id
-      LEFT JOIN staff s ON u.user_id = s.user_id
-      LEFT JOIN departments dept ON s.department_id = dept.department_id
-      LEFT JOIN doctors d ON s.staff_id = d.staff_id
-      WHERE (LOWER(u.username) = LOWER($1) OR LOWER(u.email) = LOWER($1))
-      GROUP BY 
-        u.user_id, u.username, u.email, u.password_hash, u.is_active,
-        s.staff_id, s.first_name, s.last_name, s.department_id, dept.department_name, d.doctor_id;
-    `;
+    // 1. Resolve User Identity from PostgreSQL
+    const userRecord = await resolveUserIdentityByCredential(usernameOrEmail);
 
-    const result = await query(userSql, [usernameOrEmail.trim()]);
-
-    if (result.rows.length === 0) {
+    if (!userRecord) {
       return res.status(401).json({
         success: false,
-        message: 'Invalid credentials. User not found.',
+        message: 'Invalid credentials. User identity not found.',
       });
     }
 
-    const user = result.rows[0];
-
-    if (!user.is_active) {
+    // 2. Check Account Status
+    if (!userRecord.is_active) {
       return res.status(403).json({
         success: false,
-        message: 'Account is deactivated. Contact hospital system administrator.',
+        message: 'This hospital account has been deactivated. Please contact administration.',
       });
     }
 
-    // Verify bcrypt hash
-    const isMatch = await bcrypt.compare(password, user.password_hash);
-    if (!isMatch) {
+    // 3. Verify Password Hash
+    const isPasswordValid = await verifyPassword(password, userRecord.password_hash);
+    if (!isPasswordValid) {
       return res.status(401).json({
         success: false,
         message: 'Invalid credentials. Incorrect password.',
       });
     }
 
-    const payload = {
-      userId: user.user_id,
-      username: user.username,
-      email: user.email,
-      roles: user.roles.filter(Boolean),
-      staffId: user.staff_id,
-      doctorId: user.doctor_id,
-      fullName: user.first_name ? `${user.first_name} ${user.last_name}` : user.username,
-      departmentId: user.department_id,
-      departmentName: user.department_name,
+    // 4. Construct Stakeholder Profile & Permissions Matrix
+    const stakeholderSession = buildStakeholderSession(userRecord);
+
+    // 5. Sign Structured JWT Token
+    const jwtPayload = {
+      userId: stakeholderSession.userId,
+      username: stakeholderSession.username,
+      email: stakeholderSession.email,
+      role: stakeholderSession.role,
+      roles: stakeholderSession.roles,
+      staffId: stakeholderSession.staffId,
+      doctorId: stakeholderSession.doctorId,
+      departmentId: stakeholderSession.department?.id || null,
     };
 
-    const token = jwt.sign(payload, process.env.JWT_SECRET || 'super_secret_hospital_jwt_key_2026_dbms', {
-      expiresIn: process.env.JWT_EXPIRES_IN || '24h',
+    const token = jwt.sign(jwtPayload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+
+    // 6. Record Audit Trail
+    const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '127.0.0.1';
+    await recordAuthAudit(stakeholderSession.userId, 'UPDATE', clientIp, {
+      event: 'USER_LOGIN',
+      stakeholder: stakeholderSession.role,
+      timestamp: new Date().toISOString(),
     });
 
     res.json({
       success: true,
-      message: 'Login successful.',
+      message: `Authentication successful. Welcome, ${stakeholderSession.fullName} (${stakeholderSession.stakeholderTitle}).`,
       token,
-      user: payload,
+      user: stakeholderSession,
     });
   } catch (err) {
     next(err);
   }
 });
 
+// ----------------------------------------------------------------------------
 // GET /api/auth/me
-router.get('/me', authenticateToken, async (req, res) => {
+// Live Stakeholder Profile & Active Permissions Synchronization
+// ----------------------------------------------------------------------------
+router.get('/me', authenticateToken, async (req, res, next) => {
+  try {
+    const userRecord = await resolveUserIdentityById(req.user.userId);
+
+    if (!userRecord || !userRecord.is_active) {
+      return res.status(401).json({
+        success: false,
+        message: 'Session is no longer valid or user is deactivated.',
+      });
+    }
+
+    const stakeholderSession = buildStakeholderSession(userRecord);
+
+    res.json({
+      success: true,
+      user: stakeholderSession,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// ----------------------------------------------------------------------------
+// GET /api/auth/stakeholders
+// Master Directory of Stakeholder Definitions & Capability Matrix
+// ----------------------------------------------------------------------------
+router.get('/stakeholders', (req, res) => {
   res.json({
     success: true,
-    user: req.user,
+    stakeholders: STAKEHOLDER_PROFILES,
+    roles: Object.values(STAKEHOLDER_ROLES),
   });
+});
+
+// ----------------------------------------------------------------------------
+// POST /api/auth/change-password
+// Self-Service Credential Update
+// ----------------------------------------------------------------------------
+router.post('/change-password', authenticateToken, async (req, res, next) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: 'Current password and new password are required.',
+      });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: 'New password must be at least 6 characters in length.',
+      });
+    }
+
+    const userRecord = await resolveUserIdentityById(req.user.userId);
+    if (!userRecord) {
+      return res.status(404).json({ success: false, message: 'User not found.' });
+    }
+
+    const isMatch = await verifyPassword(currentPassword, userRecord.password_hash);
+    if (!isMatch) {
+      return res.status(400).json({ success: false, message: 'Current password does not match.' });
+    }
+
+    const newHash = await bcrypt.hash(newPassword, 10);
+    await query('UPDATE users SET password_hash = $1, updated_at = CURRENT_TIMESTAMP WHERE user_id = $2;', [
+      newHash,
+      req.user.userId,
+    ]);
+
+    const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '127.0.0.1';
+    await recordAuthAudit(req.user.userId, 'UPDATE', clientIp, {
+      event: 'PASSWORD_CHANGED',
+      timestamp: new Date().toISOString(),
+    });
+
+    res.json({
+      success: true,
+      message: 'Password successfully updated.',
+    });
+  } catch (err) {
+    next(err);
+  }
 });
 
 module.exports = router;
