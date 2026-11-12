@@ -41,6 +41,10 @@ export async function apiRequest(endpoint, options = {}) {
   const data = await response.json().catch(() => ({}));
 
   if (!response.ok) {
+    if (response.status === 401 || response.status === 403) {
+      clearAuthToken();
+      window.dispatchEvent(new CustomEvent('auth:expired', { detail: data.message || 'Session expired. Please sign in again.' }));
+    }
     const error = new Error(data.message || data.error || `HTTP ${response.status}`);
     error.status = response.status;
     error.detail = data.detail;

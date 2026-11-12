@@ -5,7 +5,7 @@
 // ============================================================================
 
 import React, { useState, useEffect } from 'react';
-import { getCurrentUser, logout } from './services/api';
+import { getCurrentUser, getAuthToken, logout } from './services/api';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 
@@ -35,9 +35,21 @@ export default function App() {
   const [initializing, setInitializing] = useState(true);
 
   useEffect(() => {
+    const handleAuthExpired = () => {
+      setUser(null);
+    };
+    window.addEventListener('auth:expired', handleAuthExpired);
+    return () => window.removeEventListener('auth:expired', handleAuthExpired);
+  }, []);
+
+  useEffect(() => {
     const savedUser = getCurrentUser();
-    if (savedUser) {
+    const token = getAuthToken();
+    if (savedUser && token) {
       setUser(savedUser);
+    } else {
+      logout();
+      setUser(null);
     }
     setInitializing(false);
   }, []);

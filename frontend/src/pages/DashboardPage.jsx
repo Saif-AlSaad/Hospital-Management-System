@@ -26,9 +26,11 @@ export default function DashboardPage({ onNavigate }) {
   const [wards, setWards] = useState([]);
   const [monthlyPerf, setMonthlyPerf] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const fetchDashboardData = async () => {
     setLoading(true);
+    setError(null);
     try {
       const [statsRes, wardsRes, perfRes] = await Promise.all([
         api.getDashboardStats(),
@@ -40,6 +42,7 @@ export default function DashboardPage({ onNavigate }) {
       setMonthlyPerf(perfRes.data || []);
     } catch (err) {
       console.error('Failed to load dashboard statistics:', err);
+      setError(err.message || 'Failed to load statistics from database.');
     } finally {
       setLoading(false);
     }
@@ -82,6 +85,30 @@ export default function DashboardPage({ onNavigate }) {
           </button>
         </div>
       </div>
+
+      {/* Error Alert if API call failed */}
+      {error && (
+        <div style={{
+          backgroundColor: 'rgba(239, 68, 68, 0.12)',
+          border: '1px solid rgba(239, 68, 68, 0.3)',
+          borderRadius: '8px',
+          padding: '0.9rem 1.25rem',
+          marginBottom: '1.5rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          color: '#f87171',
+          fontSize: '0.88rem'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <AlertTriangle size={18} />
+            <span><strong>Database Query Error:</strong> {error}</span>
+          </div>
+          <button className="btn btn-secondary btn-sm" onClick={fetchDashboardData}>
+            Try Again
+          </button>
+        </div>
+      )}
 
       {/* Primary KPI Grid */}
       <div className="stat-grid">
