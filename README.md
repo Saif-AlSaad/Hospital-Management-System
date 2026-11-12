@@ -151,75 +151,25 @@ npm run dev
 
 ---
 
-## 💻 How to Access the Database in the Terminal (`psql`)
+## 💻 Access Database in Terminal (`psql`)
 
-You can query, inspect, and benchmark the PostgreSQL database directly from your command line using `psql`.
+Connect to PostgreSQL (`hospital_db`, user: `postgres`, password: `postgres`):
 
-### 🔑 Connection Credentials
-| Parameter | Default Value | Description |
-| :--- | :--- | :--- |
-| **Host** | `localhost` (or `127.0.0.1`) | Local machine host |
-| **Port** | `5432` | Standard PostgreSQL port |
-| **Database** | `hospital_db` | Main application database |
-| **User** | `postgres` | Database superuser |
-| **Password** | `postgres` | Configured in `backend/.env` |
-
----
-
-### Connecting via Terminal
-
-#### Windows PowerShell:
+**Windows (PowerShell):**
 ```powershell
-# Option A: With inline password
 $env:PGPASSWORD="postgres"; & "C:\Program Files\PostgreSQL\18\bin\psql.exe" -U postgres -d hospital_db
-
-# Option B: If psql is in your system PATH
-$env:PGPASSWORD="postgres"; psql -U postgres -d hospital_db
 ```
 
-#### Windows Command Prompt (CMD):
-```cmd
-set PGPASSWORD=postgres
-"C:\Program Files\PostgreSQL\18\bin\psql.exe" -U postgres -d hospital_db
-```
-
-#### Linux / macOS Terminal:
+**Linux / macOS (or if `psql` is in PATH):**
 ```bash
-PGPASSWORD=postgres psql -h localhost -p 5432 -U postgres -d hospital_db
+psql -U postgres -d hospital_db
 ```
 
----
-
-### 🔍 Handy Terminal Commands inside `psql`
-
-Once connected to `hospital_db=>`, use these commands to inspect the schema and data:
-
-```sql
--- 1. List all 37 relational tables
-\dt
-
--- 2. Inspect table schema, columns, and constraints
-\d patients
-\d appointments
-\d invoices
-
--- 3. View stored procedures, functions, and triggers
-\df
-SELECT trigger_name, event_manipulation, event_object_table FROM information_schema.triggers WHERE trigger_schema = 'public';
-
--- 4. Sample SELECT queries
-SELECT patient_id, patient_code, first_name, last_name, blood_group, phone FROM patients LIMIT 10;
-SELECT doctor_id, specialization, consultation_fee FROM doctors LIMIT 10;
-
--- 5. Query the monthly performance materialized view
-SELECT report_month, total_appointments, total_admissions, gross_invoiced, total_collected FROM mv_monthly_hospital_performance;
-
--- 6. Benchmark an index with live EXPLAIN ANALYZE
-EXPLAIN ANALYZE SELECT * FROM appointments WHERE appointment_date = CURRENT_DATE;
-
--- 7. Exit psql
-\q
-```
+**Quick Commands:**
+* `\dt` — List all 37 tables
+* `\d <table_name>` — View table columns and constraints
+* `SELECT * FROM patients LIMIT 10;` — Query records
+* `\q` — Exit
 
 ---
 
