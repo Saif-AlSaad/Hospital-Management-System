@@ -91,76 +91,149 @@ hospital-management-system/
 
 ---
 
-## ⚡ Quick Start & Installation
+## ⚡ Quick Start & Running the Project
 
 ### Prerequisites
 * **Node.js** (v18.0.0 or higher)
 * **PostgreSQL** (v15+ recommended, developed on PostgreSQL 18)
 
-### 1. Database Initialization
-Create the database in PostgreSQL:
-```bash
-createdb -U postgres hospital_db
-```
+---
 
-Execute the database DDL scripts and routines in sequential order:
+### Step 1: Database Initialization (One-Time Setup)
+
+Make sure PostgreSQL is running on your machine, then create and seed the database:
+
 ```bash
-# Foundation Schema
+# 1. Create the database
+createdb -U postgres hospital_db
+
+# 2. Execute foundation DDL scripts in sequential order
 psql -U postgres -d hospital_db -f schema/01_create_tables.sql
 psql -U postgres -d hospital_db -f schema/02_constraints.sql
 psql -U postgres -d hospital_db -f schema/03_indexes.sql
 psql -U postgres -d hospital_db -f schema/04_views.sql
 psql -U postgres -d hospital_db -f schema/05_roles_and_privileges.sql
 
-# Routines & Logic
+# 3. Execute PL/pgSQL business routines
 psql -U postgres -d hospital_db -f routines/functions.sql
 psql -U postgres -d hospital_db -f routines/procedures.sql
 psql -U postgres -d hospital_db -f routines/triggers.sql
 
-# Reference Data
+# 4. Insert baseline reference catalog
 psql -U postgres -d hospital_db -f seed/01_reference_data.sql
-```
 
-### 2. Generate Realistic Synthetic Dataset (~14,000 Rows)
-Run the automated seed script to populate all 37 tables with realistic interconnected clinical data:
-```bash
+# 5. Populate ~14,000 synthetic records across all 37 tables (~7 seconds)
 node seed/generate_data.js
 ```
-*(Takes approximately 7 seconds to populate 1,500 patients, 30 doctors, 3,000 appointments, 2,000 consultations, 300 admissions, 1,000 prescriptions, 2,000 invoices, and 3,000 payments).*
 
-### 3. Backend Setup & Launch
-Navigate to `backend/`, verify `.env` matches your PostgreSQL credentials, and start the server:
+---
+
+### Step 2: Run the Application
+
+You will need **two terminal windows**:
+
+#### Terminal 1 — Start the Backend Server (Express + Pure SQL)
 ```bash
 cd backend
 npm install
 npm start
 ```
-The API server runs on `http://localhost:5000`.
+* **API URL:** `http://localhost:5000`
+* **Health Check:** `http://localhost:5000/api/health`
 
-### 4. Frontend Launch
-In a separate terminal, navigate to `frontend/` and launch the Vite development server:
+#### Terminal 2 — Start the Frontend Client (React + Vite)
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
-Open your browser and navigate to **`http://localhost:3000`**.
+* **Web Portal:** Open [http://localhost:3000](http://localhost:3000) in your web browser.
+
+---
+
+## 💻 How to Access the Database in the Terminal (`psql`)
+
+You can query, inspect, and benchmark the PostgreSQL database directly from your command line using `psql`.
+
+### 🔑 Connection Credentials
+| Parameter | Default Value | Description |
+| :--- | :--- | :--- |
+| **Host** | `localhost` (or `127.0.0.1`) | Local machine host |
+| **Port** | `5432` | Standard PostgreSQL port |
+| **Database** | `hospital_db` | Main application database |
+| **User** | `postgres` | Database superuser |
+| **Password** | `postgres` | Configured in `backend/.env` |
+
+---
+
+### Connecting via Terminal
+
+#### Windows PowerShell:
+```powershell
+# Option A: With inline password
+$env:PGPASSWORD="postgres"; & "C:\Program Files\PostgreSQL\18\bin\psql.exe" -U postgres -d hospital_db
+
+# Option B: If psql is in your system PATH
+$env:PGPASSWORD="postgres"; psql -U postgres -d hospital_db
+```
+
+#### Windows Command Prompt (CMD):
+```cmd
+set PGPASSWORD=postgres
+"C:\Program Files\PostgreSQL\18\bin\psql.exe" -U postgres -d hospital_db
+```
+
+#### Linux / macOS Terminal:
+```bash
+PGPASSWORD=postgres psql -h localhost -p 5432 -U postgres -d hospital_db
+```
+
+---
+
+### 🔍 Handy Terminal Commands inside `psql`
+
+Once connected to `hospital_db=>`, use these commands to inspect the schema and data:
+
+```sql
+-- 1. List all 37 relational tables
+\dt
+
+-- 2. Inspect table schema, columns, and constraints
+\d patients
+\d appointments
+\d invoices
+
+-- 3. View stored procedures, functions, and triggers
+\df
+SELECT trigger_name, event_manipulation, event_object_table FROM information_schema.triggers WHERE trigger_schema = 'public';
+
+-- 4. Sample SELECT queries
+SELECT patient_id, patient_code, first_name, last_name, blood_group, phone FROM patients LIMIT 10;
+SELECT doctor_id, specialization, consultation_fee FROM doctors LIMIT 10;
+
+-- 5. Query the monthly performance materialized view
+SELECT report_month, total_appointments, total_admissions, gross_invoiced, total_collected FROM mv_monthly_hospital_performance;
+
+-- 6. Benchmark an index with live EXPLAIN ANALYZE
+EXPLAIN ANALYZE SELECT * FROM appointments WHERE appointment_date = CURRENT_DATE;
+
+-- 7. Exit psql
+\q
+```
 
 ---
 
 ## 🔑 Demo Accounts for University Viva Defense
 
-The login page features **1-click quick-role switch buttons** for viva demonstration:
+The login page features **1-click quick-role switch buttons** for rapid viva demonstration:
 
 | Role | Username | Password | Access Scope |
 | :--- | :--- | :--- | :--- |
-| **Administrator** | `admin` | `password123` | Full access across all 18 modules, user management, and materialized views |
-| **Doctor** | `doctor1` | `password123` | Patient encounters, diagnosis entry, and prescribing medications |
-| **Nurse** | `nurse1` | `password123` | Inpatient wards, bed assignments, and patient admissions |
-| **Receptionist** | `receptionist1` | `password123` | Patient registration, scheduling appointments, and bed allocation |
-| **Lab Technician** | `labtech1` | `password123` | Diagnostic test requisitions, specimen processing, and recording results |
-| **Pharmacist** | `pharmacist1` | `password123` | Pharmacy inventory batches, low-stock alerts, and prescription dispensing |
-| **Accountant** | `accountant1` | `password123` | Itemized invoicing, payment receipts, fee tariffs, and revenue analytics |
+| **Administrator** | `admin` | `password123` | Full unrestricted access across all 18 modules, user administration, and materialized view refreshing |
+| **Doctor** | `doctor1` | `password123` | Outpatient appointments, consultations, diagnostic requisitions, test result recording, and e-prescribing |
+| **Nurse** | `nurse1` | `password123` | Inpatient admissions, bed transfers, ward occupancy tracking, and medication dispensing |
+| **Receptionist** | `receptionist1` | `password123` | Patient master registry, booking doctor appointments, and inpatient bed reservations |
+| **Accountant** | `accountant1` | `password123` | Itemized invoicing, payment receipts, fee tariffs, debt aging, and financial revenue reports |
 
 ---
 
