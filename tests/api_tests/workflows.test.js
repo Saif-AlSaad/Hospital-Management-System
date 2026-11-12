@@ -15,6 +15,7 @@ async function runTests() {
   let adminToken = '';
   let doctorToken = '';
   let receptionistToken = '';
+  let accountantToken = '';
   let testPatientId = null;
   let testAppointmentId = null;
   let testConsultationId = null;
@@ -67,12 +68,12 @@ async function runTests() {
     receptionistToken = recepLogin.data.token;
     console.log('✅ Receptionist Login Successful');
 
-    const nurseLogin = await request('/auth/login', {
+    const acctLogin = await request('/auth/login', {
       method: 'POST',
-      body: JSON.stringify({ usernameOrEmail: 'nurse1', password: 'password123' })
+      body: JSON.stringify({ usernameOrEmail: 'accountant1', password: 'password123' })
     }, null);
-    const nurseToken = nurseLogin.data.token;
-    console.log('✅ Nurse Login Successful\n');
+    accountantToken = acctLogin.data.token;
+    console.log('✅ Accountant Login Successful\n');
   }
 
   // 2. Workflow A: Patient Registration & Appointment Scheduling
@@ -285,7 +286,7 @@ async function runTests() {
     const invRes = await request('/billing/invoices', {
       method: 'POST',
       body: JSON.stringify(invoicePayload)
-    }, receptionistToken);
+    }, accountantToken);
 
     if (invRes.status === 201 && invRes.data.invoice) {
       testInvoiceId = invRes.data.invoice.invoice_id;
@@ -306,7 +307,7 @@ async function runTests() {
           transactionReference: 'AUTH-TEST-998822',
           notes: 'Partial payment on account'
         })
-      }, receptionistToken);
+      }, accountantToken);
 
       if (payRes.status === 201) {
         console.log(`✅ Stored procedure sp_process_payment executed! Recorded payment ID=${payRes.data.paymentId}`);

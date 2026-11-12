@@ -10,7 +10,7 @@ const { query, withTransaction } = require('../db/pool');
 const { authenticateToken, requireRoles } = require('../middleware/auth.middleware');
 
 // GET /api/admissions - List Inpatient Admissions
-router.get('/', authenticateToken, async (req, res, next) => {
+router.get('/', authenticateToken, requireRoles('Admin', 'Doctor', 'Receptionist'), async (req, res, next) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 15;
@@ -23,6 +23,19 @@ router.get('/', authenticateToken, async (req, res, next) => {
 
     let whereClause = 'WHERE 1=1';
     const params = [];
+
+    // Doctor Data Scoping: Doctors only see inpatient admissions under their care
+    if (req.user.role === 'Doctor') {
+      if (!req.user.doctorId) {
+        return res.status(403).json({
+          success: false,
+          code: 'DOCTOR_PROFILE_UNLINKED',
+          message: 'Your user account is not linked to an active doctor profile.',
+        });
+      }
+      params.push(req.user.doctorId);
+      whereClause += ` AND adm.admitting_doctor_id = $${params.length}`;
+    }
 
     if (status) {
       params.push(status);
@@ -102,7 +115,19 @@ router.post('/admit', authenticateToken, requireRoles('Admin', 'Doctor', 'Recept
   try {
     const { patientId, doctorId, bedId, admissionReason } = req.body;
 
-    if (!patientId || !doctorId || !bedId || !admissionReason) {
+    let effectiveDoctorId = doctorId ? parseInt(doctorId) : null;
+    if (req.user.role === 'Doctor') {
+      if (!req.user.doctorId) {
+        return res.status(403).json({
+          success: false,
+          code: 'DOCTOR_PROFILE_UNLINKED',
+          message: 'Your user account is not linked to an active doctor profile.',
+        });
+      }
+      effectiveDoctorId = req.user.doctorId;
+    }
+
+    if (!patientId || !effectiveDoctorId || !bedId || !admissionReason) {
       return res.status(400).json({
         success: false,
         message: 'Patient, Admitting Doctor, Bed ID, and Reason for admission are required.',
@@ -114,7 +139,7 @@ router.post('/admit', authenticateToken, requireRoles('Admin', 'Doctor', 'Recept
     // Call PostgreSQL Stored Procedure sp_admit_patient with INOUT parameter
     const spResult = await query(
       'CALL sp_admit_patient($1, $2, $3, $4, $5, NULL);',
-      [patientId, doctorId, bedId, admissionReason.trim(), assignedBy]
+      [patientId, effectiveDoctorId, bedId, admissionReason.trim(), assignedBy]
     );
 
     const admissionId = spResult.rows[0]?.p_admission_id;
@@ -143,6 +168,21 @@ router.post('/:id/discharge', authenticateToken, requireRoles('Admin', 'Doctor')
       });
     }
 
+    // Doctor Scoping Check: Doctors can only discharge patients under their care
+    if (req.user.role === 'Doctor') {
+      const admCheck = await query('SELECT admitting_doctor_id FROM admissions WHERE admission_id = $1;', [admissionId]);
+      if (admCheck.rows.length === 0) {
+        return res.status(404).json({ success: false, message: 'Admission record not found.' });
+      }
+      if (admCheck.rows[0].admitting_doctor_id !== req.user.doctorId) {
+        return res.status(403).json({
+          success: false,
+          code: 'FORBIDDEN_RESOURCE',
+          message: 'Access denied. Doctors can only discharge patients under their own admitting care.',
+        });
+      }
+    }
+
     const userId = req.user?.userId || 1;
 
     // Call PostgreSQL Stored Procedure sp_discharge_patient
@@ -165,7 +205,7 @@ router.post('/:id/discharge', authenticateToken, requireRoles('Admin', 'Doctor')
 
 // POST /api/admissions/:id/transfer-bed - Multi-Table Bed Transfer Transaction
 // Atomically vacates previous bed and transfers patient to new bed
-router.post('/:id/transfer-bed', authenticateToken, requireRoles('Admin', 'Doctor'), async (req, res, next) => {
+router.post('/:id/transfer-bed', authenticateToken, requireRoles('Admin', 'Doctor', 'Receptionist'), async (req, res, next) => {
   try {
     const admissionId = parseInt(req.params.id);
     const { newBedId, transferNotes } = req.body;

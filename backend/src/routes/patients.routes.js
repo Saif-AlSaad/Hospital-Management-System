@@ -291,7 +291,7 @@ router.delete('/:id', authenticateToken, requireRoles('Admin'), async (req, res,
 });
 
 // GET /api/patients/:id/medical-history - Advanced Query 1 (Longitudinal Clinical History)
-router.get('/:id/medical-history', authenticateToken, async (req, res, next) => {
+router.get('/:id/medical-history', authenticateToken, requireRoles('Admin', 'Doctor'), async (req, res, next) => {
   try {
     const patientId = parseInt(req.params.id);
 

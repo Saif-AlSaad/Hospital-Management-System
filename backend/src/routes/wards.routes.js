@@ -81,7 +81,7 @@ router.get('/:id/beds', authenticateToken, async (req, res, next) => {
 });
 
 // PUT /api/wards/beds/:id/status - Update Bed Status (e.g. Set to Maintenance or Available)
-router.put('/beds/:id/status', authenticateToken, requireRoles('Admin', 'Doctor'), async (req, res, next) => {
+router.put('/beds/:id/status', authenticateToken, requireRoles('Admin', 'Doctor', 'Receptionist'), async (req, res, next) => {
   try {
     const bedId = parseInt(req.params.id);
     const { status } = req.body;

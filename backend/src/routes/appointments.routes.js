@@ -10,7 +10,7 @@ const { query } = require('../db/pool');
 const { authenticateToken, requireRoles } = require('../middleware/auth.middleware');
 
 // GET /api/appointments - Paginated search and multi-criteria filters
-router.get('/', authenticateToken, async (req, res, next) => {
+router.get('/', authenticateToken, requireRoles('Admin', 'Receptionist', 'Doctor'), async (req, res, next) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 15;
@@ -18,12 +18,24 @@ router.get('/', authenticateToken, async (req, res, next) => {
 
     const isClean = (v) => v !== undefined && v !== null && v !== '' && v !== 'undefined' && v !== 'null' && v !== 'All' && v !== 'all';
 
-    const doctorId = isClean(req.query.doctorId) ? parseInt(req.query.doctorId) : null;
+    let doctorId = isClean(req.query.doctorId) ? parseInt(req.query.doctorId) : null;
     const patientId = isClean(req.query.patientId) ? parseInt(req.query.patientId) : null;
     const departmentId = isClean(req.query.departmentId) ? parseInt(req.query.departmentId) : null;
     const date = isClean(req.query.date) ? req.query.date : null;
     const status = isClean(req.query.status) ? req.query.status : null;
     const search = isClean(req.query.search) && req.query.search.trim() ? `%${req.query.search.trim()}%` : null;
+
+    // Doctor Data Scoping: Doctors only view their own appointment schedule
+    if (req.user.role === 'Doctor') {
+      if (!req.user.doctorId) {
+        return res.status(403).json({
+          success: false,
+          code: 'DOCTOR_PROFILE_UNLINKED',
+          message: 'Your user account is not linked to an active doctor profile.',
+        });
+      }
+      doctorId = req.user.doctorId;
+    }
 
     let whereClause = 'WHERE 1=1';
     const params = [];
@@ -117,7 +129,7 @@ router.get('/', authenticateToken, async (req, res, next) => {
 });
 
 // GET /api/appointments/check-availability - Database Function fn_check_doctor_availability
-router.get('/check-availability', authenticateToken, async (req, res, next) => {
+router.get('/check-availability', authenticateToken, requireRoles('Admin', 'Receptionist', 'Doctor'), async (req, res, next) => {
   try {
     const { doctorId, date, startTime, endTime } = req.query;
 
@@ -151,7 +163,19 @@ router.post('/', authenticateToken, requireRoles('Admin', 'Receptionist', 'Docto
       startTime, endTime, appointmentType, notes
     } = req.body;
 
-    if (!patientId || !doctorId || !appointmentDate || !startTime || !endTime) {
+    let effectiveDoctorId = doctorId ? parseInt(doctorId) : null;
+    if (req.user.role === 'Doctor') {
+      if (!req.user.doctorId) {
+        return res.status(403).json({
+          success: false,
+          code: 'DOCTOR_PROFILE_UNLINKED',
+          message: 'Your user account is not linked to an active doctor profile.',
+        });
+      }
+      effectiveDoctorId = req.user.doctorId;
+    }
+
+    if (!patientId || !effectiveDoctorId || !appointmentDate || !startTime || !endTime) {
       return res.status(400).json({
         success: false,
         message: 'Patient, Doctor, Appointment date, and Slot times are mandatory.',
@@ -161,7 +185,7 @@ router.post('/', authenticateToken, requireRoles('Admin', 'Receptionist', 'Docto
     // Auto-resolve departmentId from doctor if omitted
     let deptId = departmentId;
     if (!deptId) {
-      const docDeptRes = await query('SELECT department_id FROM doctors WHERE doctor_id = $1;', [doctorId]);
+      const docDeptRes = await query('SELECT department_id FROM doctors WHERE doctor_id = $1;', [effectiveDoctorId]);
       deptId = docDeptRes.rows[0]?.department_id;
     }
 
@@ -183,7 +207,7 @@ router.post('/', authenticateToken, requireRoles('Admin', 'Receptionist', 'Docto
     `;
 
     const result = await query(insertSql, [
-      nextId, apptNumber, patientId, doctorId, deptId,
+      nextId, apptNumber, patientId, effectiveDoctorId, deptId,
       appointmentDate, startTime, endTime, appointmentType || 'Routine',
       notes || null, req.user?.userId || null
     ]);
@@ -209,6 +233,21 @@ router.put('/:id/reschedule', authenticateToken, requireRoles('Admin', 'Receptio
         success: false,
         message: 'New appointment date and start/end times are required.',
       });
+    }
+
+    // Doctor Scoping Check
+    if (req.user.role === 'Doctor') {
+      const apptCheck = await query('SELECT doctor_id FROM appointments WHERE appointment_id = $1;', [appointmentId]);
+      if (apptCheck.rows.length === 0) {
+        return res.status(404).json({ success: false, message: 'Appointment not found.' });
+      }
+      if (apptCheck.rows[0].doctor_id !== req.user.doctorId) {
+        return res.status(403).json({
+          success: false,
+          code: 'FORBIDDEN_RESOURCE',
+          message: 'Access denied. Doctors can only reschedule their own appointments.',
+        });
+      }
     }
 
     const updateSql = `
@@ -240,7 +279,7 @@ router.put('/:id/reschedule', authenticateToken, requireRoles('Admin', 'Receptio
 });
 
 // PUT /api/appointments/:id/status - Update Status
-router.put('/:id/status', authenticateToken, async (req, res, next) => {
+router.put('/:id/status', authenticateToken, requireRoles('Admin', 'Receptionist', 'Doctor'), async (req, res, next) => {
   try {
     const appointmentId = parseInt(req.params.id);
     const { status } = req.body;
@@ -251,6 +290,21 @@ router.put('/:id/status', authenticateToken, async (req, res, next) => {
         success: false,
         message: `Invalid status. Must be one of: [${validStatuses.join(', ')}]`,
       });
+    }
+
+    // Doctor Scoping Check
+    if (req.user.role === 'Doctor') {
+      const apptCheck = await query('SELECT doctor_id FROM appointments WHERE appointment_id = $1;', [appointmentId]);
+      if (apptCheck.rows.length === 0) {
+        return res.status(404).json({ success: false, message: 'Appointment not found.' });
+      }
+      if (apptCheck.rows[0].doctor_id !== req.user.doctorId) {
+        return res.status(403).json({
+          success: false,
+          code: 'FORBIDDEN_RESOURCE',
+          message: 'Access denied. Doctors can only update status of their own appointments.',
+        });
+      }
     }
 
     const result = await query(`

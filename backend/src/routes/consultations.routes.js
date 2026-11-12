@@ -10,7 +10,7 @@ const { query, withTransaction } = require('../db/pool');
 const { authenticateToken, requireRoles } = require('../middleware/auth.middleware');
 
 // GET /api/consultations/diagnoses-catalog - ICD-10 diagnoses list for dropdowns
-router.get('/diagnoses-catalog', authenticateToken, async (req, res, next) => {
+router.get('/diagnoses-catalog', authenticateToken, requireRoles('Doctor', 'Admin'), async (req, res, next) => {
   try {
     const result = await query(`
       SELECT diagnosis_id, icd_code, diagnosis_name, description
@@ -24,16 +24,28 @@ router.get('/diagnoses-catalog', authenticateToken, async (req, res, next) => {
   }
 });
 
-// GET /api/consultations - List consultations with filters
-router.get('/', authenticateToken, async (req, res, next) => {
+// GET /api/consultations - List consultations with filters & doctor scoping
+router.get('/', authenticateToken, requireRoles('Doctor', 'Admin'), async (req, res, next) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 15;
     const offset = (page - 1) * limit;
 
     const patientId = req.query.patientId ? parseInt(req.query.patientId) : null;
-    const doctorId = req.query.doctorId ? parseInt(req.query.doctorId) : null;
+    let doctorId = req.query.doctorId ? parseInt(req.query.doctorId) : null;
     const date = req.query.date || null;
+
+    // Doctor Data Scoping: Doctors can only query their own clinical encounters
+    if (req.user.role === 'Doctor') {
+      if (!req.user.doctorId) {
+        return res.status(403).json({
+          success: false,
+          code: 'DOCTOR_PROFILE_UNLINKED',
+          message: 'Your user account is not linked to an active doctor profile.',
+        });
+      }
+      doctorId = req.user.doctorId;
+    }
 
     let whereClause = 'WHERE 1=1';
     const params = [];
@@ -115,7 +127,7 @@ router.get('/', authenticateToken, async (req, res, next) => {
 });
 
 // GET /api/consultations/:id - Full Consultation Details with Diagnoses and Prescriptions
-router.get('/:id', authenticateToken, async (req, res, next) => {
+router.get('/:id', authenticateToken, requireRoles('Doctor', 'Admin'), async (req, res, next) => {
   try {
     const consultationId = parseInt(req.params.id);
 
@@ -177,6 +189,15 @@ router.get('/:id', authenticateToken, async (req, res, next) => {
       return res.status(404).json({ success: false, message: 'Consultation encounter not found.' });
     }
 
+    // Doctor Data Isolation: Doctors can only view consultations they conducted
+    if (req.user.role === 'Doctor' && conRes.rows[0].doctor_id !== req.user.doctorId) {
+      return res.status(403).json({
+        success: false,
+        code: 'FORBIDDEN_RESOURCE',
+        message: 'Access denied. You can only view clinical consultations that you conducted.',
+      });
+    }
+
     res.json({
       success: true,
       consultation: conRes.rows[0],
@@ -201,7 +222,19 @@ router.post('/', authenticateToken, requireRoles('Admin', 'Doctor'), async (req,
       treatmentPlan, followUpDate, vitals, diagnoses, prescriptionItems
     } = req.body;
 
-    if (!patientId || !doctorId || !symptoms || !clinicalNotes) {
+    let effectiveDoctorId = doctorId ? parseInt(doctorId) : null;
+    if (req.user.role === 'Doctor') {
+      if (!req.user.doctorId) {
+        return res.status(403).json({
+          success: false,
+          code: 'DOCTOR_PROFILE_UNLINKED',
+          message: 'Your user account is not linked to an active doctor profile.',
+        });
+      }
+      effectiveDoctorId = req.user.doctorId;
+    }
+
+    if (!patientId || !effectiveDoctorId || !symptoms || !clinicalNotes) {
       return res.status(400).json({
         success: false,
         message: 'Patient, Doctor, Symptoms, and Clinical Notes are mandatory.',
@@ -223,7 +256,7 @@ router.post('/', authenticateToken, requireRoles('Admin', 'Doctor'), async (req,
         VALUES ($1, $2, $3, $4, $5, CURRENT_TIMESTAMP, $6, $7, $8, $9, $10::jsonb)
         RETURNING *;
       `, [
-        nextId, conNumber, appointmentId || null, patientId, doctorId,
+        nextId, conNumber, appointmentId || null, patientId, effectiveDoctorId,
         symptoms, clinicalNotes, treatmentPlan || null, followUpDate || null,
         vitals ? JSON.stringify(vitals) : null
       ]);
@@ -263,7 +296,7 @@ router.post('/', authenticateToken, requireRoles('Admin', 'Doctor'), async (req,
           )
           VALUES ($1, $2, $3, $4, $5, CURRENT_DATE, 'Active', 'Outpatient consultation prescription')
           RETURNING prescription_id;
-        `, [rxNextId, rxNum, nextId, patientId, doctorId]);
+        `, [rxNextId, rxNum, nextId, patientId, effectiveDoctorId]);
 
         createdPrescriptionId = rxRes.rows[0].prescription_id;
 

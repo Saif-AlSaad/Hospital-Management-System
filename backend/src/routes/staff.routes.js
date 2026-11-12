@@ -9,8 +9,8 @@ const bcrypt = require('bcryptjs');
 const { query, withTransaction } = require('../db/pool');
 const { authenticateToken, requireRoles } = require('../middleware/auth.middleware');
 
-// GET /api/staff - List Staff with Department & Roles
-router.get('/', authenticateToken, async (req, res, next) => {
+// GET /api/staff - List Staff with Department & Roles (Admin Only)
+router.get('/', authenticateToken, requireRoles('Admin'), async (req, res, next) => {
   try {
     const departmentId = req.query.departmentId ? parseInt(req.query.departmentId) : null;
 

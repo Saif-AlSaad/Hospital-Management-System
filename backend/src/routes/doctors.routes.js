@@ -162,6 +162,17 @@ router.put('/:id', authenticateToken, requireRoles('Admin', 'Doctor'), async (re
     const doctorId = parseInt(req.params.id);
     const { specialization, consultationFee, bio, departmentId } = req.body;
 
+    // Doctor Data Scoping: Doctors can only update their own profile
+    if (req.user.role === 'Doctor') {
+      if (!req.user.doctorId || req.user.doctorId !== doctorId) {
+        return res.status(403).json({
+          success: false,
+          code: 'FORBIDDEN_RESOURCE',
+          message: 'Access denied. Doctors can only modify their own doctor profile.',
+        });
+      }
+    }
+
     const updateSql = `
       UPDATE doctors
       SET specialization = COALESCE($1, specialization),

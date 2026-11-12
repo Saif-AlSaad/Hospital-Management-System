@@ -10,7 +10,7 @@ const { query, withTransaction } = require('../db/pool');
 const { authenticateToken, requireRoles } = require('../middleware/auth.middleware');
 
 // GET /api/laboratory/catalog - All Laboratory Tests and Categories
-router.get('/catalog', authenticateToken, async (req, res, next) => {
+router.get('/catalog', authenticateToken, requireRoles('Admin', 'Doctor'), async (req, res, next) => {
   try {
     const sql = `
       SELECT 
@@ -38,7 +38,7 @@ router.get('/catalog', authenticateToken, async (req, res, next) => {
 });
 
 // GET /api/laboratory/orders - List Requisitions with Multi-Level Filters
-router.get('/orders', authenticateToken, async (req, res, next) => {
+router.get('/orders', authenticateToken, requireRoles('Admin', 'Doctor'), async (req, res, next) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 15;
@@ -52,6 +52,19 @@ router.get('/orders', authenticateToken, async (req, res, next) => {
 
     let whereClause = 'WHERE 1=1';
     const params = [];
+
+    // Doctor Data Scoping: Doctors can only view requisitions they ordered
+    if (req.user.role === 'Doctor') {
+      if (!req.user.doctorId) {
+        return res.status(403).json({
+          success: false,
+          code: 'DOCTOR_PROFILE_UNLINKED',
+          message: 'Your user account is not linked to an active doctor profile.',
+        });
+      }
+      params.push(req.user.doctorId);
+      whereClause += ` AND lo.doctor_id = $${params.length}`;
+    }
 
     if (status) {
       params.push(status);
@@ -120,7 +133,7 @@ router.get('/orders', authenticateToken, async (req, res, next) => {
 });
 
 // GET /api/laboratory/orders/:id - Order Details with Test Items and Results
-router.get('/orders/:id', authenticateToken, async (req, res, next) => {
+router.get('/orders/:id', authenticateToken, requireRoles('Admin', 'Doctor'), async (req, res, next) => {
   try {
     const orderId = parseInt(req.params.id);
 
@@ -176,6 +189,15 @@ router.get('/orders/:id', authenticateToken, async (req, res, next) => {
       return res.status(404).json({ success: false, message: 'Laboratory order not found.' });
     }
 
+    // Doctor Data Scoping
+    if (req.user.role === 'Doctor' && orderRes.rows[0].doctor_id !== req.user.doctorId) {
+      return res.status(403).json({
+        success: false,
+        code: 'FORBIDDEN_RESOURCE',
+        message: 'Access denied. Doctors can only view laboratory orders they requested.',
+      });
+    }
+
     res.json({
       success: true,
       order: orderRes.rows[0],
@@ -191,7 +213,19 @@ router.post('/orders', authenticateToken, requireRoles('Admin', 'Doctor'), async
   try {
     const { patientId, doctorId, consultationId, priority, testIds } = req.body;
 
-    if (!patientId || !doctorId || !Array.isArray(testIds) || testIds.length === 0) {
+    let effectiveDoctorId = doctorId ? parseInt(doctorId) : null;
+    if (req.user.role === 'Doctor') {
+      if (!req.user.doctorId) {
+        return res.status(403).json({
+          success: false,
+          code: 'DOCTOR_PROFILE_UNLINKED',
+          message: 'Your user account is not linked to an active doctor profile.',
+        });
+      }
+      effectiveDoctorId = req.user.doctorId;
+    }
+
+    if (!patientId || !effectiveDoctorId || !Array.isArray(testIds) || testIds.length === 0) {
       return res.status(400).json({
         success: false,
         message: 'Patient, Doctor, and at least one Test are required to place a lab requisition.',
@@ -212,7 +246,7 @@ router.post('/orders', authenticateToken, requireRoles('Admin', 'Doctor'), async
         )
         VALUES ($1, $2, $3, $4, $5, CURRENT_TIMESTAMP, 'Ordered', $6)
         RETURNING *;
-      `, [nextId, orderNumber, patientId, doctorId, consultationId || null, priority || 'Routine']);
+      `, [nextId, orderNumber, patientId, effectiveDoctorId, consultationId || null, priority || 'Routine']);
 
       // 3. Insert items
       for (const tId of testIds) {

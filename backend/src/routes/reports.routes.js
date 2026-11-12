@@ -52,7 +52,7 @@ router.get('/dashboard-stats', authenticateToken, async (req, res, next) => {
 });
 
 // GET /api/reports/monthly-performance - Materialized View mv_monthly_hospital_performance
-router.get('/monthly-performance', authenticateToken, async (req, res, next) => {
+router.get('/monthly-performance', authenticateToken, requireRoles('Admin', 'Accountant'), async (req, res, next) => {
   try {
     const result = await query('SELECT * FROM mv_monthly_hospital_performance ORDER BY month_date ASC;');
     res.json({ success: true, data: result.rows });
@@ -77,7 +77,7 @@ router.post('/refresh-materialized-view', authenticateToken, requireRoles('Admin
 });
 
 // GET /api/reports/doctor-workload - Advanced Query 2: GROUP BY and HAVING
-router.get('/doctor-workload', authenticateToken, async (req, res, next) => {
+router.get('/doctor-workload', authenticateToken, requireRoles('Admin', 'Accountant'), async (req, res, next) => {
   try {
     const startDate = req.query.startDate || '2025-01-01';
     const endDate = req.query.endDate || '2026-12-31';
@@ -118,7 +118,7 @@ router.get('/doctor-workload', authenticateToken, async (req, res, next) => {
 });
 
 // GET /api/reports/revenue-breakdown - Daily Revenue by Payment Method
-router.get('/revenue-breakdown', authenticateToken, async (req, res, next) => {
+router.get('/revenue-breakdown', authenticateToken, requireRoles('Admin', 'Accountant'), async (req, res, next) => {
   try {
     const startDate = req.query.startDate || '2025-01-01';
     const endDate = req.query.endDate || '2026-12-31';
@@ -145,7 +145,7 @@ router.get('/revenue-breakdown', authenticateToken, async (req, res, next) => {
 });
 
 // GET /api/reports/debt-aging - Accounts Receivable Aging Report
-router.get('/debt-aging', authenticateToken, async (req, res, next) => {
+router.get('/debt-aging', authenticateToken, requireRoles('Admin', 'Accountant'), async (req, res, next) => {
   try {
     const sql = `
       SELECT 
@@ -175,7 +175,7 @@ router.get('/debt-aging', authenticateToken, async (req, res, next) => {
 });
 
 // GET /api/reports/explain-query - Viva Performance Demonstration with EXPLAIN ANALYZE
-router.get('/explain-query', authenticateToken, async (req, res, next) => {
+router.get('/explain-query', authenticateToken, requireRoles('Admin'), async (req, res, next) => {
   try {
     const queryType = req.query.type || 'patient_search';
 

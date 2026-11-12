@@ -10,7 +10,7 @@ const { query, withTransaction } = require('../db/pool');
 const { authenticateToken, requireRoles } = require('../middleware/auth.middleware');
 
 // GET /api/prescriptions - List Prescriptions
-router.get('/', authenticateToken, async (req, res, next) => {
+router.get('/', authenticateToken, requireRoles('Doctor', 'Admin', 'Accountant', 'Receptionist'), async (req, res, next) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 15;
@@ -19,9 +19,21 @@ router.get('/', authenticateToken, async (req, res, next) => {
     const isClean = (v) => v !== undefined && v !== null && v !== '' && v !== 'undefined' && v !== 'null' && v !== 'All' && v !== 'all';
 
     const patientId = isClean(req.query.patientId) ? parseInt(req.query.patientId) : null;
-    const doctorId = isClean(req.query.doctorId) ? parseInt(req.query.doctorId) : null;
+    let doctorId = isClean(req.query.doctorId) ? parseInt(req.query.doctorId) : null;
     let status = isClean(req.query.status) ? req.query.status : null; // 'Active', 'Partially Dispensed', 'Dispensed'
     if (status === 'Pending') status = 'Active';
+
+    // Doctor Data Isolation: Doctors can only view prescriptions they authored
+    if (req.user.role === 'Doctor') {
+      if (!req.user.doctorId) {
+        return res.status(403).json({
+          success: false,
+          code: 'DOCTOR_PROFILE_UNLINKED',
+          message: 'Your user account is not linked to an active doctor profile.',
+        });
+      }
+      doctorId = req.user.doctorId;
+    }
 
     let whereClause = 'WHERE 1=1';
     const params = [];
@@ -95,7 +107,7 @@ router.get('/', authenticateToken, async (req, res, next) => {
 });
 
 // GET /api/prescriptions/:id - Prescription Details with Items & Available Batches
-router.get('/:id', authenticateToken, async (req, res, next) => {
+router.get('/:id', authenticateToken, requireRoles('Doctor', 'Admin', 'Accountant', 'Receptionist'), async (req, res, next) => {
   try {
     const prescriptionId = parseInt(req.params.id);
 
@@ -143,6 +155,15 @@ router.get('/:id', authenticateToken, async (req, res, next) => {
       return res.status(404).json({ success: false, message: 'Prescription not found.' });
     }
 
+    // Doctor Data Scoping
+    if (req.user.role === 'Doctor' && rxRes.rows[0].doctor_id !== req.user.doctorId) {
+      return res.status(403).json({
+        success: false,
+        code: 'FORBIDDEN_RESOURCE',
+        message: 'Access denied. Doctors can only view prescriptions they authored.',
+      });
+    }
+
     res.json({
       success: true,
       prescription: rxRes.rows[0],
@@ -153,9 +174,73 @@ router.get('/:id', authenticateToken, async (req, res, next) => {
   }
 });
 
+// POST /api/prescriptions - Create Standalone Prescription
+router.post('/', authenticateToken, requireRoles('Doctor', 'Admin'), async (req, res, next) => {
+  try {
+    const { patientId, doctorId, consultationId, notes, items } = req.body;
+
+    let effectiveDoctorId = doctorId ? parseInt(doctorId) : null;
+    if (req.user.role === 'Doctor') {
+      if (!req.user.doctorId) {
+        return res.status(403).json({
+          success: false,
+          code: 'DOCTOR_PROFILE_UNLINKED',
+          message: 'Your user account is not linked to an active doctor profile.',
+        });
+      }
+      effectiveDoctorId = req.user.doctorId;
+    }
+
+    if (!patientId || !effectiveDoctorId || !Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'Patient, Doctor, and at least one medicine item are mandatory.',
+      });
+    }
+
+    const prescription = await withTransaction(async (client) => {
+      const rxSeq = await client.query("SELECT nextval('prescriptions_prescription_id_seq') AS next_id;");
+      const rxNextId = rxSeq.rows[0].next_id;
+      const rxNum = `RX-${new Date().getFullYear()}-${String(rxNextId).padStart(5, '0')}`;
+
+      const rxRes = await client.query(`
+        INSERT INTO prescriptions (
+          prescription_id, prescription_number, consultation_id, patient_id,
+          doctor_id, issue_date, status, notes
+        )
+        VALUES ($1, $2, $3, $4, $5, CURRENT_DATE, 'Active', $6)
+        RETURNING *;
+      `, [rxNextId, rxNum, consultationId || null, patientId, effectiveDoctorId, notes || 'Direct prescription']);
+
+      for (const item of items) {
+        await client.query(`
+          INSERT INTO prescription_items (
+            prescription_id, medicine_id, dosage, frequency,
+            duration_days, prescribed_quantity, instructions
+          )
+          VALUES ($1, $2, $3, $4, $5, $6, $7);
+        `, [
+          rxNextId, item.medicineId, item.dosage, item.frequency,
+          item.durationDays || 7, item.prescribedQuantity, item.instructions || null
+        ]);
+      }
+
+      return rxRes.rows[0];
+    });
+
+    res.status(201).json({
+      success: true,
+      message: `Prescription ${prescription.prescription_number} generated successfully.`,
+      prescription,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 // POST /api/prescriptions/:id/dispense - Multi-Table Dispensing Workflow
 // Atomically deducts inventory, records dispensing, updates prescription items and status
-router.post('/:id/dispense', authenticateToken, requireRoles('Admin', 'Doctor'), async (req, res, next) => {
+router.post('/:id/dispense', authenticateToken, requireRoles('Admin', 'Accountant', 'Doctor'), async (req, res, next) => {
   try {
     const prescriptionId = parseInt(req.params.id);
     const { items, notes } = req.body; // Array of { prescriptionItemId, batchId, quantity }

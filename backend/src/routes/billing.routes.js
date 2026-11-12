@@ -10,7 +10,7 @@ const { query, withTransaction } = require('../db/pool');
 const { authenticateToken, requireRoles } = require('../middleware/auth.middleware');
 
 // GET /api/billing/services - Service Tariff Catalog
-router.get('/services', authenticateToken, async (req, res, next) => {
+router.get('/services', authenticateToken, requireRoles('Admin', 'Accountant', 'Receptionist', 'Doctor'), async (req, res, next) => {
   try {
     const result = await query('SELECT * FROM services WHERE is_active = TRUE ORDER BY category, service_name;');
     res.json({ success: true, data: result.rows });
@@ -20,7 +20,7 @@ router.get('/services', authenticateToken, async (req, res, next) => {
 });
 
 // GET /api/billing/patients/:id/balance - Function fn_calculate_patient_balance
-router.get('/patients/:id/balance', authenticateToken, async (req, res, next) => {
+router.get('/patients/:id/balance', authenticateToken, requireRoles('Admin', 'Accountant', 'Receptionist'), async (req, res, next) => {
   try {
     const patientId = parseInt(req.params.id);
     const result = await query('SELECT fn_calculate_patient_balance($1) AS outstanding_balance;', [patientId]);
@@ -34,8 +34,8 @@ router.get('/patients/:id/balance', authenticateToken, async (req, res, next) =>
   }
 });
 
-// GET /api/billing/invoices - List Invoices with Filters
-router.get('/invoices', authenticateToken, async (req, res, next) => {
+// GET /api/billing/invoices - List Invoices with Filters (Accountant / Admin Only)
+router.get('/invoices', authenticateToken, requireRoles('Admin', 'Accountant'), async (req, res, next) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 15;
@@ -106,7 +106,7 @@ router.get('/invoices', authenticateToken, async (req, res, next) => {
 });
 
 // GET /api/billing/invoices/:id - Invoice Details with Items and Payment History
-router.get('/invoices/:id', authenticateToken, async (req, res, next) => {
+router.get('/invoices/:id', authenticateToken, requireRoles('Admin', 'Accountant'), async (req, res, next) => {
   try {
     const invoiceId = parseInt(req.params.id);
 
@@ -161,7 +161,7 @@ router.get('/invoices/:id', authenticateToken, async (req, res, next) => {
 });
 
 // POST /api/billing/invoices - Create Itemized Invoice (Multi-Table Transaction)
-router.post('/invoices', authenticateToken, requireRoles('Admin', 'Accountant', 'Receptionist'), async (req, res, next) => {
+router.post('/invoices', authenticateToken, requireRoles('Admin', 'Accountant'), async (req, res, next) => {
   try {
     const { patientId, admissionId, consultationId, dueDate, items, notes } = req.body;
 
@@ -247,7 +247,7 @@ router.post('/invoices', authenticateToken, requireRoles('Admin', 'Accountant', 
 });
 
 // GET /api/billing/payments - List Payments with Patient and Invoice Information
-router.get('/payments', authenticateToken, async (req, res, next) => {
+router.get('/payments', authenticateToken, requireRoles('Admin', 'Accountant'), async (req, res, next) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 15;
@@ -330,7 +330,7 @@ router.get('/payments', authenticateToken, async (req, res, next) => {
 });
 
 // POST /api/billing/payments - Record Payment via Stored Procedure sp_process_payment
-router.post('/payments', authenticateToken, requireRoles('Admin', 'Accountant', 'Receptionist'), async (req, res, next) => {
+router.post('/payments', authenticateToken, requireRoles('Admin', 'Accountant'), async (req, res, next) => {
   try {
     const { invoiceId, amount, paymentMethod, transactionReference, notes } = req.body;
 

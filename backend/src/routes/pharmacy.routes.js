@@ -10,7 +10,7 @@ const { query, withTransaction } = require('../db/pool');
 const { authenticateToken, requireRoles } = require('../middleware/auth.middleware');
 
 // GET /api/pharmacy/categories - Drug Categories
-router.get('/categories', authenticateToken, async (req, res, next) => {
+router.get('/categories', authenticateToken, requireRoles('Admin', 'Accountant', 'Doctor'), async (req, res, next) => {
   try {
     const result = await query('SELECT * FROM medicine_categories WHERE is_active = TRUE ORDER BY category_name;');
     res.json({ success: true, data: result.rows });
@@ -20,7 +20,7 @@ router.get('/categories', authenticateToken, async (req, res, next) => {
 });
 
 // GET /api/pharmacy/medicines - Formulary with Stock Aggregations
-router.get('/medicines', authenticateToken, async (req, res, next) => {
+router.get('/medicines', authenticateToken, requireRoles('Admin', 'Accountant', 'Doctor'), async (req, res, next) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 15;
@@ -100,7 +100,7 @@ router.get('/medicines', authenticateToken, async (req, res, next) => {
 });
 
 // GET /api/pharmacy/low-stock - View v_low_stock_medicines
-router.get('/low-stock', authenticateToken, async (req, res, next) => {
+router.get('/low-stock', authenticateToken, requireRoles('Admin', 'Accountant'), async (req, res, next) => {
   try {
     const result = await query(`
       SELECT * FROM v_low_stock_medicines 
@@ -114,7 +114,7 @@ router.get('/low-stock', authenticateToken, async (req, res, next) => {
 });
 
 // GET /api/pharmacy/batches - Inventory Batches with Expiry Information
-router.get('/batches', authenticateToken, async (req, res, next) => {
+router.get('/batches', authenticateToken, requireRoles('Admin', 'Accountant'), async (req, res, next) => {
   try {
     const medicineId = req.query.medicineId ? parseInt(req.query.medicineId) : null;
     const inStockOnly = req.query.inStockOnly !== 'false';
@@ -157,7 +157,7 @@ router.get('/batches', authenticateToken, async (req, res, next) => {
 });
 
 // POST /api/pharmacy/batches - Add Stock Batch & Record Purchase Transaction
-router.post('/batches', authenticateToken, requireRoles('Admin', 'Doctor'), async (req, res, next) => {
+router.post('/batches', authenticateToken, requireRoles('Admin', 'Accountant'), async (req, res, next) => {
   try {
     const {
       medicineId, batchNumber, manufactureDate, expiryDate,
