@@ -20,7 +20,7 @@ import DataTable from '../components/DataTable';
 import Modal from '../components/Modal';
 import { api } from '../services/api';
 
-export default function AdmissionsPage() {
+export default function AdmissionsPage({ user }) {
   const [admissions, setAdmissions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState('Admitted');
@@ -37,10 +37,14 @@ export default function AdmissionsPage() {
   const [showTransferModal, setShowTransferModal] = useState(false);
   const [selectedAdmission, setSelectedAdmission] = useState(null);
 
+  const isDoctor = user?.role === 'Doctor';
+  const canDischarge = user?.role === 'Admin' || user?.role === 'Doctor';
+  const doctorId = user?.doctorId || '';
+
   // Forms
   const [admitForm, setAdmitForm] = useState({
     patientId: '',
-    doctorId: '',
+    doctorId: doctorId ? String(doctorId) : '',
     bedId: '',
     admissionReason: '',
   });
@@ -242,14 +246,16 @@ export default function AdmissionsPage() {
                 <ArrowRightLeft size={13} />
                 <span>Transfer</span>
               </button>
-              <button
-                className="btn btn-danger btn-sm"
-                title="Discharge & Finalize Billing via sp_discharge_patient"
-                onClick={() => { setSelectedAdmission(row); setShowDischargeModal(true); }}
-              >
-                <LogOut size={13} />
-                <span>Discharge</span>
-              </button>
+              {canDischarge && (
+                <button
+                  className="btn btn-danger btn-sm"
+                  title="Discharge & Finalize Billing via sp_discharge_patient"
+                  onClick={() => { setSelectedAdmission(row); setShowDischargeModal(true); }}
+                >
+                  <LogOut size={13} />
+                  <span>Discharge</span>
+                </button>
+              )}
             </>
           )}
         </div>
@@ -262,9 +268,28 @@ export default function AdmissionsPage() {
       {/* Top Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
-          <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: '#fff' }}>Inpatient Admissions & Discharges</h2>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+            <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: '#fff' }}>
+              {isDoctor ? 'Inpatients Under My Clinical Care' : 'Inpatient Admissions & Discharges'}
+            </h2>
+            {isDoctor && (
+              <span style={{
+                fontSize: '0.72rem',
+                backgroundColor: 'rgba(2, 132, 199, 0.15)',
+                color: '#38bdf8',
+                border: '1px solid rgba(2, 132, 199, 0.35)',
+                padding: '0.2rem 0.55rem',
+                borderRadius: '6px',
+                fontWeight: 700,
+              }}>
+                Dr. {user?.fullName || 'Physician'}
+              </span>
+            )}
+          </div>
           <p style={{ color: '#94a3b8', fontSize: '0.85rem' }}>
-            Multi-table workflows orchestrated by PostgreSQL stored procedures <code style={{ color: '#38bdf8' }}>sp_admit_patient</code> and <code style={{ color: '#38bdf8' }}>sp_discharge_patient</code>.
+            {isDoctor
+              ? 'Inpatient care management and discharge execution via stored procedure sp_discharge_patient.'
+              : 'Multi-table workflows orchestrated by PostgreSQL stored procedures sp_admit_patient and sp_discharge_patient.'}
           </p>
         </div>
 

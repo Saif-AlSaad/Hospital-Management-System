@@ -1,6 +1,6 @@
 // ============================================================================
 // HOSPITAL MANAGEMENT SYSTEM (HMS)
-// Outpatient Appointment Management & Scheduling Page
+// Outpatient Appointment Management & Receptionist Landing Workspace
 // Database Trigger Enforced Conflict Prevention & Dynamic Slot Availability
 // ============================================================================
 
@@ -16,13 +16,24 @@ import {
   AlertCircle,
   RefreshCw,
   User,
-  Building2
+  UserPlus,
+  Building2,
+  BedDouble,
+  ShieldCheck,
+  Check,
+  ChevronRight,
+  ArrowRight
 } from 'lucide-react';
 import DataTable from '../components/DataTable';
 import Modal from '../components/Modal';
 import { api } from '../services/api';
 
-export default function AppointmentsPage() {
+export default function AppointmentsPage({ user, onNavigate }) {
+  const isDoctor = user?.role === 'Doctor';
+  const isReceptionist = user?.role === 'Receptionist';
+  const doctorId = user?.doctorId || '';
+
+  // Main Data States
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -30,18 +41,23 @@ export default function AppointmentsPage() {
   const [statusFilter, setStatusFilter] = useState('');
   const [pagination, setPagination] = useState({ page: 1, limit: 15, totalRecords: 0, totalPages: 1 });
 
-  // Doctor list for filter & schedule form
+  // Doctor & Ward Lookups for Front Desk Telemetry
   const [doctors, setDoctors] = useState([]);
+  const [wards, setWards] = useState([]);
+  const [telemetryLoading, setTelemetryLoading] = useState(false);
 
   // Modals
   const [showAddModal, setShowAddModal] = useState(false);
   const [showRescheduleModal, setShowRescheduleModal] = useState(false);
+  const [showFastTrackModal, setShowFastTrackModal] = useState(false);
+  const [showBedStatusModal, setShowBedStatusModal] = useState(false);
   const [selectedAppt, setSelectedAppt] = useState(null);
+  const [toastMessage, setToastMessage] = useState(null);
 
-  // Form State
+  // Booking Form State
   const [formData, setFormData] = useState({
     patientId: '',
-    doctorId: '',
+    doctorId: doctorId ? String(doctorId) : '',
     appointmentDate: new Date().toISOString().split('T')[0],
     startTime: '10:00:00',
     endTime: '10:30:00',
@@ -53,7 +69,23 @@ export default function AppointmentsPage() {
   const [formSubmitting, setFormSubmitting] = useState(false);
   const [formError, setFormError] = useState(null);
 
-  // Reschedule Form
+  // Fast-Track Patient Registration Form State
+  const [fastTrackData, setFastTrackData] = useState({
+    firstName: '',
+    lastName: '',
+    dateOfBirth: '1995-01-01',
+    gender: 'Male',
+    bloodGroup: 'B+',
+    phone: '01711',
+    email: '',
+    address: 'Dhaka, Bangladesh',
+    emergencyContactName: 'Next of Kin',
+    emergencyContactPhone: '01811000000',
+  });
+  const [fastTrackSubmitting, setFastTrackSubmitting] = useState(false);
+  const [fastTrackError, setFastTrackError] = useState(null);
+
+  // Reschedule Form State
   const [rescheduleData, setRescheduleData] = useState({
     appointmentDate: '',
     startTime: '',
@@ -70,8 +102,8 @@ export default function AppointmentsPage() {
         search: search.trim(),
         status: statusFilter || undefined,
       });
-      setAppointments(res.data);
-      setPagination(res.pagination);
+      setAppointments(res.data || []);
+      setPagination(res.pagination || { page: 1, limit: 15, totalRecords: 0, totalPages: 1 });
     } catch (err) {
       console.error('Failed to load appointments:', err);
     } finally {
@@ -79,12 +111,19 @@ export default function AppointmentsPage() {
     }
   };
 
-  const fetchDoctorList = async () => {
+  const fetchFrontDeskLookups = async () => {
+    setTelemetryLoading(true);
     try {
-      const res = await api.getDoctors();
-      setDoctors(res.data);
+      const [docRes, wardsRes] = await Promise.all([
+        api.getDoctors().catch(() => ({ data: [] })),
+        api.getWards().catch(() => ({ data: [] })),
+      ]);
+      setDoctors(docRes.data || []);
+      setWards(wardsRes.data || []);
     } catch (err) {
-      console.error('Failed to load doctors:', err);
+      console.error('Failed to load front-desk telemetry:', err);
+    } finally {
+      setTelemetryLoading(false);
     }
   };
 
@@ -93,8 +132,15 @@ export default function AppointmentsPage() {
   }, [page, search, statusFilter]);
 
   useEffect(() => {
-    fetchDoctorList();
+    fetchFrontDeskLookups();
   }, []);
+
+  // Compute Front Desk Telemetry
+  const totalAvailableBeds = wards.reduce((acc, w) => acc + parseInt(w.available_beds || 0), 0);
+  const totalBeds = wards.reduce((acc, w) => acc + parseInt(w.total_beds || 0), 0);
+  const totalDoctorsOnDuty = doctors.length;
+  const scheduledCount = appointments.filter(a => a.status === 'Scheduled' || a.status === 'Confirmed').length;
+  const completedCount = appointments.filter(a => a.status === 'Completed').length;
 
   const handleCheckAvailability = async () => {
     if (!formData.doctorId || !formData.appointmentDate || !formData.startTime || !formData.endTime) {
@@ -127,8 +173,11 @@ export default function AppointmentsPage() {
     try {
       await api.createAppointment(formData);
       setShowAddModal(false);
+      setToastMessage(`Appointment booked successfully! Trigger trg_check_appointment_conflict validated.`);
+      setTimeout(() => setToastMessage(null), 5000);
+
       setFormData({
-        patientId: '', doctorId: '',
+        patientId: '', doctorId: doctorId ? String(doctorId) : '',
         appointmentDate: new Date().toISOString().split('T')[0],
         startTime: '10:00:00', endTime: '10:30:00',
         appointmentType: 'Routine', notes: ''
@@ -139,6 +188,39 @@ export default function AppointmentsPage() {
       setFormError(err.message || 'Failed to schedule appointment.');
     } finally {
       setFormSubmitting(false);
+    }
+  };
+
+  // Fast-track Register Patient and chain directly into Appointment Booking
+  const handleFastTrackPatient = async (e) => {
+    e.preventDefault();
+    setFastTrackSubmitting(true);
+    setFastTrackError(null);
+
+    try {
+      const res = await api.createPatient(fastTrackData);
+      const newPatient = res.patient;
+      setShowFastTrackModal(false);
+
+      setToastMessage(`Patient ${newPatient.first_name} ${newPatient.last_name} (${newPatient.patient_code}) registered!`);
+      setTimeout(() => setToastMessage(null), 5000);
+
+      // Reset Fast-Track form
+      setFastTrackData({
+        firstName: '', lastName: '', dateOfBirth: '1995-01-01', gender: 'Male', bloodGroup: 'B+',
+        phone: '01711', email: '', address: 'Dhaka, Bangladesh', emergencyContactName: 'Next of Kin', emergencyContactPhone: '01811000000',
+      });
+
+      // Automatically chain into appointment booking with new patient pre-selected
+      setFormData(prev => ({
+        ...prev,
+        patientId: String(newPatient.patient_id),
+      }));
+      setShowAddModal(true);
+    } catch (err) {
+      setFastTrackError(err.message || 'Failed to register patient.');
+    } finally {
+      setFastTrackSubmitting(false);
     }
   };
 
@@ -159,6 +241,8 @@ export default function AppointmentsPage() {
     try {
       await api.rescheduleAppointment(selectedAppt.appointment_id, rescheduleData);
       setShowRescheduleModal(false);
+      setToastMessage(`Appointment ${selectedAppt.appointment_number} rescheduled successfully.`);
+      setTimeout(() => setToastMessage(null), 4000);
       fetchAppointments();
     } catch (err) {
       alert('Reschedule error: ' + err.message);
@@ -241,7 +325,7 @@ export default function AppointmentsPage() {
       ),
     },
     {
-      header: 'Actions',
+      header: 'Front Desk Actions',
       key: 'actions',
       render: (row) => (
         <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
@@ -251,12 +335,13 @@ export default function AppointmentsPage() {
                 className="btn btn-secondary btn-sm"
                 title="Reschedule Appointment"
                 onClick={() => handleOpenReschedule(row)}
+                style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem' }}
               >
                 Reschedule
               </button>
               <select
                 className="form-control"
-                style={{ padding: '0.2rem 0.5rem', fontSize: '0.75rem', width: 'auto' }}
+                style={{ padding: '0.2rem 0.4rem', fontSize: '0.75rem', width: 'auto' }}
                 value={row.status}
                 onChange={(e) => handleStatusChange(row.appointment_id, e.target.value)}
               >
@@ -268,6 +353,11 @@ export default function AppointmentsPage() {
               </select>
             </>
           )}
+          {row.status === 'Completed' && (
+            <span style={{ fontSize: '0.75rem', color: '#34d399', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '0.2rem' }}>
+              <Check size={13} /> Completed
+            </span>
+          )}
         </div>
       ),
     },
@@ -275,23 +365,184 @@ export default function AppointmentsPage() {
 
   return (
     <div>
-      {/* Top Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
-        <div>
-          <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: '#fff' }}>Outpatient Appointments</h2>
-          <p style={{ color: '#94a3b8', fontSize: '0.85rem' }}>
-            Schedule management protected by PostgreSQL trigger <code style={{ color: '#38bdf8' }}>trg_check_appointment_conflict</code>.
-          </p>
+      {/* Front Desk Identity & Operations Banner */}
+      <div style={{
+        backgroundColor: '#0f172a',
+        border: '1px solid #1e293b',
+        borderRadius: '12px',
+        padding: '1.25rem 1.5rem',
+        marginBottom: '1.5rem',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
+        gap: '1rem',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <div style={{
+            width: '52px',
+            height: '52px',
+            borderRadius: '12px',
+            backgroundColor: 'rgba(16, 185, 129, 0.15)',
+            border: '1px solid rgba(16, 185, 129, 0.35)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#34d399',
+          }}>
+            <Calendar size={28} />
+          </div>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
+              <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: '#fff', margin: 0 }}>
+                {isReceptionist ? 'Front Desk & Patient Registrar Hub' : 'Outpatient Appointment Scheduling'}
+              </h2>
+              {isReceptionist && (
+                <span style={{
+                  fontSize: '0.75rem',
+                  backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                  color: '#34d399',
+                  border: '1px solid rgba(16, 185, 129, 0.4)',
+                  padding: '0.2rem 0.6rem',
+                  borderRadius: '6px',
+                  fontWeight: 700,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.3rem',
+                }}>
+                  <ShieldCheck size={13} />
+                  Desk Attendant: {user?.fullName || 'Receptionist'}
+                </span>
+              )}
+            </div>
+            <p style={{ color: '#94a3b8', fontSize: '0.85rem', margin: '0.25rem 0 0 0' }}>
+              Real-time slot availability, walk-in patient triage, and database trigger conflict enforcement (trg_check_appointment_conflict).
+            </p>
+          </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+        {/* Front Desk Action Toolbar */}
+        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+          <button
+            className="btn btn-secondary btn-sm"
+            onClick={() => setShowBedStatusModal(true)}
+            title="Inspect Ward Bed Capacity"
+          >
+            <BedDouble size={14} color="#06b6d4" />
+            <span>Ward Beds ({totalAvailableBeds} Free)</span>
+          </button>
+
+          <button
+            className="btn btn-secondary btn-sm"
+            onClick={() => setShowFastTrackModal(true)}
+            title="Register Walk-in Patient"
+            style={{ borderColor: 'rgba(16, 185, 129, 0.4)', color: '#34d399' }}
+          >
+            <UserPlus size={14} />
+            <span>Fast-Track Patient Intake</span>
+          </button>
+
+          <button
+            className="btn btn-primary btn-sm"
+            onClick={() => {
+              setAvailabilityStatus(null);
+              setShowAddModal(true);
+            }}
+          >
+            <Plus size={15} />
+            <span>Book Appointment</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Toast Alert */}
+      {toastMessage && (
+        <div style={{
+          backgroundColor: 'rgba(16, 185, 129, 0.15)',
+          border: '1px solid rgba(16, 185, 129, 0.35)',
+          color: '#34d399',
+          borderRadius: '8px',
+          padding: '0.85rem 1.25rem',
+          marginBottom: '1.25rem',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          fontSize: '0.88rem',
+        }}>
+          <CheckCircle2 size={18} />
+          <span>{toastMessage}</span>
+        </div>
+      )}
+
+      {/* Front Desk Telemetry KPI Bar */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))',
+        gap: '1rem',
+        marginBottom: '1.5rem',
+      }}>
+        <div className="card stat-card" style={{ '--stat-color': '#0284c7' }}>
+          <div className="stat-info">
+            <h3>Active Appointments</h3>
+            <div className="stat-value">{scheduledCount}</div>
+            <div className="stat-subtext">Scheduled & Confirmed slots</div>
+          </div>
+          <div className="stat-icon-wrapper">
+            <Calendar size={22} />
+          </div>
+        </div>
+
+        <div className="card stat-card" style={{ '--stat-color': '#06b6d4' }}>
+          <div className="stat-info">
+            <h3>Available Inpatient Beds</h3>
+            <div className="stat-value">{totalAvailableBeds}</div>
+            <div className="stat-subtext">Out of {totalBeds} total hospital beds</div>
+          </div>
+          <div className="stat-icon-wrapper">
+            <BedDouble size={22} />
+          </div>
+        </div>
+
+        <div className="card stat-card" style={{ '--stat-color': '#f59e0b' }}>
+          <div className="stat-info">
+            <h3>Doctors on Duty</h3>
+            <div className="stat-value">{totalDoctorsOnDuty}</div>
+            <div className="stat-subtext">Registered hospital physicians</div>
+          </div>
+          <div className="stat-icon-wrapper">
+            <User size={22} />
+          </div>
+        </div>
+
+        <div className="card stat-card" style={{ '--stat-color': '#10b981' }}>
+          <div className="stat-info">
+            <h3>Completed Consultations</h3>
+            <div className="stat-value">{completedCount}</div>
+            <div className="stat-subtext">Finished OPD encounters</div>
+          </div>
+          <div className="stat-icon-wrapper">
+            <CheckCircle2 size={22} />
+          </div>
+        </div>
+      </div>
+
+      {/* Filter and Search Bar */}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: '1.25rem',
+        flexWrap: 'wrap',
+        gap: '0.75rem',
+      }}>
+        <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'center' }}>
           <select
             className="form-control"
-            style={{ width: '160px' }}
+            style={{ width: '170px' }}
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
           >
-            <option value="">All Statuses</option>
+            <option value="">All Appointment Statuses</option>
             <option value="Scheduled">Scheduled</option>
             <option value="Confirmed">Confirmed</option>
             <option value="Completed">Completed</option>
@@ -299,11 +550,24 @@ export default function AppointmentsPage() {
             <option value="No-Show">No-Show</option>
           </select>
 
-          <button className="btn btn-primary" onClick={() => setShowAddModal(true)}>
-            <Plus size={16} />
-            <span>Book Appointment</span>
+          <button className="btn btn-secondary btn-sm" onClick={fetchAppointments} title="Refresh Table">
+            <RefreshCw size={13} className={loading ? 'spin' : ''} />
+            <span>Refresh</span>
           </button>
         </div>
+
+        {onNavigate && (
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <button className="btn btn-secondary btn-sm" onClick={() => onNavigate('patients')}>
+              <span>Patients Directory</span>
+              <ChevronRight size={13} />
+            </button>
+            <button className="btn btn-secondary btn-sm" onClick={() => onNavigate('admissions')}>
+              <span>Bed Admissions</span>
+              <ChevronRight size={13} />
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Appointments Data Table */}
@@ -313,7 +577,7 @@ export default function AppointmentsPage() {
         loading={loading}
         searchValue={search}
         onSearchChange={setSearch}
-        searchPlaceholder="Search by Appt #, Patient Name, or Code..."
+        searchPlaceholder="Search Appt #, Patient Name, or Code..."
         pagination={pagination}
         onPageChange={setPage}
       />
@@ -328,7 +592,7 @@ export default function AppointmentsPage() {
           <>
             <button className="btn btn-secondary" onClick={() => setShowAddModal(false)}>Cancel</button>
             <button className="btn btn-primary" onClick={handleCreateAppointment} disabled={formSubmitting}>
-              {formSubmitting ? 'Booking & Checking Conflicts...' : 'Confirm Appointment'}
+              {formSubmitting ? 'Checking Conflict Trigger & Booking...' : 'Confirm Appointment'}
             </button>
           </>
         }
@@ -342,16 +606,36 @@ export default function AppointmentsPage() {
 
         <form onSubmit={handleCreateAppointment}>
           <div className="form-group">
-            <label className="form-label">Patient ID *</label>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <label className="form-label">Patient ID *</label>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowAddModal(false);
+                  setShowFastTrackModal(true);
+                }}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#34d399',
+                  fontSize: '0.75rem',
+                  cursor: 'pointer',
+                  fontWeight: 600,
+                  textDecoration: 'underline',
+                  padding: 0,
+                }}
+              >
+                + Register New Patient
+              </button>
+            </div>
             <input
               type="number"
               className="form-control"
               value={formData.patientId}
               onChange={(e) => setFormData({ ...formData, patientId: e.target.value })}
-              placeholder="e.g. 1"
+              placeholder="e.g. 1 (from Patients Directory)"
               required
             />
-            <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Enter the numerical Patient ID (from Patients directory)</span>
           </div>
 
           <div className="form-group">
@@ -421,7 +705,7 @@ export default function AppointmentsPage() {
           </div>
 
           {/* Database Availability Check Button */}
-          <div style={{ marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <div style={{ marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
             <button
               type="button"
               className="btn btn-secondary btn-sm"
@@ -451,10 +735,238 @@ export default function AppointmentsPage() {
               rows={2}
               value={formData.notes}
               onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-              placeholder="e.g. Follow-up for blood pressure monitoring."
+              placeholder="e.g. Patient presents with high fever and cough."
             />
           </div>
         </form>
+      </Modal>
+
+      {/* Fast-Track Patient Registration Modal */}
+      <Modal
+        isOpen={showFastTrackModal}
+        onClose={() => setShowFastTrackModal(false)}
+        title="Fast-Track Patient Intake & Triage"
+        size="lg"
+        footer={
+          <>
+            <button className="btn btn-secondary" onClick={() => setShowFastTrackModal(false)}>Cancel</button>
+            <button className="btn btn-primary" onClick={handleFastTrackPatient} disabled={fastTrackSubmitting}>
+              {fastTrackSubmitting ? 'Registering in PostgreSQL...' : 'Register Patient & Continue to Booking'}
+            </button>
+          </>
+        }
+      >
+        {fastTrackError && (
+          <div style={{ padding: '0.75rem', backgroundColor: 'rgba(244, 63, 94, 0.15)', color: '#fb7185', borderRadius: '6px', marginBottom: '1rem', fontSize: '0.85rem' }}>
+            <AlertCircle size={16} style={{ display: 'inline', marginRight: '0.4rem' }} />
+            {fastTrackError}
+          </div>
+        )}
+
+        <form onSubmit={handleFastTrackPatient}>
+          <div className="form-row">
+            <div className="form-group">
+              <label className="form-label">First Name *</label>
+              <input
+                type="text"
+                className="form-control"
+                value={fastTrackData.firstName}
+                onChange={(e) => setFastTrackData({ ...fastTrackData, firstName: e.target.value })}
+                placeholder="e.g. Rafiqul"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Last Name *</label>
+              <input
+                type="text"
+                className="form-control"
+                value={fastTrackData.lastName}
+                onChange={(e) => setFastTrackData({ ...fastTrackData, lastName: e.target.value })}
+                placeholder="e.g. Islam"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label className="form-label">Date of Birth *</label>
+              <input
+                type="date"
+                className="form-control"
+                value={fastTrackData.dateOfBirth}
+                onChange={(e) => setFastTrackData({ ...fastTrackData, dateOfBirth: e.target.value })}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Gender *</label>
+              <select
+                className="form-control"
+                value={fastTrackData.gender}
+                onChange={(e) => setFastTrackData({ ...fastTrackData, gender: e.target.value })}
+                required
+              >
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label className="form-label">Blood Group</label>
+              <select
+                className="form-control"
+                value={fastTrackData.bloodGroup}
+                onChange={(e) => setFastTrackData({ ...fastTrackData, bloodGroup: e.target.value })}
+              >
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label className="form-label">Phone Number *</label>
+              <input
+                type="tel"
+                className="form-control"
+                value={fastTrackData.phone}
+                onChange={(e) => setFastTrackData({ ...fastTrackData, phone: e.target.value })}
+                placeholder="017xxxxxxxx"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Email (Optional)</label>
+              <input
+                type="email"
+                className="form-control"
+                value={fastTrackData.email}
+                onChange={(e) => setFastTrackData({ ...fastTrackData, email: e.target.value })}
+                placeholder="patient@gmail.com"
+              />
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Address / District</label>
+            <input
+              type="text"
+              className="form-control"
+              value={fastTrackData.address}
+              onChange={(e) => setFastTrackData({ ...fastTrackData, address: e.target.value })}
+              placeholder="e.g. Dhanmondi, Dhaka"
+            />
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label className="form-label">Emergency Contact Name *</label>
+              <input
+                type="text"
+                className="form-control"
+                value={fastTrackData.emergencyContactName}
+                onChange={(e) => setFastTrackData({ ...fastTrackData, emergencyContactName: e.target.value })}
+                placeholder="e.g. Salma Begum (Spouse)"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Emergency Contact Phone *</label>
+              <input
+                type="tel"
+                className="form-control"
+                value={fastTrackData.emergencyContactPhone}
+                onChange={(e) => setFastTrackData({ ...fastTrackData, emergencyContactPhone: e.target.value })}
+                placeholder="018xxxxxxxx"
+                required
+              />
+            </div>
+          </div>
+        </form>
+      </Modal>
+
+      {/* Ward Bed Capacity Modal */}
+      <Modal
+        isOpen={showBedStatusModal}
+        onClose={() => setShowBedStatusModal(false)}
+        title="Live Hospital Ward Bed Occupancy"
+        size="lg"
+        footer={
+          <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
+            <span style={{ fontSize: '0.82rem', color: '#94a3b8' }}>
+              Enforced by PostgreSQL Trigger <code>trg_enforce_ward_bed_capacity</code>
+            </span>
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+              {onNavigate && (
+                <button
+                  className="btn btn-primary btn-sm"
+                  onClick={() => {
+                    setShowBedStatusModal(false);
+                    onNavigate('admissions');
+                  }}
+                >
+                  <BedDouble size={14} />
+                  <span>Go to Bed Admissions</span>
+                </button>
+              )}
+              <button className="btn btn-secondary btn-sm" onClick={() => setShowBedStatusModal(false)}>Close</button>
+            </div>
+          </div>
+        }
+      >
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gap: '1rem',
+          }}>
+            {wards.map((w) => {
+              const occPct = parseFloat(w.occupancy_percentage || 0);
+              const isFull = w.available_beds <= 0;
+              return (
+                <div
+                  key={w.ward_id}
+                  style={{
+                    padding: '1rem',
+                    backgroundColor: '#0b1120',
+                    border: '1px solid #1e293b',
+                    borderRadius: '8px',
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
+                    <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.95rem' }}>{w.ward_name}</div>
+                    <span className={`badge ${isFull ? 'badge-rose' : 'badge-green'}`} style={{ fontSize: '0.7rem' }}>
+                      {isFull ? 'Ward Full' : `${w.available_beds} Free`}
+                    </span>
+                  </div>
+                  <div style={{ fontSize: '0.78rem', color: '#94a3b8', marginBottom: '0.5rem' }}>
+                    Type: <strong style={{ color: '#e2e8f0' }}>{w.ward_type}</strong>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: '#64748b', marginBottom: '0.35rem' }}>
+                    <span>Occupied: {w.occupied_beds} / {w.total_beds} beds</span>
+                    <span>{occPct}%</span>
+                  </div>
+                  <div style={{ width: '100%', height: '6px', backgroundColor: '#1e293b', borderRadius: '3px', overflow: 'hidden' }}>
+                    <div style={{
+                      width: `${Math.min(100, occPct)}%`,
+                      height: '100%',
+                      backgroundColor: occPct > 80 ? '#f43f5e' : (occPct > 50 ? '#f59e0b' : '#10b981'),
+                    }} />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </Modal>
 
       {/* Reschedule Modal */}

@@ -164,7 +164,7 @@ export default function PharmacyPage({ user }) {
     {
       header: 'Actions',
       render: row => (
-        ['Admin', 'Doctor'].includes(user?.role) && (
+        ['Admin', 'Accountant'].includes(user?.role) && (
           <button 
             className="btn btn-secondary btn-sm"
             onClick={() => openAddBatch(row)}
@@ -230,12 +230,14 @@ export default function PharmacyPage({ user }) {
     {
       header: 'Action',
       render: row => (
-        <button 
-          className="btn btn-primary btn-sm"
-          onClick={() => openAddBatch({ medicine_id: row.medicine_id, unit_price: 15.00 })}
-        >
-          <Plus size={14} /> Reorder Stock
-        </button>
+        ['Admin', 'Accountant'].includes(user?.role) ? (
+          <button 
+            className="btn btn-primary btn-sm"
+            onClick={() => openAddBatch({ medicine_id: row.medicine_id, unit_price: 15.00 })}
+          >
+            <Plus size={14} /> Reorder Stock
+          </button>
+        ) : null
       )
     }
   ];
@@ -251,7 +253,7 @@ export default function PharmacyPage({ user }) {
           <p className="page-subtitle">Track hospital medicines, batch expiries, reorder thresholds, and controlled stock movements</p>
         </div>
         <div>
-          {['Admin', 'Doctor'].includes(user?.role) && (
+          {['Admin', 'Accountant'].includes(user?.role) && (
             <button className="btn btn-primary" onClick={() => openAddBatch()}>
               <Plus size={16} /> Receive New Stock Batch
             </button>

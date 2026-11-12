@@ -26,12 +26,15 @@ import DataTable from '../components/DataTable';
 import Modal from '../components/Modal';
 import { api } from '../services/api';
 
-export default function PatientsPage() {
+export default function PatientsPage({ user }) {
   const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [pagination, setPagination] = useState({ page: 1, limit: 15, totalRecords: 0, totalPages: 1 });
+
+  const isAdmin = user?.role === 'Admin' || (user?.roles && user?.roles.includes('Admin'));
+  const canRegister = isAdmin || user?.role === 'Receptionist' || user?.role === 'Doctor';
 
   // Modals
   const [showAddModal, setShowAddModal] = useState(false);
@@ -192,13 +195,15 @@ export default function PatientsPage() {
             <Eye size={14} />
             <span>Profile</span>
           </button>
-          <button
-            className="btn btn-danger btn-sm"
-            title="Soft Deactivate"
-            onClick={() => handleDeactivate(row.patient_id)}
-          >
-            <Trash2 size={14} />
-          </button>
+          {isAdmin && (
+            <button
+              className="btn btn-danger btn-sm"
+              title="Soft Deactivate (Admin Only)"
+              onClick={() => handleDeactivate(row.patient_id)}
+            >
+              <Trash2 size={14} />
+            </button>
+          )}
         </div>
       ),
     },
@@ -215,10 +220,12 @@ export default function PatientsPage() {
           </p>
         </div>
 
-        <button className="btn btn-primary" onClick={() => setShowAddModal(true)}>
-          <UserPlus size={16} />
-          <span>Register New Patient</span>
-        </button>
+        {canRegister && (
+          <button className="btn btn-primary" onClick={() => setShowAddModal(true)}>
+            <UserPlus size={16} />
+            <span>Register New Patient</span>
+          </button>
+        )}
       </div>
 
       {/* Patients Data Table */}

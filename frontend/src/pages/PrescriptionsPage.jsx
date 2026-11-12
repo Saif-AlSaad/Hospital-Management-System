@@ -195,7 +195,7 @@ export default function PrescriptionsPage({ user }) {
           >
             <Eye size={14} /> View
           </button>
-          {['Admin', 'Doctor'].includes(user?.role) && row.status !== 'Dispensed' && (
+          {['Admin', 'Accountant', 'Doctor'].includes(user?.role) && row.status !== 'Dispensed' && (
             <button 
               className="btn btn-primary btn-sm"
               onClick={() => openDispense(row.prescription_id)}

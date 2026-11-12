@@ -31,7 +31,7 @@ export default function LaboratoryPage({ user }) {
   const [patientSearchResults, setPatientSearchResults] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [doctorsList, setDoctorsList] = useState([]);
-  const [selectedDoctorId, setSelectedDoctorId] = useState('');
+  const [selectedDoctorId, setSelectedDoctorId] = useState(user?.doctorId ? String(user.doctorId) : '');
   const [selectedTests, setSelectedTests] = useState([]);
   const [orderPriority, setOrderPriority] = useState('Routine');
   const [submittingOrder, setSubmittingOrder] = useState(false);

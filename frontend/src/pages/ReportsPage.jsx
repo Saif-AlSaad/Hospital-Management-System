@@ -226,12 +226,14 @@ export default function ReportsPage({ user }) {
         >
           <Activity size={16} /> Daily Revenue Channels
         </button>
-        <button 
-          className={`px-4 py-2 font-medium text-sm border-b-2 transition-colors flex items-center gap-2 ${activeTab === 'explain' ? 'border-purple-600 text-purple-600' : 'border-transparent text-muted hover:text-foreground'}`}
-          onClick={() => setActiveTab('explain')}
-        >
-          <Terminal size={16} /> EXPLAIN ANALYZE Inspector
-        </button>
+        {user?.role === 'Admin' && (
+          <button 
+            className={`px-4 py-2 font-medium text-sm border-b-2 transition-colors flex items-center gap-2 ${activeTab === 'explain' ? 'border-purple-600 text-purple-600' : 'border-transparent text-muted hover:text-foreground'}`}
+            onClick={() => setActiveTab('explain')}
+          >
+            <Terminal size={16} /> EXPLAIN ANALYZE Inspector
+          </button>
+        )}
       </div>
 
       {/* Tab 1: Materialized View */}
