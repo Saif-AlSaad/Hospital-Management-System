@@ -91,8 +91,8 @@ export default function DataTable({
       {pagination && (
         <div className="pagination-bar">
           <div>
-            Showing Page <strong style={{ color: '#fff' }}>{pagination.page}</strong> of{' '}
-            <strong style={{ color: '#fff' }}>{pagination.totalPages || 1}</strong> (
+            Showing Page <strong style={{ color: 'var(--text-main)' }}>{pagination.page}</strong> of{' '}
+            <strong style={{ color: 'var(--text-main)' }}>{pagination.totalPages || 1}</strong> (
             {pagination.totalRecords || 0} total records in database)
           </div>
 

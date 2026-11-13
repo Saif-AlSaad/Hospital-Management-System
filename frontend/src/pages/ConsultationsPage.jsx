@@ -318,8 +318,8 @@ export default function ConsultationsPage({ user, onNavigate }) {
     <div>
       {/* Doctor Identity & Workspace Header */}
       <div style={{
-        backgroundColor: '#0f172a',
-        border: '1px solid #1e293b',
+        backgroundColor: 'var(--bg-main)',
+        border: '1px solid var(--border-card)',
         borderRadius: '12px',
         padding: '1.25rem 1.5rem',
         marginBottom: '1.5rem',
@@ -519,7 +519,7 @@ export default function ConsultationsPage({ user, onNavigate }) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        borderBottom: '1px solid #1e293b',
+        borderBottom: '1px solid var(--border-card)',
         marginBottom: '1.25rem',
         flexWrap: 'wrap',
         gap: '0.75rem',
@@ -545,7 +545,7 @@ export default function ConsultationsPage({ user, onNavigate }) {
             <span>Today's OPD Patient Queue</span>
             <span style={{
               fontSize: '0.7rem',
-              backgroundColor: activeTab === 'queue' ? '#0284c7' : '#1e293b',
+              backgroundColor: activeTab === 'queue' ? '#0284c7' : 'var(--border-card)',
               color: '#fff',
               padding: '0.1rem 0.5rem',
               borderRadius: '10px',
@@ -575,7 +575,7 @@ export default function ConsultationsPage({ user, onNavigate }) {
             <span>Documented Encounters History</span>
             <span style={{
               fontSize: '0.7rem',
-              backgroundColor: activeTab === 'history' ? '#0284c7' : '#1e293b',
+              backgroundColor: activeTab === 'history' ? '#0284c7' : 'var(--border-card)',
               color: '#fff',
               padding: '0.1rem 0.5rem',
               borderRadius: '10px',
@@ -781,7 +781,7 @@ export default function ConsultationsPage({ user, onNavigate }) {
                   className="form-control"
                   value={`Dr. ${user?.fullName || 'Self'} (${user?.doctorProfile?.specialization || 'Consultant'})`}
                   disabled
-                  style={{ backgroundColor: '#1e293b', color: '#38bdf8', fontWeight: 600 }}
+                  style={{ backgroundColor: 'var(--bg-card-hover)', color: '#38bdf8', fontWeight: 600 }}
                 />
               ) : (
                 <select
@@ -814,8 +814,8 @@ export default function ConsultationsPage({ user, onNavigate }) {
           {/* Vitals Box */}
           <div style={{
             padding: '1rem',
-            backgroundColor: '#0b1120',
-            border: '1px solid #1e293b',
+            backgroundColor: 'var(--bg-main)',
+            border: '1px solid var(--border-card)',
             borderRadius: '8px',
             marginBottom: '1.25rem',
           }}>
@@ -964,7 +964,7 @@ export default function ConsultationsPage({ user, onNavigate }) {
           footer={<button className="btn btn-secondary" onClick={() => setShowViewModal(false)}>Close Encounter</button>}
         >
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem', backgroundColor: '#0b1120', borderRadius: '8px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem', backgroundColor: 'var(--bg-main)', borderRadius: '8px' }}>
               <div>
                 <span style={{ color: '#94a3b8', fontSize: '0.8rem' }}>Patient:</span>
                 <div style={{ fontWeight: 700, color: '#fff' }}>{selectedCon.consultation.patient_name} ({selectedCon.consultation.patient_code})</div>

@@ -1,7 +1,7 @@
 // ============================================================================
 // HOSPITAL MANAGEMENT SYSTEM (HMS)
 // Administrative Executive Governance & Operations Hub
-// Real-time SQL Aggregates, Materialized View Refresh, Bed Occupancy & Telemetry
+// Turquoise Harmony Theme: Baltic Blue, Teal, Verdigris, Mint Leaf & Cream
 // ============================================================================
 
 import React, { useState, useEffect } from 'react';
@@ -148,8 +148,8 @@ export default function DashboardPage({ user, onNavigate }) {
     <div>
       {/* Header Banner */}
       <div style={{
-        backgroundColor: '#0f172a',
-        border: '1px solid #1e293b',
+        backgroundColor: 'var(--bg-card)',
+        border: '1px solid var(--border-card)',
         borderRadius: '12px',
         padding: '1.25rem 1.5rem',
         marginBottom: '1.25rem',
@@ -158,31 +158,32 @@ export default function DashboardPage({ user, onNavigate }) {
         justifyContent: 'space-between',
         flexWrap: 'wrap',
         gap: '1rem',
+        boxShadow: 'var(--shadow-sm)',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <div style={{
             width: '52px',
             height: '52px',
             borderRadius: '12px',
-            backgroundColor: isAdmin ? 'rgba(244, 63, 94, 0.15)' : 'rgba(2, 132, 199, 0.15)',
-            border: `1px solid ${isAdmin ? 'rgba(244, 63, 94, 0.35)' : 'rgba(2, 132, 199, 0.35)'}`,
+            backgroundColor: isAdmin ? 'rgba(5, 102, 141, 0.15)' : 'rgba(0, 168, 150, 0.15)',
+            border: `1px solid ${isAdmin ? '#05668D' : '#00A896'}`,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: isAdmin ? '#fb7185' : '#38bdf8',
+            color: isAdmin ? '#05668D' : '#00A896',
           }}>
             {isAdmin ? <ShieldCheck size={28} /> : <Activity size={28} />}
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
-              <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: '#fff', margin: 0 }}>
+              <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: 'var(--text-main)', margin: 0 }}>
                 {roleHeader.title}
               </h2>
               <span style={{
                 fontSize: '0.75rem',
-                backgroundColor: isAdmin ? 'rgba(244, 63, 94, 0.2)' : 'rgba(2, 132, 199, 0.2)',
-                color: isAdmin ? '#fb7185' : '#38bdf8',
-                border: `1px solid ${isAdmin ? 'rgba(244, 63, 94, 0.4)' : 'rgba(2, 132, 199, 0.4)'}`,
+                backgroundColor: isAdmin ? 'rgba(5, 102, 141, 0.15)' : 'rgba(0, 168, 150, 0.15)',
+                color: isAdmin ? '#05668D' : '#008778',
+                border: `1px solid ${isAdmin ? 'rgba(5, 102, 141, 0.35)' : 'rgba(0, 168, 150, 0.35)'}`,
                 padding: '0.2rem 0.6rem',
                 borderRadius: '6px',
                 fontWeight: 700,
@@ -194,7 +195,7 @@ export default function DashboardPage({ user, onNavigate }) {
                 {isAdmin ? 'System Administrator (Root)' : roleKey}
               </span>
             </div>
-            <p style={{ color: '#94a3b8', fontSize: '0.85rem', margin: '0.25rem 0 0 0' }}>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', margin: '0.25rem 0 0 0' }}>
               {roleHeader.subtitle}
             </p>
           </div>
@@ -223,20 +224,21 @@ export default function DashboardPage({ user, onNavigate }) {
           marginBottom: '1.5rem',
         }}>
           <div style={{
-            backgroundColor: '#0b1120',
-            border: '1px solid #1e293b',
+            backgroundColor: 'var(--bg-card)',
+            border: '1px solid var(--border-card)',
             borderRadius: '10px',
             padding: '0.85rem 1rem',
             display: 'flex',
             alignItems: 'center',
             gap: '0.75rem',
+            boxShadow: 'var(--shadow-sm)',
           }}>
             <div style={{
               width: '36px',
               height: '36px',
               borderRadius: '8px',
-              backgroundColor: 'rgba(56, 189, 248, 0.12)',
-              color: '#38bdf8',
+              backgroundColor: 'rgba(0, 168, 150, 0.15)',
+              color: '#00A896',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -244,27 +246,28 @@ export default function DashboardPage({ user, onNavigate }) {
               <Database size={18} />
             </div>
             <div>
-              <div style={{ fontSize: '0.72rem', color: '#94a3b8', fontWeight: 600, textTransform: 'uppercase' }}>DBMS Engine</div>
-              <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#fff' }}>PostgreSQL 18.6</div>
-              <div style={{ fontSize: '0.68rem', color: '#34d399' }}>Pure SQL • 3NF Normalized</div>
+              <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase' }}>DBMS Engine</div>
+              <div style={{ fontSize: '0.88rem', fontWeight: 800, color: 'var(--text-main)' }}>PostgreSQL 18.6</div>
+              <div style={{ fontSize: '0.68rem', color: '#008767', fontWeight: 600 }}>Pure SQL • 3NF Normalized</div>
             </div>
           </div>
 
           <div style={{
-            backgroundColor: '#0b1120',
-            border: '1px solid #1e293b',
+            backgroundColor: 'var(--bg-card)',
+            border: '1px solid var(--border-card)',
             borderRadius: '10px',
             padding: '0.85rem 1rem',
             display: 'flex',
             alignItems: 'center',
             gap: '0.75rem',
+            boxShadow: 'var(--shadow-sm)',
           }}>
             <div style={{
               width: '36px',
               height: '36px',
               borderRadius: '8px',
-              backgroundColor: 'rgba(244, 63, 94, 0.12)',
-              color: '#fb7185',
+              backgroundColor: 'rgba(2, 128, 144, 0.15)',
+              color: '#028090',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -272,27 +275,28 @@ export default function DashboardPage({ user, onNavigate }) {
               <History size={18} />
             </div>
             <div>
-              <div style={{ fontSize: '0.72rem', color: '#94a3b8', fontWeight: 600, textTransform: 'uppercase' }}>CDC Audit Triggers</div>
-              <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#fff' }}>Autonomous Logs</div>
-              <div style={{ fontSize: '0.68rem', color: '#38bdf8' }}>Row-Level Before/After Diffs</div>
+              <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase' }}>CDC Audit Triggers</div>
+              <div style={{ fontSize: '0.88rem', fontWeight: 800, color: 'var(--text-main)' }}>Autonomous Logs</div>
+              <div style={{ fontSize: '0.68rem', color: '#028090', fontWeight: 600 }}>Row-Level Diffs</div>
             </div>
           </div>
 
           <div style={{
-            backgroundColor: '#0b1120',
-            border: '1px solid #1e293b',
+            backgroundColor: 'var(--bg-card)',
+            border: '1px solid var(--border-card)',
             borderRadius: '10px',
             padding: '0.85rem 1rem',
             display: 'flex',
             alignItems: 'center',
             gap: '0.75rem',
+            boxShadow: 'var(--shadow-sm)',
           }}>
             <div style={{
               width: '36px',
               height: '36px',
               borderRadius: '8px',
-              backgroundColor: 'rgba(16, 185, 129, 0.12)',
-              color: '#34d399',
+              backgroundColor: 'rgba(2, 195, 154, 0.15)',
+              color: '#008767',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -300,27 +304,28 @@ export default function DashboardPage({ user, onNavigate }) {
               <Cpu size={18} />
             </div>
             <div>
-              <div style={{ fontSize: '0.72rem', color: '#94a3b8', fontWeight: 600, textTransform: 'uppercase' }}>Connection Pool</div>
-              <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#fff' }}>20 Client Clients</div>
-              <div style={{ fontSize: '0.68rem', color: '#34d399' }}>Zero Connection Leaks</div>
+              <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase' }}>Connection Pool</div>
+              <div style={{ fontSize: '0.88rem', fontWeight: 800, color: 'var(--text-main)' }}>20 Client Clients</div>
+              <div style={{ fontSize: '0.68rem', color: '#008767', fontWeight: 600 }}>Zero Connection Leaks</div>
             </div>
           </div>
 
           <div style={{
-            backgroundColor: '#0b1120',
-            border: '1px solid #1e293b',
+            backgroundColor: 'var(--bg-card)',
+            border: '1px solid var(--border-card)',
             borderRadius: '10px',
             padding: '0.85rem 1rem',
             display: 'flex',
             alignItems: 'center',
             gap: '0.75rem',
+            boxShadow: 'var(--shadow-sm)',
           }}>
             <div style={{
               width: '36px',
               height: '36px',
               borderRadius: '8px',
-              backgroundColor: 'rgba(245, 158, 11, 0.12)',
-              color: '#fbbf24',
+              backgroundColor: 'rgba(240, 243, 189, 0.7)',
+              color: '#05668D',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -328,9 +333,9 @@ export default function DashboardPage({ user, onNavigate }) {
               <DollarSign size={18} />
             </div>
             <div>
-              <div style={{ fontSize: '0.72rem', color: '#94a3b8', fontWeight: 600, textTransform: 'uppercase' }}>Fiscal Currency</div>
-              <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#fff' }}>BDT (৳) Bangladesh</div>
-              <div style={{ fontSize: '0.68rem', color: '#fbbf24' }}>MFS & Cash Handled</div>
+              <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase' }}>Fiscal Currency</div>
+              <div style={{ fontSize: '0.88rem', fontWeight: 800, color: 'var(--text-main)' }}>BDT (৳) Bangladesh</div>
+              <div style={{ fontSize: '0.68rem', color: '#05668D', fontWeight: 600 }}>MFS & Cash Handled</div>
             </div>
           </div>
         </div>
@@ -339,9 +344,9 @@ export default function DashboardPage({ user, onNavigate }) {
       {/* Success / Alert Toast */}
       {mvMessage && (
         <div style={{
-          backgroundColor: 'rgba(16, 185, 129, 0.15)',
-          border: '1px solid rgba(16, 185, 129, 0.35)',
-          color: '#34d399',
+          backgroundColor: 'rgba(2, 195, 154, 0.15)',
+          border: '1px solid rgba(2, 195, 154, 0.35)',
+          color: '#02C39A',
           borderRadius: '8px',
           padding: '0.85rem 1.25rem',
           marginBottom: '1.25rem',
@@ -392,18 +397,19 @@ export default function DashboardPage({ user, onNavigate }) {
               alignItems: 'center',
               gap: '0.75rem',
               cursor: 'pointer',
-              border: '1px solid #1e293b',
-              backgroundColor: '#0b1120',
+              border: '1px solid var(--border-card)',
+              backgroundColor: 'var(--bg-card)',
               textAlign: 'left',
               transition: 'all 0.15s ease',
+              boxShadow: 'var(--shadow-sm)',
             }}
           >
-            <div style={{ padding: '0.5rem', borderRadius: '8px', backgroundColor: 'rgba(244, 63, 94, 0.15)', color: '#fb7185' }}>
+            <div style={{ padding: '0.5rem', borderRadius: '8px', backgroundColor: 'rgba(0, 168, 150, 0.15)', color: '#00A896' }}>
               <ShieldCheck size={20} />
             </div>
             <div>
-              <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.86rem' }}>Trigger Audit Logs</div>
-              <div style={{ fontSize: '0.72rem', color: '#94a3b8' }}>Inspect SQL Diffs & Rollbacks</div>
+              <div style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '0.86rem' }}>Trigger Audit Logs</div>
+              <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Inspect SQL Diffs & Rollbacks</div>
             </div>
           </button>
 
@@ -416,18 +422,19 @@ export default function DashboardPage({ user, onNavigate }) {
               alignItems: 'center',
               gap: '0.75rem',
               cursor: 'pointer',
-              border: '1px solid #1e293b',
-              backgroundColor: '#0b1120',
+              border: '1px solid var(--border-card)',
+              backgroundColor: 'var(--bg-card)',
               textAlign: 'left',
               transition: 'all 0.15s ease',
+              boxShadow: 'var(--shadow-sm)',
             }}
           >
-            <div style={{ padding: '0.5rem', borderRadius: '8px', backgroundColor: 'rgba(2, 132, 199, 0.15)', color: '#38bdf8' }}>
+            <div style={{ padding: '0.5rem', borderRadius: '8px', backgroundColor: 'rgba(2, 195, 154, 0.15)', color: '#008767' }}>
               <Users size={20} />
             </div>
             <div>
-              <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.86rem' }}>Staff & RBAC Accounts</div>
-              <div style={{ fontSize: '0.72rem', color: '#94a3b8' }}>Manage System Users & Roles</div>
+              <div style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '0.86rem' }}>Staff & RBAC Accounts</div>
+              <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Manage System Users & Roles</div>
             </div>
           </button>
 
@@ -440,18 +447,19 @@ export default function DashboardPage({ user, onNavigate }) {
               alignItems: 'center',
               gap: '0.75rem',
               cursor: 'pointer',
-              border: '1px solid #1e293b',
-              backgroundColor: '#0b1120',
+              border: '1px solid var(--border-card)',
+              backgroundColor: 'var(--bg-card)',
               textAlign: 'left',
               transition: 'all 0.15s ease',
+              boxShadow: 'var(--shadow-sm)',
             }}
           >
-            <div style={{ padding: '0.5rem', borderRadius: '8px', backgroundColor: 'rgba(168, 85, 247, 0.15)', color: '#c084fc' }}>
+            <div style={{ padding: '0.5rem', borderRadius: '8px', backgroundColor: 'rgba(5, 102, 141, 0.15)', color: '#05668D' }}>
               <Building2 size={20} />
             </div>
             <div>
-              <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.86rem' }}>Departments</div>
-              <div style={{ fontSize: '0.72rem', color: '#94a3b8' }}>Clinical Units & Head Doctors</div>
+              <div style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '0.86rem' }}>Departments</div>
+              <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Clinical Units & Head Doctors</div>
             </div>
           </button>
 
@@ -464,18 +472,19 @@ export default function DashboardPage({ user, onNavigate }) {
               alignItems: 'center',
               gap: '0.75rem',
               cursor: 'pointer',
-              border: '1px solid #1e293b',
-              backgroundColor: '#0b1120',
+              border: '1px solid var(--border-card)',
+              backgroundColor: 'var(--bg-card)',
               textAlign: 'left',
               transition: 'all 0.15s ease',
+              boxShadow: 'var(--shadow-sm)',
             }}
           >
-            <div style={{ padding: '0.5rem', borderRadius: '8px', backgroundColor: 'rgba(14, 165, 233, 0.15)', color: '#38bdf8' }}>
+            <div style={{ padding: '0.5rem', borderRadius: '8px', backgroundColor: 'rgba(2, 128, 144, 0.15)', color: '#028090' }}>
               <UserCheck size={20} />
             </div>
             <div>
-              <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.86rem' }}>Medical Physicians</div>
-              <div style={{ fontSize: '0.72rem', color: '#94a3b8' }}>Specialists & Schedules</div>
+              <div style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '0.86rem' }}>Medical Physicians</div>
+              <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Specialists & Schedules</div>
             </div>
           </button>
 
@@ -488,18 +497,19 @@ export default function DashboardPage({ user, onNavigate }) {
               alignItems: 'center',
               gap: '0.75rem',
               cursor: 'pointer',
-              border: '1px solid #1e293b',
-              backgroundColor: '#0b1120',
+              border: '1px solid var(--border-card)',
+              backgroundColor: 'var(--bg-card)',
               textAlign: 'left',
               transition: 'all 0.15s ease',
+              boxShadow: 'var(--shadow-sm)',
             }}
           >
-            <div style={{ padding: '0.5rem', borderRadius: '8px', backgroundColor: 'rgba(16, 185, 129, 0.15)', color: '#34d399' }}>
+            <div style={{ padding: '0.5rem', borderRadius: '8px', backgroundColor: 'rgba(0, 168, 150, 0.15)', color: '#00A896' }}>
               <BedDouble size={20} />
             </div>
             <div>
-              <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.86rem' }}>Wards & Bed Capacity</div>
-              <div style={{ fontSize: '0.72rem', color: '#94a3b8' }}>Interactive Bed Occupancy</div>
+              <div style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '0.86rem' }}>Wards & Bed Capacity</div>
+              <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Interactive Bed Occupancy</div>
             </div>
           </button>
 
@@ -512,18 +522,19 @@ export default function DashboardPage({ user, onNavigate }) {
               alignItems: 'center',
               gap: '0.75rem',
               cursor: 'pointer',
-              border: '1px solid #1e293b',
-              backgroundColor: '#0b1120',
+              border: '1px solid var(--border-card)',
+              backgroundColor: 'var(--bg-card)',
               textAlign: 'left',
               transition: 'all 0.15s ease',
+              boxShadow: 'var(--shadow-sm)',
             }}
           >
-            <div style={{ padding: '0.5rem', borderRadius: '8px', backgroundColor: 'rgba(245, 158, 11, 0.15)', color: '#fbbf24' }}>
+            <div style={{ padding: '0.5rem', borderRadius: '8px', backgroundColor: 'rgba(240, 243, 189, 0.65)', color: '#05668D' }}>
               <FileSpreadsheet size={20} />
             </div>
             <div>
-              <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.86rem' }}>EXPLAIN Analytics</div>
-              <div style={{ fontSize: '0.72rem', color: '#94a3b8' }}>SQL Benchmark & Viva Hub</div>
+              <div style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '0.86rem' }}>EXPLAIN Analytics</div>
+              <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>SQL Benchmark & Viva Hub</div>
             </div>
           </button>
 
@@ -536,18 +547,19 @@ export default function DashboardPage({ user, onNavigate }) {
               alignItems: 'center',
               gap: '0.75rem',
               cursor: 'pointer',
-              border: '1px solid #1e293b',
-              backgroundColor: '#0b1120',
+              border: '1px solid var(--border-card)',
+              backgroundColor: 'var(--bg-card)',
               textAlign: 'left',
               transition: 'all 0.15s ease',
+              boxShadow: 'var(--shadow-sm)',
             }}
           >
-            <div style={{ padding: '0.5rem', borderRadius: '8px', backgroundColor: 'rgba(148, 163, 184, 0.15)', color: '#94a3b8' }}>
+            <div style={{ padding: '0.5rem', borderRadius: '8px', backgroundColor: 'rgba(2, 128, 144, 0.12)', color: '#028090' }}>
               <Settings size={20} />
             </div>
             <div>
-              <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.86rem' }}>System Settings</div>
-              <div style={{ fontSize: '0.72rem', color: '#94a3b8' }}>DBMS Parameters & RBAC Matrix</div>
+              <div style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '0.86rem' }}>System Settings</div>
+              <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>DBMS Parameters & RBAC Matrix</div>
             </div>
           </button>
         </div>
@@ -560,7 +572,7 @@ export default function DashboardPage({ user, onNavigate }) {
         gap: '1.25rem',
         marginBottom: '2rem',
       }}>
-        <div className="card stat-card" style={{ '--stat-color': '#0284c7' }}>
+        <div className="card stat-card" style={{ '--stat-color': '#05668D' }}>
           <div className="stat-info">
             <h3>Registered Patients</h3>
             <div className="stat-value">{stats?.totalPatients || 0}</div>
@@ -571,7 +583,7 @@ export default function DashboardPage({ user, onNavigate }) {
           </div>
         </div>
 
-        <div className="card stat-card" style={{ '--stat-color': '#0ea5e9' }}>
+        <div className="card stat-card" style={{ '--stat-color': '#028090' }}>
           <div className="stat-info">
             <h3>Today's Outpatient Queue</h3>
             <div className="stat-value">{stats?.appointmentsToday || 0}</div>
@@ -582,7 +594,7 @@ export default function DashboardPage({ user, onNavigate }) {
           </div>
         </div>
 
-        <div className="card stat-card" style={{ '--stat-color': '#06b6d4' }}>
+        <div className="card stat-card" style={{ '--stat-color': '#00A896' }}>
           <div className="stat-info">
             <h3>Current Inpatients</h3>
             <div className="stat-value">{stats?.currentInpatients || 0}</div>
@@ -593,13 +605,13 @@ export default function DashboardPage({ user, onNavigate }) {
           </div>
         </div>
 
-        <div className="card stat-card" style={{ '--stat-color': '#10b981' }}>
+        <div className="card stat-card" style={{ '--stat-color': '#02C39A' }}>
           <div className="stat-info">
             <h3>Today's Collected Revenue</h3>
             <div className="stat-value">৳{stats?.revenueToday ? stats.revenueToday.toLocaleString() : '0.00'}</div>
-            <div className="stat-subtext">Outstanding Debt: ৳{stats?.totalOutstandingDebt ? stats.totalOutstandingDebt.toLocaleString() : '0.00'}</div>
+            <div className="stat-subtext" style={{ color: '#F0F3BD' }}>Outstanding Debt: ৳{stats?.totalOutstandingDebt ? stats.totalOutstandingDebt.toLocaleString() : '0.00'}</div>
           </div>
-          <div className="stat-icon-wrapper">
+          <div className="stat-icon-wrapper" style={{ color: '#02C39A' }}>
             <DollarSign size={24} />
           </div>
         </div>
@@ -612,8 +624,8 @@ export default function DashboardPage({ user, onNavigate }) {
         <div className="card">
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
             <div>
-              <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#fff' }}>Ward Bed Utilization</h3>
-              <p style={{ fontSize: '0.8rem', color: '#94a3b8' }}>Overall Facility Occupancy: {overallOccupancyPct}% ({occupiedBeds}/{totalBeds} beds)</p>
+              <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-main)' }}>Ward Bed Utilization</h3>
+              <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Overall Facility Occupancy: {overallOccupancyPct}% ({occupiedBeds}/{totalBeds} beds)</p>
             </div>
             {onNavigate && (
               <button className="btn btn-secondary btn-sm" onClick={() => onNavigate('wards')}>
@@ -626,14 +638,14 @@ export default function DashboardPage({ user, onNavigate }) {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {wards.slice(0, 6).map((w) => {
               const occPct = parseFloat(w.occupancy_percentage || 0);
-              const barColor = occPct > 80 ? '#f43f5e' : (occPct > 50 ? '#f59e0b' : '#10b981');
+              const barColor = occPct > 80 ? '#f43f5e' : (occPct > 50 ? '#028090' : '#02C39A');
               return (
                 <div key={w.ward_id}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem', marginBottom: '0.35rem' }}>
-                    <span style={{ fontWeight: 600, color: '#e2e8f0' }}>{w.ward_name} ({w.ward_type})</span>
-                    <span style={{ color: '#94a3b8' }}>{w.occupied_beds} / {w.total_beds} beds ({occPct}%)</span>
+                    <span style={{ fontWeight: 600, color: 'var(--text-main)' }}>{w.ward_name} ({w.ward_type})</span>
+                    <span style={{ color: 'var(--text-muted)' }}>{w.occupied_beds} / {w.total_beds} beds ({occPct}%)</span>
                   </div>
-                  <div style={{ width: '100%', height: '8px', backgroundColor: '#0f172a', borderRadius: '4px', overflow: 'hidden' }}>
+                  <div style={{ width: '100%', height: '8px', backgroundColor: 'var(--border-subtle)', borderRadius: '4px', overflow: 'hidden' }}>
                     <div style={{ width: `${Math.min(100, occPct)}%`, height: '100%', backgroundColor: barColor, borderRadius: '4px', transition: 'width 0.5s ease-in-out' }} />
                   </div>
                 </div>
@@ -647,8 +659,8 @@ export default function DashboardPage({ user, onNavigate }) {
           <div className="card">
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
               <div>
-                <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#fff' }}>Monthly Performance (Materialized View)</h3>
-                <p style={{ fontSize: '0.8rem', color: '#94a3b8' }}>Fast Aggregation from mv_monthly_hospital_performance</p>
+                <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-main)' }}>Monthly Performance (Materialized View)</h3>
+                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Fast Aggregation from mv_monthly_hospital_performance</p>
               </div>
               <div style={{ display: 'flex', gap: '0.5rem' }}>
                 {isAdmin && (
@@ -685,11 +697,11 @@ export default function DashboardPage({ user, onNavigate }) {
                 <tbody>
                   {monthlyPerf.slice(-5).map((m, idx) => (
                     <tr key={idx}>
-                      <td style={{ fontWeight: 600, color: '#38bdf8' }}>{m.report_month}</td>
+                      <td style={{ fontWeight: 600, color: '#008778' }}>{m.report_month}</td>
                       <td>{m.total_appointments}</td>
                       <td>{m.total_admissions}</td>
-                      <td style={{ color: '#f59e0b' }}>৳{parseFloat(m.gross_invoiced || 0).toLocaleString()}</td>
-                      <td style={{ color: '#10b981', fontWeight: 600 }}>৳{parseFloat(m.total_collected || 0).toLocaleString()}</td>
+                      <td style={{ color: '#05668D', fontWeight: 700 }}>৳{parseFloat(m.gross_invoiced || 0).toLocaleString()}</td>
+                      <td style={{ color: '#008767', fontWeight: 700 }}>৳{parseFloat(m.total_collected || 0).toLocaleString()}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -699,57 +711,57 @@ export default function DashboardPage({ user, onNavigate }) {
         ) : (
           <div className="card">
             <div style={{ marginBottom: '1.25rem' }}>
-              <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#fff' }}>
+              <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-main)' }}>
                 {roleKey === 'Doctor' ? 'Clinical Workspace Shortcuts' : 'Front Desk Quick Navigation'}
               </h3>
-              <p style={{ fontSize: '0.8rem', color: '#94a3b8' }}>Quick access to your authorized hospital workflows</p>
+              <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Quick access to your authorized hospital workflows</p>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.85rem' }}>
               {roleKey === 'Doctor' ? (
                 <>
                   <button className="btn btn-secondary" style={{ padding: '1rem', flexDirection: 'column', alignItems: 'flex-start', height: 'auto' }} onClick={() => onNavigate && onNavigate('consultations')}>
-                    <Stethoscope size={20} color="#0284c7" />
-                    <span style={{ fontWeight: 700, marginTop: '0.4rem', color: '#fff' }}>Consultations</span>
-                    <span style={{ fontSize: '0.72rem', color: '#94a3b8' }}>Outpatient Queue & Notes</span>
+                    <Stethoscope size={20} color="#00A896" />
+                    <span style={{ fontWeight: 700, marginTop: '0.4rem', color: 'var(--text-main)' }}>Consultations</span>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Outpatient Queue & Notes</span>
                   </button>
                   <button className="btn btn-secondary" style={{ padding: '1rem', flexDirection: 'column', alignItems: 'flex-start', height: 'auto' }} onClick={() => onNavigate && onNavigate('prescriptions')}>
-                    <Receipt size={20} color="#06b6d4" />
-                    <span style={{ fontWeight: 700, marginTop: '0.4rem', color: '#fff' }}>Prescriptions</span>
-                    <span style={{ fontSize: '0.72rem', color: '#94a3b8' }}>Digital Drug Orders</span>
+                    <Receipt size={20} color="#028090" />
+                    <span style={{ fontWeight: 700, marginTop: '0.4rem', color: 'var(--text-main)' }}>Prescriptions</span>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Digital Drug Orders</span>
                   </button>
                   <button className="btn btn-secondary" style={{ padding: '1rem', flexDirection: 'column', alignItems: 'flex-start', height: 'auto' }} onClick={() => onNavigate && onNavigate('admissions')}>
-                    <BedDouble size={20} color="#10b981" />
-                    <span style={{ fontWeight: 700, marginTop: '0.4rem', color: '#fff' }}>Inpatients</span>
-                    <span style={{ fontSize: '0.72rem', color: '#94a3b8' }}>Admitted Patient Care</span>
+                    <BedDouble size={20} color="#02C39A" />
+                    <span style={{ fontWeight: 700, marginTop: '0.4rem', color: 'var(--text-main)' }}>Inpatients</span>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Admitted Patient Care</span>
                   </button>
                   <button className="btn btn-secondary" style={{ padding: '1rem', flexDirection: 'column', alignItems: 'flex-start', height: 'auto' }} onClick={() => onNavigate && onNavigate('laboratory')}>
-                    <FlaskConical size={20} color="#f59e0b" />
-                    <span style={{ fontWeight: 700, marginTop: '0.4rem', color: '#fff' }}>Laboratory</span>
-                    <span style={{ fontSize: '0.72rem', color: '#94a3b8' }}>Diagnostic Requisitions</span>
+                    <FlaskConical size={20} color="#05668D" />
+                    <span style={{ fontWeight: 700, marginTop: '0.4rem', color: 'var(--text-main)' }}>Laboratory</span>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Diagnostic Requisitions</span>
                   </button>
                 </>
               ) : (
                 <>
                   <button className="btn btn-secondary" style={{ padding: '1rem', flexDirection: 'column', alignItems: 'flex-start', height: 'auto' }} onClick={() => onNavigate && onNavigate('patients')}>
-                    <Users size={20} color="#10b981" />
-                    <span style={{ fontWeight: 700, marginTop: '0.4rem', color: '#fff' }}>Patient Directory</span>
-                    <span style={{ fontSize: '0.72rem', color: '#94a3b8' }}>Register & Search Patients</span>
+                    <Users size={20} color="#02C39A" />
+                    <span style={{ fontWeight: 700, marginTop: '0.4rem', color: 'var(--text-main)' }}>Patient Directory</span>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Register & Search Patients</span>
                   </button>
                   <button className="btn btn-secondary" style={{ padding: '1rem', flexDirection: 'column', alignItems: 'flex-start', height: 'auto' }} onClick={() => onNavigate && onNavigate('appointments')}>
-                    <Calendar size={20} color="#0284c7" />
-                    <span style={{ fontWeight: 700, marginTop: '0.4rem', color: '#fff' }}>Appointments</span>
-                    <span style={{ fontSize: '0.72rem', color: '#94a3b8' }}>Schedule OPD Visits</span>
+                    <Calendar size={20} color="#00A896" />
+                    <span style={{ fontWeight: 700, marginTop: '0.4rem', color: 'var(--text-main)' }}>Appointments</span>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Schedule OPD Visits</span>
                   </button>
                   <button className="btn btn-secondary" style={{ padding: '1rem', flexDirection: 'column', alignItems: 'flex-start', height: 'auto' }} onClick={() => onNavigate && onNavigate('admissions')}>
-                    <BedDouble size={20} color="#06b6d4" />
-                    <span style={{ fontWeight: 700, marginTop: '0.4rem', color: '#fff' }}>Bed Admissions</span>
-                    <span style={{ fontSize: '0.72rem', color: '#94a3b8' }}>Allocate Available Beds</span>
+                    <BedDouble size={20} color="#028090" />
+                    <span style={{ fontWeight: 700, marginTop: '0.4rem', color: 'var(--text-main)' }}>Bed Admissions</span>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Allocate Available Beds</span>
                   </button>
                   <button className="btn btn-secondary" style={{ padding: '1rem', flexDirection: 'column', alignItems: 'flex-start', height: 'auto' }} onClick={() => onNavigate && onNavigate('doctors')}>
-                    <UserCheck size={20} color="#f59e0b" />
-                    <span style={{ fontWeight: 700, marginTop: '0.4rem', color: '#fff' }}>Doctor Schedules</span>
-                    <span style={{ fontSize: '0.72rem', color: '#94a3b8' }}>Check Availability</span>
+                    <UserCheck size={20} color="#05668D" />
+                    <span style={{ fontWeight: 700, marginTop: '0.4rem', color: 'var(--text-main)' }}>Doctor Schedules</span>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Check Availability</span>
                   </button>
                 </>
               )}
@@ -761,29 +773,30 @@ export default function DashboardPage({ user, onNavigate }) {
       {/* Database Trigger Integrity Status Chip */}
       <div style={{
         padding: '0.9rem 1.25rem',
-        backgroundColor: '#0b1120',
-        border: '1px solid #1e293b',
+        backgroundColor: 'var(--bg-card)',
+        border: '1px solid var(--border-card)',
         borderRadius: '8px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         flexWrap: 'wrap',
         gap: '0.75rem',
+        boxShadow: 'var(--shadow-sm)',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-          <Database size={16} color="#38bdf8" />
-          <span style={{ fontSize: '0.82rem', color: '#e2e8f0', fontWeight: 600 }}>
+          <Database size={16} color="#00A896" />
+          <span style={{ fontSize: '0.82rem', color: 'var(--text-main)', fontWeight: 700 }}>
             PostgreSQL 18 Trigger Enforcement:
           </span>
-          <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>
+          <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
             trg_audit_patients • trg_check_appointment_conflict • trg_recalculate_invoice_balance • trg_enforce_ward_bed_capacity
           </span>
         </div>
         <span style={{
           fontSize: '0.72rem',
           fontWeight: 700,
-          color: '#34d399',
-          backgroundColor: 'rgba(16, 185, 129, 0.15)',
+          color: '#008767',
+          backgroundColor: 'rgba(2, 195, 154, 0.15)',
           padding: '0.2rem 0.5rem',
           borderRadius: '4px',
         }}>

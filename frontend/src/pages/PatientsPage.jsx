@@ -403,8 +403,8 @@ export default function PatientsPage({ user }) {
             flexWrap: 'wrap',
             gap: '1.5rem',
             padding: '1rem 1.25rem',
-            backgroundColor: '#0b1120',
-            border: '1px solid #1e293b',
+            backgroundColor: 'var(--bg-main)',
+            border: '1px solid var(--border-card)',
             borderRadius: '8px',
             marginBottom: '1.5rem',
             fontSize: '0.85rem',
@@ -430,7 +430,7 @@ export default function PatientsPage({ user }) {
           </div>
 
           {/* Sub-tabs */}
-          <div style={{ display: 'flex', gap: '0.5rem', borderBottom: '1px solid #1e293b', marginBottom: '1.25rem', overflowX: 'auto' }}>
+          <div style={{ display: 'flex', gap: '0.5rem', borderBottom: '1px solid var(--border-card)', marginBottom: '1.25rem', overflowX: 'auto' }}>
             {[
               { id: 'history', label: 'Longitudinal Clinical History (Adv Query 1)' },
               { id: 'appts', label: `Appointments (${selectedPatient360.appointments.length})` },
@@ -470,8 +470,8 @@ export default function PatientsPage({ user }) {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                   {medicalHistory.map((item) => (
                     <div key={item.consultation_id} style={{
-                      backgroundColor: '#0f172a',
-                      border: '1px solid #1e293b',
+                      backgroundColor: 'var(--bg-main)',
+                      border: '1px solid var(--border-card)',
                       borderRadius: '8px',
                       padding: '1.15rem',
                     }}>

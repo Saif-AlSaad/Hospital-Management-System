@@ -420,7 +420,7 @@ export default function AdmissionsPage({ user }) {
             </>
           }
         >
-          <div style={{ marginBottom: '1.25rem', padding: '0.85rem', backgroundColor: '#0b1120', borderRadius: '8px', fontSize: '0.85rem' }}>
+          <div style={{ marginBottom: '1.25rem', padding: '0.85rem', backgroundColor: 'var(--bg-main)', borderRadius: '8px', fontSize: '0.85rem' }}>
             <div>Admission Stay: <strong>{selectedAdmission.days_stayed} days</strong> in {selectedAdmission.ward_name} (Bed {selectedAdmission.bed_number})</div>
             <div style={{ color: '#38bdf8', marginTop: '0.25rem' }}>
               ℹ️ Executing <code style={{ color: '#fbbf24' }}>sp_discharge_patient</code> will atomically release Bed {selectedAdmission.bed_number} back to 'Available' and auto-generate the inpatient bill.

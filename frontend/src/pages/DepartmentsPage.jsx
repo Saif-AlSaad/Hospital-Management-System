@@ -1,7 +1,7 @@
 // ============================================================================
 // HOSPITAL MANAGEMENT SYSTEM (HMS)
 // Hospital Departments & Clinical Units Directory
-// Administrator Exclusive Management: Organizational Structure & Leadership
+// Turquoise Harmony Theme: Baltic Blue, Teal, Verdigris, Mint Leaf & Cream
 // ============================================================================
 
 import React, { useState, useEffect } from 'react';
@@ -122,9 +122,9 @@ export default function DepartmentsPage({ user }) {
         <span style={{
           fontFamily: 'monospace',
           fontWeight: 700,
-          color: '#38bdf8',
-          backgroundColor: 'rgba(2, 132, 199, 0.15)',
-          border: '1px solid rgba(2, 132, 199, 0.35)',
+          color: '#00A896',
+          backgroundColor: 'rgba(5, 102, 141, 0.22)',
+          border: '1px solid rgba(0, 168, 150, 0.45)',
           padding: '0.25rem 0.55rem',
           borderRadius: '6px',
           fontSize: '0.82rem',
@@ -141,7 +141,7 @@ export default function DepartmentsPage({ user }) {
           <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.9rem' }}>
             {row.department_name}
           </div>
-          <div style={{ fontSize: '0.74rem', color: '#94a3b8', marginTop: '0.15rem' }}>
+          <div style={{ fontSize: '0.74rem', color: '#8aaabb', marginTop: '0.15rem' }}>
             {row.description || 'Clinical inpatient and outpatient services'}
           </div>
         </div>
@@ -156,12 +156,12 @@ export default function DepartmentsPage({ user }) {
             width: '32px',
             height: '32px',
             borderRadius: '50%',
-            backgroundColor: 'rgba(14, 165, 233, 0.15)',
-            border: '1px solid rgba(14, 165, 233, 0.35)',
+            backgroundColor: 'rgba(2, 128, 144, 0.2)',
+            border: '1px solid rgba(2, 128, 144, 0.45)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#38bdf8',
+            color: '#02C39A',
             fontSize: '0.78rem',
             fontWeight: 700,
           }}>
@@ -171,13 +171,13 @@ export default function DepartmentsPage({ user }) {
             <div style={{ fontWeight: 600, color: '#e2e8f0', fontSize: '0.84rem' }}>
               Dr. {row.head_doctor_name}
             </div>
-            <div style={{ fontSize: '0.72rem', color: '#94a3b8' }}>
+            <div style={{ fontSize: '0.72rem', color: '#8aaabb' }}>
               {row.head_doctor_specialization || 'Consultant Specialist'}
             </div>
           </div>
         </div>
       ) : (
-        <span style={{ color: '#64748b', fontSize: '0.78rem', fontStyle: 'italic' }}>
+        <span style={{ color: '#5c7e91', fontSize: '0.78rem', fontStyle: 'italic' }}>
           Unassigned
         </span>
       ) 
@@ -194,7 +194,7 @@ export default function DepartmentsPage({ user }) {
           fontWeight: 600,
           color: '#e2e8f0',
         }}>
-          <Stethoscope size={14} color="#38bdf8" />
+          <Stethoscope size={14} color="#02C39A" />
           <span>{row.total_doctors} Physicians</span>
         </span>
       ) 
@@ -205,7 +205,7 @@ export default function DepartmentsPage({ user }) {
       render: row => (
         <div style={{ fontSize: '0.8rem', color: '#cbd5e1' }}>
           <div style={{ fontWeight: 600 }}>{row.total_allocated_beds} Beds</div>
-          <div style={{ fontSize: '0.72rem', color: '#94a3b8' }}>{row.total_wards} Wards Allocated</div>
+          <div style={{ fontSize: '0.72rem', color: '#8aaabb' }}>{row.total_wards} Wards Allocated</div>
         </div>
       ) 
     },
@@ -217,9 +217,9 @@ export default function DepartmentsPage({ user }) {
         <span style={{
           fontSize: '0.74rem',
           fontWeight: 700,
-          color: '#34d399',
-          backgroundColor: 'rgba(16, 185, 129, 0.15)',
-          border: '1px solid rgba(16, 185, 129, 0.35)',
+          color: '#02C39A',
+          backgroundColor: 'rgba(2, 195, 154, 0.15)',
+          border: '1px solid rgba(2, 195, 154, 0.35)',
           padding: '0.2rem 0.55rem',
           borderRadius: '6px',
         }}>
@@ -233,8 +233,8 @@ export default function DepartmentsPage({ user }) {
     <div>
       {/* Executive Header Banner */}
       <div style={{
-        backgroundColor: '#0f172a',
-        border: '1px solid #1e293b',
+        backgroundColor: 'var(--bg-card)',
+        border: '1px solid var(--border-card)',
         borderRadius: '12px',
         padding: '1.25rem 1.5rem',
         marginBottom: '1.5rem',
@@ -249,12 +249,12 @@ export default function DepartmentsPage({ user }) {
             width: '52px',
             height: '52px',
             borderRadius: '12px',
-            backgroundColor: 'rgba(168, 85, 247, 0.15)',
-            border: '1px solid rgba(168, 85, 247, 0.35)',
+            backgroundColor: 'rgba(5, 102, 141, 0.22)',
+            border: '1px solid rgba(0, 168, 150, 0.45)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#c084fc',
+            color: '#00A896',
           }}>
             <Building2 size={28} />
           </div>
@@ -265,9 +265,9 @@ export default function DepartmentsPage({ user }) {
               </h2>
               <span style={{
                 fontSize: '0.75rem',
-                backgroundColor: 'rgba(168, 85, 247, 0.2)',
-                color: '#c084fc',
-                border: '1px solid rgba(168, 85, 247, 0.4)',
+                backgroundColor: 'rgba(2, 128, 144, 0.2)',
+                color: '#02C39A',
+                border: '1px solid rgba(2, 195, 154, 0.4)',
                 padding: '0.2rem 0.6rem',
                 borderRadius: '6px',
                 fontWeight: 700,
@@ -279,7 +279,7 @@ export default function DepartmentsPage({ user }) {
                 Organizational Governance
               </span>
             </div>
-            <p style={{ color: '#94a3b8', fontSize: '0.85rem', margin: '0.25rem 0 0 0' }}>
+            <p style={{ color: '#8aaabb', fontSize: '0.85rem', margin: '0.25rem 0 0 0' }}>
               Manage clinical mandates, departmental leadership assignments, inpatient ward allocations, and physician staffing.
             </p>
           </div>
@@ -296,9 +296,9 @@ export default function DepartmentsPage({ user }) {
       {/* Toast Notification */}
       {toastMessage && (
         <div style={{
-          backgroundColor: 'rgba(16, 185, 129, 0.15)',
-          border: '1px solid rgba(16, 185, 129, 0.35)',
-          color: '#34d399',
+          backgroundColor: 'rgba(2, 195, 154, 0.15)',
+          border: '1px solid rgba(2, 195, 154, 0.35)',
+          color: '#02C39A',
           borderRadius: '8px',
           padding: '0.85rem 1.25rem',
           marginBottom: '1.25rem',
@@ -319,55 +319,47 @@ export default function DepartmentsPage({ user }) {
         gap: '1rem',
         marginBottom: '1.5rem',
       }}>
-        <div className="card" style={{ padding: '1rem 1.25rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <div>
-              <div style={{ fontSize: '0.74rem', color: '#94a3b8', fontWeight: 600, textTransform: 'uppercase' }}>Departments</div>
-              <div style={{ fontSize: '1.65rem', fontWeight: 800, color: '#fff', marginTop: '0.2rem' }}>{totalDepartments}</div>
-              <div style={{ fontSize: '0.72rem', color: '#c084fc', marginTop: '0.2rem' }}>All Specialized Divisions</div>
-            </div>
-            <div style={{ padding: '0.65rem', borderRadius: '10px', backgroundColor: 'rgba(168, 85, 247, 0.15)', color: '#c084fc' }}>
-              <Building2 size={22} />
-            </div>
+        <div className="card stat-card" style={{ '--stat-color': '#05668D' }}>
+          <div className="stat-info">
+            <h3>Departments</h3>
+            <div className="stat-value">{totalDepartments}</div>
+            <div className="stat-subtext">All Specialized Divisions</div>
+          </div>
+          <div className="stat-icon-wrapper">
+            <Building2 size={22} />
           </div>
         </div>
 
-        <div className="card" style={{ padding: '1rem 1.25rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <div>
-              <div style={{ fontSize: '0.74rem', color: '#94a3b8', fontWeight: 600, textTransform: 'uppercase' }}>Clinical Doctors</div>
-              <div style={{ fontSize: '1.65rem', fontWeight: 800, color: '#fff', marginTop: '0.2rem' }}>{totalDoctors}</div>
-              <div style={{ fontSize: '0.72rem', color: '#38bdf8', marginTop: '0.2rem' }}>Active Medical Specialists</div>
-            </div>
-            <div style={{ padding: '0.65rem', borderRadius: '10px', backgroundColor: 'rgba(2, 132, 199, 0.15)', color: '#38bdf8' }}>
-              <Stethoscope size={22} />
-            </div>
+        <div className="card stat-card" style={{ '--stat-color': '#028090' }}>
+          <div className="stat-info">
+            <h3>Clinical Doctors</h3>
+            <div className="stat-value">{totalDoctors}</div>
+            <div className="stat-subtext">Active Medical Specialists</div>
+          </div>
+          <div className="stat-icon-wrapper">
+            <Stethoscope size={22} />
           </div>
         </div>
 
-        <div className="card" style={{ padding: '1rem 1.25rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <div>
-              <div style={{ fontSize: '0.74rem', color: '#94a3b8', fontWeight: 600, textTransform: 'uppercase' }}>Inpatient Wards</div>
-              <div style={{ fontSize: '1.65rem', fontWeight: 800, color: '#fff', marginTop: '0.2rem' }}>{totalWards}</div>
-              <div style={{ fontSize: '0.72rem', color: '#34d399', marginTop: '0.2rem' }}>General, ICU & CCU Units</div>
-            </div>
-            <div style={{ padding: '0.65rem', borderRadius: '10px', backgroundColor: 'rgba(16, 185, 129, 0.15)', color: '#34d399' }}>
-              <Hotel size={22} />
-            </div>
+        <div className="card stat-card" style={{ '--stat-color': '#00A896' }}>
+          <div className="stat-info">
+            <h3>Inpatient Wards</h3>
+            <div className="stat-value">{totalWards}</div>
+            <div className="stat-subtext">General, ICU & CCU Units</div>
+          </div>
+          <div className="stat-icon-wrapper">
+            <Hotel size={22} />
           </div>
         </div>
 
-        <div className="card" style={{ padding: '1rem 1.25rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <div>
-              <div style={{ fontSize: '0.74rem', color: '#94a3b8', fontWeight: 600, textTransform: 'uppercase' }}>Allocated Beds</div>
-              <div style={{ fontSize: '1.65rem', fontWeight: 800, color: '#fff', marginTop: '0.2rem' }}>{totalBeds}</div>
-              <div style={{ fontSize: '0.72rem', color: '#fbbf24', marginTop: '0.2rem' }}>Hospital Bed Infrastructure</div>
-            </div>
-            <div style={{ padding: '0.65rem', borderRadius: '10px', backgroundColor: 'rgba(245, 158, 11, 0.15)', color: '#fbbf24' }}>
-              <BedDouble size={22} />
-            </div>
+        <div className="card stat-card" style={{ '--stat-color': '#02C39A' }}>
+          <div className="stat-info">
+            <h3>Allocated Beds</h3>
+            <div className="stat-value">{totalBeds}</div>
+            <div className="stat-subtext" style={{ color: '#F0F3BD' }}>Hospital Bed Infrastructure</div>
+          </div>
+          <div className="stat-icon-wrapper">
+            <BedDouble size={22} />
           </div>
         </div>
       </div>
@@ -421,8 +413,8 @@ export default function DepartmentsPage({ user }) {
                 style={{
                   width: '100%',
                   padding: '0.6rem 0.85rem',
-                  backgroundColor: '#0a101d',
-                  border: '1px solid #1e2c45',
+                  backgroundColor: 'var(--bg-main)',
+                  border: '1px solid var(--border-card)',
                   borderRadius: '8px',
                   color: '#ffffff',
                   fontSize: '0.86rem',
@@ -444,8 +436,8 @@ export default function DepartmentsPage({ user }) {
                 style={{
                   width: '100%',
                   padding: '0.6rem 0.85rem',
-                  backgroundColor: '#0a101d',
-                  border: '1px solid #1e2c45',
+                  backgroundColor: 'var(--bg-main)',
+                  border: '1px solid var(--border-card)',
                   borderRadius: '8px',
                   color: '#ffffff',
                   fontSize: '0.86rem',
@@ -467,8 +459,8 @@ export default function DepartmentsPage({ user }) {
               style={{
                 width: '100%',
                 padding: '0.6rem 0.85rem',
-                backgroundColor: '#0a101d',
-                border: '1px solid #1e2c45',
+                backgroundColor: 'var(--bg-main)',
+                border: '1px solid var(--border-card)',
                 borderRadius: '8px',
                 color: '#ffffff',
                 fontSize: '0.86rem',
@@ -496,8 +488,8 @@ export default function DepartmentsPage({ user }) {
               style={{
                 width: '100%',
                 padding: '0.6rem 0.85rem',
-                backgroundColor: '#0a101d',
-                border: '1px solid #1e2c45',
+                backgroundColor: 'var(--bg-main)',
+                border: '1px solid var(--border-card)',
                 borderRadius: '8px',
                 color: '#ffffff',
                 fontSize: '0.86rem',
@@ -512,7 +504,7 @@ export default function DepartmentsPage({ user }) {
             justifyContent: 'flex-end',
             gap: '0.75rem',
             paddingTop: '1rem',
-            borderTop: '1px solid #1e293b',
+            borderTop: '1px solid var(--border-card)',
           }}>
             <button type="button" className="btn btn-secondary" onClick={() => setShowAddModal(false)}>
               Cancel

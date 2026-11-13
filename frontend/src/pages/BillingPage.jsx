@@ -428,8 +428,8 @@ export default function BillingPage({ user, onNavigate }) {
     <div>
       {/* Header Banner */}
       <div style={{
-        backgroundColor: '#0f172a',
-        border: '1px solid #1e293b',
+        backgroundColor: 'var(--bg-main)',
+        border: '1px solid var(--border-card)',
         borderRadius: '12px',
         padding: '1.25rem 1.5rem',
         marginBottom: '1.5rem',
@@ -581,7 +581,7 @@ export default function BillingPage({ user, onNavigate }) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        borderBottom: '1px solid #1e293b',
+        borderBottom: '1px solid var(--border-card)',
         marginBottom: '1.25rem',
         flexWrap: 'wrap',
         gap: '0.75rem',
@@ -607,7 +607,7 @@ export default function BillingPage({ user, onNavigate }) {
             <span>Invoices Ledger & Cash Counter</span>
             <span style={{
               fontSize: '0.7rem',
-              backgroundColor: activeTab === 'invoices' ? '#f59e0b' : '#1e293b',
+              backgroundColor: activeTab === 'invoices' ? '#f59e0b' : 'var(--border-card)',
               color: '#000',
               padding: '0.1rem 0.5rem',
               borderRadius: '10px',
@@ -637,7 +637,7 @@ export default function BillingPage({ user, onNavigate }) {
             <span>Accounts Receivable & Debt Aging</span>
             <span style={{
               fontSize: '0.7rem',
-              backgroundColor: activeTab === 'aging' ? '#f43f5e' : '#1e293b',
+              backgroundColor: activeTab === 'aging' ? '#f43f5e' : 'var(--border-card)',
               color: '#fff',
               padding: '0.1rem 0.5rem',
               borderRadius: '10px',
@@ -667,7 +667,7 @@ export default function BillingPage({ user, onNavigate }) {
             <span>Payment Receipts Ledger</span>
             <span style={{
               fontSize: '0.7rem',
-              backgroundColor: activeTab === 'payments' ? '#10b981' : '#1e293b',
+              backgroundColor: activeTab === 'payments' ? '#10b981' : 'var(--border-card)',
               color: '#fff',
               padding: '0.1rem 0.5rem',
               borderRadius: '10px',
@@ -756,25 +756,25 @@ export default function BillingPage({ user, onNavigate }) {
             gap: '1rem',
             marginBottom: '1.5rem',
           }}>
-            <div style={{ padding: '1rem', backgroundColor: '#0b1120', border: '1px solid #1e293b', borderRadius: '8px' }}>
+            <div style={{ padding: '1rem', backgroundColor: 'var(--bg-main)', border: '1px solid var(--border-card)', borderRadius: '8px' }}>
               <div style={{ fontSize: '0.75rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 700 }}>0 - 30 Days (Current)</div>
               <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#38bdf8', marginTop: '0.25rem' }}>৳{aging0to30.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
               <div style={{ fontSize: '0.72rem', color: '#64748b' }}>Recent billing cycle</div>
             </div>
 
-            <div style={{ padding: '1rem', backgroundColor: '#0b1120', border: '1px solid #1e293b', borderRadius: '8px' }}>
+            <div style={{ padding: '1rem', backgroundColor: 'var(--bg-main)', border: '1px solid var(--border-card)', borderRadius: '8px' }}>
               <div style={{ fontSize: '0.75rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 700 }}>31 - 60 Days (Mild Overdue)</div>
               <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#fbbf24', marginTop: '0.25rem' }}>৳{aging31to60.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
               <div style={{ fontSize: '0.72rem', color: '#64748b' }}>Reminder notice due</div>
             </div>
 
-            <div style={{ padding: '1rem', backgroundColor: '#0b1120', border: '1px solid #1e293b', borderRadius: '8px' }}>
+            <div style={{ padding: '1rem', backgroundColor: 'var(--bg-main)', border: '1px solid var(--border-card)', borderRadius: '8px' }}>
               <div style={{ fontSize: '0.75rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 700 }}>61 - 90 Days (Late)</div>
               <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#fb923c', marginTop: '0.25rem' }}>৳{aging61to90.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
               <div style={{ fontSize: '0.72rem', color: '#64748b' }}>Follow-up required</div>
             </div>
 
-            <div style={{ padding: '1rem', backgroundColor: '#0b1120', border: '1px solid rgba(244, 63, 94, 0.3)', borderRadius: '8px' }}>
+            <div style={{ padding: '1rem', backgroundColor: 'var(--bg-main)', border: '1px solid rgba(244, 63, 94, 0.3)', borderRadius: '8px' }}>
               <div style={{ fontSize: '0.75rem', color: '#fb7185', textTransform: 'uppercase', fontWeight: 700 }}>90+ Days (Severe Overdue)</div>
               <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#f43f5e', marginTop: '0.25rem' }}>৳{agingOver90.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
               <div style={{ fontSize: '0.72rem', color: '#64748b' }}>Escalated collection</div>
@@ -783,7 +783,7 @@ export default function BillingPage({ user, onNavigate }) {
 
           {/* Aging Table */}
           <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
-            <div style={{ padding: '1rem 1.25rem', borderBottom: '1px solid #1e293b', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ padding: '1rem 1.25rem', borderBottom: '1px solid var(--border-card)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>
                 <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#fff', margin: 0 }}>Outstanding Patient Receivables Ledger</h3>
                 <p style={{ fontSize: '0.78rem', color: '#94a3b8', margin: '0.2rem 0 0 0' }}>Aggregated across all unpaid and partially paid hospital invoices</p>
@@ -987,18 +987,18 @@ export default function BillingPage({ user, onNavigate }) {
                 />
                 {patientSearchResults.length > 0 && (
                   <div style={{
-                    border: '1px solid #1e293b',
+                    border: '1px solid var(--border-card)',
                     borderRadius: '6px',
                     maxHeight: '160px',
                     overflowY: 'auto',
-                    backgroundColor: '#0b1120',
+                    backgroundColor: 'var(--bg-main)',
                   }}>
                     {patientSearchResults.map(p => (
                       <div 
                         key={p.patient_id}
                         style={{
                           padding: '0.5rem 0.75rem',
-                          borderBottom: '1px solid #1e293b',
+                          borderBottom: '1px solid var(--border-card)',
                           cursor: 'pointer',
                           display: 'flex',
                           justifyContent: 'space-between',
@@ -1060,9 +1060,9 @@ export default function BillingPage({ user, onNavigate }) {
               </button>
             </div>
 
-            <div style={{ border: '1px solid #1e293b', borderRadius: '8px', overflow: 'hidden' }}>
+            <div style={{ border: '1px solid var(--border-card)', borderRadius: '8px', overflow: 'hidden' }}>
               <table style={{ width: '100%', fontSize: '0.82rem', borderCollapse: 'collapse' }}>
-                <thead style={{ backgroundColor: '#0b1120', borderBottom: '1px solid #1e293b', color: '#94a3b8' }}>
+                <thead style={{ backgroundColor: 'var(--bg-main)', borderBottom: '1px solid var(--border-card)', color: '#94a3b8' }}>
                   <tr>
                     <th style={{ padding: '0.5rem', textAlign: 'left' }}>Service Catalog</th>
                     <th style={{ padding: '0.5rem', textAlign: 'left' }}>Description</th>
@@ -1077,7 +1077,7 @@ export default function BillingPage({ user, onNavigate }) {
                   {invoiceItems.map((item, idx) => {
                     const lineTotal = (parseInt(item.quantity || 1) * parseFloat(item.unitPrice || 0)) - parseFloat(item.discount || 0);
                     return (
-                      <tr key={idx} style={{ borderBottom: '1px solid #1e293b' }}>
+                      <tr key={idx} style={{ borderBottom: '1px solid var(--border-card)' }}>
                         <td style={{ padding: '0.4rem' }}>
                           <select 
                             className="form-control"
@@ -1159,8 +1159,8 @@ export default function BillingPage({ user, onNavigate }) {
 
           {/* Totals Summary */}
           <div style={{
-            backgroundColor: '#0b1120',
-            border: '1px solid #1e293b',
+            backgroundColor: 'var(--bg-main)',
+            border: '1px solid var(--border-card)',
             borderRadius: '8px',
             padding: '1rem',
             display: 'flex',
@@ -1185,7 +1185,7 @@ export default function BillingPage({ user, onNavigate }) {
                 <span>Tax (5%):</span>
                 <span>৳{tax.toFixed(2)}</span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 800, fontSize: '1rem', color: '#fbbf24', borderTop: '1px solid #1e293b', paddingTop: '0.25rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 800, fontSize: '1rem', color: '#fbbf24', borderTop: '1px solid var(--border-card)', paddingTop: '0.25rem' }}>
                 <span>Total Amount:</span>
                 <span>৳{grandTotal.toFixed(2)}</span>
               </div>
@@ -1202,7 +1202,7 @@ export default function BillingPage({ user, onNavigate }) {
             />
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', borderTop: '1px solid #1e293b', paddingTop: '1rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', borderTop: '1px solid var(--border-card)', paddingTop: '1rem' }}>
             <button type="button" className="btn btn-secondary" onClick={() => setShowCreateModal(false)}>Cancel</button>
             <button type="submit" className="btn btn-primary" disabled={submittingInvoice}>
               {submittingInvoice ? 'Generating Invoice...' : 'Generate & Commit Invoice'}
@@ -1225,8 +1225,8 @@ export default function BillingPage({ user, onNavigate }) {
               justifyContent: 'space-between',
               alignItems: 'flex-start',
               padding: '1rem',
-              backgroundColor: '#0b1120',
-              border: '1px solid #1e293b',
+              backgroundColor: 'var(--bg-main)',
+              border: '1px solid var(--border-card)',
               borderRadius: '8px',
             }}>
               <div>
@@ -1251,9 +1251,9 @@ export default function BillingPage({ user, onNavigate }) {
             </div>
 
             {/* Line Items */}
-            <div style={{ border: '1px solid #1e293b', borderRadius: '8px', overflow: 'hidden' }}>
+            <div style={{ border: '1px solid var(--border-card)', borderRadius: '8px', overflow: 'hidden' }}>
               <table style={{ width: '100%', fontSize: '0.82rem', borderCollapse: 'collapse' }}>
-                <thead style={{ backgroundColor: '#0b1120', borderBottom: '1px solid #1e293b', color: '#94a3b8' }}>
+                <thead style={{ backgroundColor: 'var(--bg-main)', borderBottom: '1px solid var(--border-card)', color: '#94a3b8' }}>
                   <tr>
                     <th style={{ padding: '0.6rem', textAlign: 'left' }}>Description</th>
                     <th style={{ padding: '0.6rem', textAlign: 'right' }}>Qty</th>
@@ -1264,7 +1264,7 @@ export default function BillingPage({ user, onNavigate }) {
                 </thead>
                 <tbody>
                   {selectedInvoice.items.map(item => (
-                    <tr key={item.item_id} style={{ borderBottom: '1px solid #1e293b' }}>
+                    <tr key={item.item_id} style={{ borderBottom: '1px solid var(--border-card)' }}>
                       <td style={{ padding: '0.6rem', fontWeight: 600, color: '#fff' }}>{item.item_description}</td>
                       <td style={{ padding: '0.6rem', textAlign: 'right', fontFamily: 'monospace' }}>{item.quantity}</td>
                       <td style={{ padding: '0.6rem', textAlign: 'right', fontFamily: 'monospace' }}>৳{parseFloat(item.unit_price).toFixed(2)}</td>
@@ -1291,7 +1291,7 @@ export default function BillingPage({ user, onNavigate }) {
                   <span>Tax (5%):</span>
                   <span>+৳{parseFloat(selectedInvoice.invoice.tax_amount).toFixed(2)}</span>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 800, color: '#fff', borderTop: '1px solid #1e293b', paddingTop: '0.25rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 800, color: '#fff', borderTop: '1px solid var(--border-card)', paddingTop: '0.25rem' }}>
                   <span>Total Amount:</span>
                   <span>৳{parseFloat(selectedInvoice.invoice.total_amount).toFixed(2)}</span>
                 </div>
@@ -1299,7 +1299,7 @@ export default function BillingPage({ user, onNavigate }) {
                   <span>Total Paid:</span>
                   <span>৳{parseFloat(selectedInvoice.invoice.paid_amount).toFixed(2)}</span>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 800, color: '#fb7185', borderTop: '1px solid #1e293b', paddingTop: '0.25rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 800, color: '#fb7185', borderTop: '1px solid var(--border-card)', paddingTop: '0.25rem' }}>
                   <span>Balance Due:</span>
                   <span>৳{parseFloat(selectedInvoice.invoice.balance_due).toFixed(2)}</span>
                 </div>
@@ -1310,9 +1310,9 @@ export default function BillingPage({ user, onNavigate }) {
             {selectedInvoice.payments.length > 0 && (
               <div>
                 <h4 style={{ fontWeight: 700, fontSize: '0.88rem', color: '#fff', marginBottom: '0.5rem' }}>Payment Receipts on this Invoice</h4>
-                <div style={{ border: '1px solid #1e293b', borderRadius: '8px', overflow: 'hidden' }}>
+                <div style={{ border: '1px solid var(--border-card)', borderRadius: '8px', overflow: 'hidden' }}>
                   <table style={{ width: '100%', fontSize: '0.78rem', borderCollapse: 'collapse' }}>
-                    <thead style={{ backgroundColor: '#0b1120', borderBottom: '1px solid #1e293b', color: '#94a3b8' }}>
+                    <thead style={{ backgroundColor: 'var(--bg-main)', borderBottom: '1px solid var(--border-card)', color: '#94a3b8' }}>
                       <tr>
                         <th style={{ padding: '0.5rem', textAlign: 'left' }}>Receipt #</th>
                         <th style={{ padding: '0.5rem', textAlign: 'left' }}>Date</th>
@@ -1323,7 +1323,7 @@ export default function BillingPage({ user, onNavigate }) {
                     </thead>
                     <tbody>
                       {selectedInvoice.payments.map(p => (
-                        <tr key={p.payment_id} style={{ borderBottom: '1px solid #1e293b' }}>
+                        <tr key={p.payment_id} style={{ borderBottom: '1px solid var(--border-card)' }}>
                           <td style={{ padding: '0.5rem', fontFamily: 'monospace', fontWeight: 700, color: '#38bdf8' }}>{p.payment_number}</td>
                           <td style={{ padding: '0.5rem' }}>{new Date(p.payment_date).toLocaleString()}</td>
                           <td style={{ padding: '0.5rem' }}><span className="badge badge-blue">{p.payment_method}</span></td>
@@ -1362,8 +1362,8 @@ export default function BillingPage({ user, onNavigate }) {
           <form onSubmit={handleProcessPayment} className="space-y-4">
             <div style={{
               padding: '0.75rem 1rem',
-              backgroundColor: '#0b1120',
-              border: '1px solid #1e293b',
+              backgroundColor: 'var(--bg-main)',
+              border: '1px solid var(--border-card)',
               borderRadius: '8px',
               display: 'flex',
               justifyContent: 'space-between',
@@ -1447,7 +1447,7 @@ export default function BillingPage({ user, onNavigate }) {
               ⚡ <strong>PostgreSQL Stored Procedure:</strong> Executes <code>CALL sp_process_payment(...)</code> and automatically executes trigger <code>trg_recalculate_invoice_balance</code> to adjust invoice status and balance.
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', borderTop: '1px solid #1e293b', paddingTop: '1rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', borderTop: '1px solid var(--border-card)', paddingTop: '1rem' }}>
               <button type="button" className="btn btn-secondary" onClick={() => setShowPayModal(false)}>Cancel</button>
               <button type="submit" className="btn btn-primary" disabled={submittingPayment}>
                 {submittingPayment ? 'Processing in DB...' : 'Execute Payment Transaction'}

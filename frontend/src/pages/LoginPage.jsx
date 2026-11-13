@@ -1,6 +1,6 @@
 // ============================================================================
 // HOSPITAL MANAGEMENT SYSTEM (HMS)
-// Stakeholder Authentication Gateway (Compact & Clean Edition)
+// Stakeholder Authentication Gateway - Turquoise Harmony Edition
 // Real-time PostgreSQL Authentication with Quick-Switch Evaluator Profiles
 // ============================================================================
 
@@ -29,10 +29,10 @@ const QUICK_STAKEHOLDERS = [
     username: 'admin',
     name: 'Saif Al Saad',
     workspace: 'Full Control & Audits',
-    accentColor: '#f43f5e',
-    accentGlow: 'rgba(244, 63, 94, 0.2)',
-    bgActive: 'rgba(244, 63, 94, 0.1)',
-    borderActive: '#f43f5e',
+    accentColor: '#05668D',
+    accentGlow: 'rgba(5, 102, 141, 0.25)',
+    bgActive: '#e6f3f8',
+    borderActive: '#05668D',
     icon: ShieldCheck,
   },
   {
@@ -41,10 +41,10 @@ const QUICK_STAKEHOLDERS = [
     username: 'doctor1',
     name: 'Dr. Tanvir Ahmed',
     workspace: 'OPD Queue & Rx',
-    accentColor: '#0ea5e9',
-    accentGlow: 'rgba(14, 165, 233, 0.2)',
-    bgActive: 'rgba(14, 165, 233, 0.1)',
-    borderActive: '#0ea5e9',
+    accentColor: '#028090',
+    accentGlow: 'rgba(2, 128, 144, 0.25)',
+    bgActive: '#e5f6f8',
+    borderActive: '#028090',
     icon: Stethoscope,
   },
   {
@@ -53,10 +53,10 @@ const QUICK_STAKEHOLDERS = [
     username: 'receptionist1',
     name: 'Nusrat Jahan',
     workspace: 'Appointments & Beds',
-    accentColor: '#10b981',
-    accentGlow: 'rgba(16, 185, 129, 0.2)',
-    bgActive: 'rgba(16, 185, 129, 0.1)',
-    borderActive: '#10b981',
+    accentColor: '#008767',
+    accentGlow: 'rgba(2, 195, 154, 0.25)',
+    bgActive: '#e5f8f3',
+    borderActive: '#02C39A',
     icon: Calendar,
   },
   {
@@ -65,10 +65,10 @@ const QUICK_STAKEHOLDERS = [
     username: 'accountant1',
     name: 'Kamrul Hasan',
     workspace: 'Invoicing & MFS',
-    accentColor: '#f59e0b',
-    accentGlow: 'rgba(245, 158, 11, 0.2)',
-    bgActive: 'rgba(245, 158, 11, 0.1)',
-    borderActive: '#f59e0b',
+    accentColor: '#8a791a',
+    accentGlow: 'rgba(240, 243, 189, 0.4)',
+    bgActive: '#fcfdeb',
+    borderActive: '#c8b74b',
     icon: Receipt,
   },
 ];
@@ -118,56 +118,71 @@ export default function LoginPage({ onLoginSuccess }) {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: '#070b14',
-      backgroundImage: `
-        radial-gradient(ellipse at 50% 0%, rgba(14, 165, 233, 0.12) 0%, transparent 60%),
-        radial-gradient(circle at 85% 85%, rgba(16, 185, 129, 0.05) 0%, transparent 50%),
-        radial-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px)
-      `,
-      backgroundSize: '100% 100%, 100% 100%, 24px 24px',
+      background: 'linear-gradient(135deg, #eaf5f4 0%, #d8ece7 50%, #cde5df 100%)',
       padding: '1.5rem 1rem',
       overflowX: 'hidden',
     }}>
       <div style={{
         width: '100%',
-        maxWidth: '420px',
-        backgroundColor: 'rgba(15, 23, 42, 0.92)',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
+        maxWidth: '430px',
+        backgroundColor: '#ffffff',
         borderRadius: '18px',
-        border: '1px solid rgba(56, 189, 248, 0.15)',
-        boxShadow: '0 20px 50px -10px rgba(0, 0, 0, 0.8), 0 0 30px rgba(14, 165, 233, 0.06)',
+        border: '1px solid #cce5e0',
+        boxShadow: '0 20px 45px -10px rgba(5, 102, 141, 0.18), 0 0 20px rgba(0, 168, 150, 0.08)',
         overflow: 'hidden',
+        position: 'relative',
       }}>
+        {/* Signature 5-Band Turquoise Harmony Color Strip */}
+        <div style={{
+          height: '6px',
+          width: '100%',
+          background: 'linear-gradient(90deg, #05668D 0%, #028090 25%, #00A896 50%, #02C39A 75%, #F0F3BD 100%)',
+        }} />
+
         {/* Compact Clean Header */}
         <div style={{
-          padding: '1.75rem 1.75rem 0.75rem',
+          padding: '1.75rem 1.75rem 0.5rem',
           textAlign: 'center',
         }}>
           <div style={{
-            width: '46px',
-            height: '46px',
+            width: '48px',
+            height: '48px',
             borderRadius: '14px',
-            background: 'linear-gradient(135deg, #0284c7 0%, #06b6d4 100%)',
+            background: 'linear-gradient(135deg, #05668D 0%, #00A896 50%, #02C39A 100%)',
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
             color: '#fff',
-            marginBottom: '0.75rem',
-            boxShadow: '0 8px 20px -3px rgba(2, 132, 199, 0.45)',
+            marginBottom: '0.65rem',
+            boxShadow: '0 8px 18px -3px rgba(0, 168, 150, 0.4)',
           }}>
-            <Hospital size={24} strokeWidth={2.2} />
+            <Hospital size={26} strokeWidth={2.2} />
           </div>
 
           <h1 style={{
-            fontSize: '1.3rem',
+            fontSize: '1.35rem',
             fontWeight: 800,
-            color: '#ffffff',
+            color: '#072a38',
             letterSpacing: '-0.02em',
             margin: 0,
           }}>
             Apex Hospital Management
           </h1>
+
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.35rem',
+            fontSize: '0.72rem',
+            color: '#028090',
+            fontWeight: 700,
+            backgroundColor: '#e6f5f4',
+            padding: '0.2rem 0.6rem',
+            borderRadius: '12px',
+            marginTop: '0.4rem',
+          }}>
+            <span>Turquoise Harmony • Multi-Stakeholder RBAC</span>
+          </div>
         </div>
 
         {/* Compact Form Body */}
@@ -178,10 +193,10 @@ export default function LoginPage({ onLoginSuccess }) {
               alignItems: 'center',
               gap: '0.5rem',
               padding: '0.65rem 0.85rem',
-              backgroundColor: 'rgba(244, 63, 94, 0.12)',
-              border: '1px solid rgba(244, 63, 94, 0.3)',
+              backgroundColor: '#fef2f2',
+              border: '1px solid #fecaca',
               borderRadius: '8px',
-              color: '#fb7185',
+              color: '#dc2626',
               fontSize: '0.8rem',
               marginBottom: '1rem',
             }}>
@@ -196,8 +211,8 @@ export default function LoginPage({ onLoginSuccess }) {
               <label style={{
                 display: 'block',
                 fontSize: '0.76rem',
-                fontWeight: 600,
-                color: '#cbd5e1',
+                fontWeight: 700,
+                color: '#4a7282',
                 marginBottom: '0.35rem',
               }}>
                 Username or Email
@@ -207,7 +222,7 @@ export default function LoginPage({ onLoginSuccess }) {
                 <div style={{
                   position: 'absolute',
                   left: '0.85rem',
-                  color: '#64748b',
+                  color: '#7093a2',
                   display: 'flex',
                   alignItems: 'center',
                   pointerEvents: 'none',
@@ -222,21 +237,24 @@ export default function LoginPage({ onLoginSuccess }) {
                   required
                   style={{
                     width: '100%',
-                    padding: '0.6rem 0.85rem 0.6rem 2.4rem',
-                    backgroundColor: '#0a101d',
-                    border: '1px solid #1e2c45',
+                    padding: '0.65rem 0.85rem 0.65rem 2.4rem',
+                    backgroundColor: '#f8fcfb',
+                    border: '1px solid #cbe4e0',
                     borderRadius: '8px',
-                    color: '#ffffff',
-                    fontSize: '0.86rem',
+                    color: '#072a38',
+                    fontSize: '0.88rem',
                     outline: 'none',
+                    fontWeight: 600,
                     transition: 'all 0.15s ease',
                   }}
                   onFocus={(e) => {
-                    e.target.style.borderColor = '#0284c7';
-                    e.target.style.boxShadow = '0 0 0 2px rgba(2, 132, 199, 0.2)';
+                    e.target.style.borderColor = '#00A896';
+                    e.target.style.backgroundColor = '#ffffff';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(0, 168, 150, 0.2)';
                   }}
                   onBlur={(e) => {
-                    e.target.style.borderColor = '#1e2c45';
+                    e.target.style.borderColor = '#cbe4e0';
+                    e.target.style.backgroundColor = '#f8fcfb';
                     e.target.style.boxShadow = 'none';
                   }}
                 />
@@ -248,8 +266,8 @@ export default function LoginPage({ onLoginSuccess }) {
               <label style={{
                 display: 'block',
                 fontSize: '0.76rem',
-                fontWeight: 600,
-                color: '#cbd5e1',
+                fontWeight: 700,
+                color: '#4a7282',
                 marginBottom: '0.35rem',
               }}>
                 Password
@@ -259,7 +277,7 @@ export default function LoginPage({ onLoginSuccess }) {
                 <div style={{
                   position: 'absolute',
                   left: '0.85rem',
-                  color: '#64748b',
+                  color: '#7093a2',
                   display: 'flex',
                   alignItems: 'center',
                   pointerEvents: 'none',
@@ -274,22 +292,25 @@ export default function LoginPage({ onLoginSuccess }) {
                   required
                   style={{
                     width: '100%',
-                    padding: '0.6rem 2.4rem 0.6rem 2.4rem',
-                    backgroundColor: '#0a101d',
-                    border: '1px solid #1e2c45',
+                    padding: '0.65rem 2.4rem 0.65rem 2.4rem',
+                    backgroundColor: '#f8fcfb',
+                    border: '1px solid #cbe4e0',
                     borderRadius: '8px',
-                    color: '#ffffff',
-                    fontSize: '0.86rem',
+                    color: '#072a38',
+                    fontSize: '0.88rem',
                     outline: 'none',
                     letterSpacing: showPassword ? 'normal' : '0.1em',
+                    fontWeight: 600,
                     transition: 'all 0.15s ease',
                   }}
                   onFocus={(e) => {
-                    e.target.style.borderColor = '#0284c7';
-                    e.target.style.boxShadow = '0 0 0 2px rgba(2, 132, 199, 0.2)';
+                    e.target.style.borderColor = '#00A896';
+                    e.target.style.backgroundColor = '#ffffff';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(0, 168, 150, 0.2)';
                   }}
                   onBlur={(e) => {
-                    e.target.style.borderColor = '#1e2c45';
+                    e.target.style.borderColor = '#cbe4e0';
+                    e.target.style.backgroundColor = '#f8fcfb';
                     e.target.style.boxShadow = 'none';
                   }}
                 />
@@ -301,7 +322,7 @@ export default function LoginPage({ onLoginSuccess }) {
                     right: '0.75rem',
                     background: 'none',
                     border: 'none',
-                    color: '#64748b',
+                    color: '#7093a2',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
@@ -320,37 +341,35 @@ export default function LoginPage({ onLoginSuccess }) {
               disabled={loading}
               style={{
                 width: '100%',
-                padding: '0.7rem 1rem',
+                padding: '0.75rem 1rem',
                 borderRadius: '8px',
                 background: selectedStakeholder
-                  ? `linear-gradient(135deg, ${selectedStakeholder.accentColor}, #0284c7)`
-                  : 'linear-gradient(135deg, #0284c7, #0369a1)',
+                  ? `linear-gradient(135deg, ${selectedStakeholder.accentColor}, #028090)`
+                  : 'linear-gradient(135deg, #028090, #05668D)',
                 border: 'none',
                 color: '#ffffff',
                 fontWeight: 700,
-                fontSize: '0.88rem',
+                fontSize: '0.90rem',
                 cursor: loading ? 'not-allowed' : 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '0.5rem',
-                boxShadow: selectedStakeholder
-                  ? `0 4px 15px ${selectedStakeholder.accentGlow}`
-                  : '0 4px 15px rgba(2, 132, 199, 0.3)',
+                boxShadow: '0 4px 14px rgba(2, 128, 144, 0.3)',
                 transition: 'all 0.15s ease',
               }}
             >
               {loading ? (
                 <>
                   <div style={{
-                    width: '15px',
-                    height: '15px',
+                    width: '16px',
+                    height: '16px',
                     border: '2px solid rgba(255, 255, 255, 0.3)',
                     borderTopColor: '#ffffff',
                     borderRadius: '50%',
                     animation: 'spin 0.8s linear infinite',
                   }} />
-                  <span>Verifying...</span>
+                  <span>Verifying in PostgreSQL...</span>
                 </>
               ) : (
                 <>
@@ -359,7 +378,7 @@ export default function LoginPage({ onLoginSuccess }) {
                       ? `Sign In as ${selectedStakeholder.role}`
                       : 'Sign In to Portal'}
                   </span>
-                  <ArrowRight size={15} />
+                  <ArrowRight size={16} />
                 </>
               )}
             </button>
@@ -367,9 +386,9 @@ export default function LoginPage({ onLoginSuccess }) {
 
           {/* Compact Quick Stakeholder Switcher */}
           <div style={{
-            marginTop: '1.35rem',
+            marginTop: '1.25rem',
             paddingTop: '1.1rem',
-            borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+            borderTop: '1px solid #e2f0ee',
           }}>
             <div style={{
               display: 'flex',
@@ -381,14 +400,14 @@ export default function LoginPage({ onLoginSuccess }) {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.35rem',
-                fontSize: '0.68rem',
+                fontSize: '0.70rem',
                 textTransform: 'uppercase',
                 letterSpacing: '0.05em',
-                color: '#94a3b8',
-                fontWeight: 700,
+                color: '#4a7282',
+                fontWeight: 800,
               }}>
-                <Sparkles size={11} color="#38bdf8" />
-                <span>Demo Stakeholders (1-Click)</span>
+                <Sparkles size={12} color="#008767" />
+                <span>Viva Evaluator One-Click Profiles:</span>
               </div>
             </div>
 
@@ -411,14 +430,14 @@ export default function LoginPage({ onLoginSuccess }) {
                       display: 'flex',
                       flexDirection: 'column',
                       alignItems: 'flex-start',
-                      padding: '0.6rem 0.75rem',
+                      padding: '0.65rem 0.75rem',
                       borderRadius: '10px',
-                      backgroundColor: isSelected ? s.bgActive : 'rgba(16, 25, 45, 0.55)',
-                      border: `1.5px solid ${isSelected ? s.borderActive : 'rgba(255, 255, 255, 0.07)'}`,
+                      backgroundColor: isSelected ? s.bgActive : '#fbfdfd',
+                      border: `1.5px solid ${isSelected ? s.borderActive : '#d9ede9'}`,
                       cursor: 'pointer',
                       textAlign: 'left',
                       transition: 'all 0.15s ease',
-                      boxShadow: isSelected ? `0 0 12px ${s.accentGlow}` : 'none',
+                      boxShadow: isSelected ? `0 2px 10px ${s.accentGlow}` : 'none',
                     }}
                   >
                     <div style={{
@@ -429,7 +448,7 @@ export default function LoginPage({ onLoginSuccess }) {
                       marginBottom: '0.2rem',
                     }}>
                       <span style={{
-                        fontSize: '0.6rem',
+                        fontSize: '0.62rem',
                         fontWeight: 800,
                         color: s.accentColor,
                         letterSpacing: '0.05em',
@@ -437,16 +456,16 @@ export default function LoginPage({ onLoginSuccess }) {
                         {s.roleTag}
                       </span>
                       {isSelected ? (
-                        <Check size={11} color={s.accentColor} strokeWidth={3} />
+                        <Check size={12} color={s.accentColor} strokeWidth={3} />
                       ) : (
-                        <Icon size={11} color={s.accentColor} />
+                        <Icon size={12} color={s.accentColor} />
                       )}
                     </div>
 
                     <div style={{
-                      fontSize: '0.78rem',
+                      fontSize: '0.80rem',
                       fontWeight: 700,
-                      color: isSelected ? '#ffffff' : '#e2e8f0',
+                      color: '#072a38',
                       width: '100%',
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
@@ -456,8 +475,8 @@ export default function LoginPage({ onLoginSuccess }) {
                     </div>
 
                     <div style={{
-                      fontSize: '0.65rem',
-                      color: isSelected ? '#cbd5e1' : '#64748b',
+                      fontSize: '0.66rem',
+                      color: '#4a7282',
                       marginTop: '0.1rem',
                       width: '100%',
                       overflow: 'hidden',

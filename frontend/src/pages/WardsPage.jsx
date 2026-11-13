@@ -114,8 +114,8 @@ export default function WardsPage() {
               key={w.ward_id}
               onClick={() => setSelectedWardId(w.ward_id)}
               style={{
-                backgroundColor: isSelected ? '#15233e' : '#111b2f',
-                border: isSelected ? '2px solid #0284c7' : '1px solid #1e293b',
+                backgroundColor: isSelected ? '#15233e' : 'var(--bg-card)',
+                border: isSelected ? '2px solid #0284c7' : '1px solid var(--border-card)',
                 borderRadius: '12px',
                 padding: '1.15rem',
                 cursor: 'pointer',
@@ -139,7 +139,7 @@ export default function WardsPage() {
                 <strong>{w.occupied_beds} / {w.total_beds} beds ({occPct}%)</strong>
               </div>
 
-              <div style={{ width: '100%', height: '6px', backgroundColor: '#0b1120', borderRadius: '3px', overflow: 'hidden' }}>
+              <div style={{ width: '100%', height: '6px', backgroundColor: 'var(--bg-main)', borderRadius: '3px', overflow: 'hidden' }}>
                 <div style={{
                   width: `${Math.min(100, occPct)}%`,
                   height: '100%',
@@ -189,8 +189,8 @@ export default function WardsPage() {
               {Object.entries(bedsByRoom).map(([roomLabel, roomBeds], idx) => (
                 <div key={idx} style={{
                   padding: '1.25rem',
-                  backgroundColor: '#0b1120',
-                  border: '1px solid #1e293b',
+                  backgroundColor: 'var(--bg-main)',
+                  border: '1px solid var(--border-card)',
                   borderRadius: '10px',
                 }}>
                   <div style={{ fontWeight: 700, color: '#e2e8f0', fontSize: '0.92rem', marginBottom: '1rem' }}>

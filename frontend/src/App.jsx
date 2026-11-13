@@ -48,12 +48,12 @@ function AccessDeniedView({ activeTab, user, onNavigate }) {
       <div style={{
         maxWidth: '560px',
         width: '100%',
-        backgroundColor: '#111b2f',
-        border: '1px solid #f43f5e',
+        backgroundColor: 'var(--bg-card)',
+        border: '1px solid rgba(244, 63, 94, 0.4)',
         borderRadius: '16px',
         padding: '2.5rem',
         textAlign: 'center',
-        boxShadow: '0 20px 40px rgba(0, 0, 0, 0.5)',
+        boxShadow: '0 20px 40px rgba(0, 0, 0, 0.6)',
       }}>
         <div style={{
           width: '64px',
@@ -70,22 +70,22 @@ function AccessDeniedView({ activeTab, user, onNavigate }) {
           <ShieldAlert size={36} />
         </div>
 
-        <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: '#fff', marginBottom: '0.5rem' }}>
+        <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: '#f8fafc', marginBottom: '0.5rem' }}>
           403 - Module Access Restricted
         </h2>
 
         <p style={{ fontSize: '0.90rem', color: '#94a3b8', lineHeight: 1.6, marginBottom: '1.5rem' }}>
           Your current stakeholder account (<strong style={{ color: '#fff' }}>{user?.fullName || user?.username}</strong>, role:{' '}
           <span style={{ color: '#fb7185', fontWeight: 700 }}>{roleName}</span>) does not possess authorization to access the{' '}
-          <strong style={{ color: '#38bdf8' }}>{activeTab}</strong> module in this hospital system.
+          <strong style={{ color: '#00A896' }}>{activeTab}</strong> module in this hospital system.
         </p>
 
         <div style={{
-          backgroundColor: '#0b1120',
+          backgroundColor: 'var(--bg-main)',
           borderRadius: '10px',
           padding: '1rem',
           marginBottom: '1.75rem',
-          border: '1px solid #1e293b',
+          border: '1px solid var(--border-card)',
           textAlign: 'left',
         }}>
           <div style={{ fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: '#64748b', fontWeight: 700, marginBottom: '0.6rem' }}>
@@ -98,15 +98,16 @@ function AccessDeniedView({ activeTab, user, onNavigate }) {
                 type="button"
                 onClick={() => onNavigate(mod)}
                 style={{
-                  padding: '0.3rem 0.6rem',
+                  padding: '0.35rem 0.65rem',
                   fontSize: '0.75rem',
                   borderRadius: '6px',
-                  backgroundColor: '#1e293b',
+                  backgroundColor: 'rgba(2, 128, 144, 0.15)',
                   color: '#e2e8f0',
-                  border: '1px solid #334155',
+                  border: '1px solid var(--border-card)',
                   cursor: 'pointer',
                   fontWeight: 600,
                   textTransform: 'capitalize',
+                  transition: 'all 0.15s ease',
                 }}
               >
                 {mod}
@@ -177,20 +178,20 @@ export default function App() {
         alignItems: 'center',
         justifyContent: 'center',
         height: '100vh',
-        backgroundColor: '#0b1120',
-        color: '#fff',
+        backgroundColor: 'var(--bg-main)',
+        color: 'var(--text-main)',
         fontFamily: 'sans-serif',
       }}>
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem' }}>
           <div style={{
             width: '40px',
             height: '40px',
-            border: '4px solid #0284c7',
+            border: '4px solid #00A896',
             borderTopColor: 'transparent',
             borderRadius: '50%',
             animation: 'spin 1s linear infinite',
           }}></div>
-          <p style={{ fontSize: '0.88rem', color: '#94a3b8', fontFamily: 'monospace' }}>
+          <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', fontFamily: 'monospace' }}>
             Initializing PostgreSQL Hospital System...
           </p>
         </div>

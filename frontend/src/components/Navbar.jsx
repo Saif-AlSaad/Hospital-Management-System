@@ -1,11 +1,11 @@
 // ============================================================================
 // HOSPITAL MANAGEMENT SYSTEM (HMS)
-// Top Navigation Header Component
-// Stakeholder Status, Live DB Indicators, and Context Breadcrumbs
+// Top Navigation Header Component - Turquoise Harmony Edition
+// Stakeholder Status, Live DB Indicators, Theme Mode Switcher & Context Breadcrumbs
 // ============================================================================
 
-import React from 'react';
-import { Database, LogOut, Shield, Award, Stethoscope } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Database, LogOut, Award, Sun, Moon, Palette } from 'lucide-react';
 
 const PAGE_TITLES = {
   dashboard: 'Hospital Administration Dashboard',
@@ -28,13 +28,36 @@ const PAGE_TITLES = {
 };
 
 const ROLE_COLORS = {
-  Admin: { text: '#fb7185', bg: 'rgba(244, 63, 94, 0.15)', border: 'rgba(244, 63, 94, 0.35)' },
-  Doctor: { text: '#38bdf8', bg: 'rgba(2, 132, 199, 0.15)', border: 'rgba(2, 132, 199, 0.35)' },
-  Receptionist: { text: '#34d399', bg: 'rgba(16, 185, 129, 0.15)', border: 'rgba(16, 185, 129, 0.35)' },
-  Accountant: { text: '#fbbf24', bg: 'rgba(245, 158, 11, 0.15)', border: 'rgba(245, 158, 11, 0.35)' },
+  Admin: { text: '#05668D', bg: 'rgba(5, 102, 141, 0.12)', border: '#00A896' },
+  Doctor: { text: '#028090', bg: 'rgba(2, 128, 144, 0.12)', border: '#028090' },
+  Receptionist: { text: '#008767', bg: 'rgba(2, 195, 154, 0.14)', border: '#02C39A' },
+  Accountant: { text: '#bfa829', bg: 'rgba(240, 243, 189, 0.65)', border: '#c8b74b' },
 };
 
 export default function Navbar({ activeTab, user, onLogout }) {
+  const [themeMode, setThemeMode] = useState('light');
+
+  useEffect(() => {
+    const saved = localStorage.getItem('hms-theme') || 'light';
+    setThemeMode(saved);
+    if (saved === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const next = themeMode === 'light' ? 'dark' : 'light';
+    setThemeMode(next);
+    localStorage.setItem('hms-theme', next);
+    if (next === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+  };
+
   const pageTitle = PAGE_TITLES[activeTab] || 'Hospital Management System';
   const roleName = user?.role || (user?.roles && user?.roles[0]) || 'Staff';
   const colors = ROLE_COLORS[roleName] || ROLE_COLORS.Admin;
@@ -46,18 +69,35 @@ export default function Navbar({ activeTab, user, onLogout }) {
       </div>
 
       <div className="navbar-right">
+        {/* Turquoise Harmony Palette Tag */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.4rem',
+          fontSize: '0.74rem',
+          color: '#05668D',
+          fontWeight: 700,
+          backgroundColor: '#eaf4f3',
+          padding: '0.28rem 0.65rem',
+          borderRadius: '20px',
+          border: '1px solid #d0e8e5',
+        }}>
+          <Palette size={13} color="#00A896" />
+          <span>Turquoise Harmony</span>
+        </div>
+
         {/* Live Database Status Indicator */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
           gap: '0.45rem',
           fontSize: '0.78rem',
-          color: '#10b981',
-          fontWeight: 600,
-          backgroundColor: 'rgba(16, 185, 129, 0.08)',
+          color: '#008767',
+          fontWeight: 700,
+          backgroundColor: 'rgba(2, 195, 154, 0.15)',
           padding: '0.35rem 0.65rem',
           borderRadius: '20px',
-          border: '1px solid rgba(16, 185, 129, 0.25)',
+          border: '1px solid rgba(2, 195, 154, 0.4)',
         }}>
           <Database size={14} />
           <span>PostgreSQL 18 Connected</span>
@@ -70,20 +110,52 @@ export default function Navbar({ activeTab, user, onLogout }) {
             alignItems: 'center',
             gap: '0.35rem',
             fontSize: '0.76rem',
-            color: '#38bdf8',
-            backgroundColor: 'rgba(2, 132, 199, 0.12)',
+            color: '#028090',
+            backgroundColor: 'rgba(2, 128, 144, 0.12)',
             padding: '0.35rem 0.65rem',
             borderRadius: '20px',
-            border: '1px solid rgba(2, 132, 199, 0.3)',
-            fontWeight: 600,
+            border: '1px solid rgba(2, 128, 144, 0.35)',
+            fontWeight: 700,
           }}>
             <Award size={14} />
             <span>{user.doctorProfile.licenseNumber}</span>
           </div>
         )}
 
+        {/* Theme Switcher Toggle (Fresh Light vs Oceanic Night) */}
+        <button
+          onClick={toggleTheme}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.35rem',
+            padding: '0.35rem 0.65rem',
+            borderRadius: '20px',
+            border: '1px solid var(--border-card)',
+            backgroundColor: 'var(--bg-card)',
+            color: 'var(--text-main)',
+            cursor: 'pointer',
+            fontSize: '0.75rem',
+            fontWeight: 700,
+            transition: 'all 0.15s ease',
+          }}
+          title={themeMode === 'light' ? 'Switch to Oceanic Dark Mode' : 'Switch to Fresh Turquoise Harmony Light Mode'}
+        >
+          {themeMode === 'light' ? (
+            <>
+              <Moon size={14} color="#05668D" />
+              <span>Oceanic</span>
+            </>
+          ) : (
+            <>
+              <Sun size={14} color="#F0F3BD" />
+              <span>Fresh</span>
+            </>
+          )}
+        </button>
+
         {/* Stakeholder Identity Chip */}
-        <div className="user-badge" style={{ border: `1px solid ${colors.border}` }}>
+        <div className="user-badge" style={{ border: `1.5px solid ${colors.border}` }}>
           <div className="user-avatar" style={{ backgroundColor: colors.bg, color: colors.text }}>
             {user?.fullName?.charAt(0) || user?.username?.charAt(0) || 'U'}
           </div>
@@ -98,7 +170,7 @@ export default function Navbar({ activeTab, user, onLogout }) {
                 padding: '0.1rem 0.4rem',
                 borderRadius: '4px',
                 fontSize: '0.68rem',
-                fontWeight: 700,
+                fontWeight: 800,
               }}
             >
               {roleName}

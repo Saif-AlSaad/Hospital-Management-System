@@ -1,7 +1,7 @@
 // ============================================================================
 // HOSPITAL MANAGEMENT SYSTEM (HMS)
 // Database Trigger Audit Trail & Change Data Capture (CDC) Console
-// Administrator Exclusive Module: Row-Level Triggers & Rollback Inspection
+// Turquoise Harmony Theme: Baltic Blue, Teal, Verdigris, Mint Leaf & Cream
 // ============================================================================
 
 import React, { useState, useEffect } from 'react';
@@ -68,17 +68,17 @@ export default function AuditLogsPage({ user, onNavigate }) {
     return matchTable || matchAction || matchUser || matchId || matchLogId;
   });
 
-  // Action badge colors
+  // Action badge colors (Turquoise Harmony)
   const getActionBadge = (action) => {
     switch (action) {
       case 'INSERT':
-        return { bg: 'rgba(16, 185, 129, 0.15)', text: '#34d399', border: 'rgba(16, 185, 129, 0.35)' };
+        return { bg: 'rgba(2, 195, 154, 0.16)', text: '#02C39A', border: 'rgba(2, 195, 154, 0.45)' };
       case 'UPDATE':
-        return { bg: 'rgba(245, 158, 11, 0.15)', text: '#fbbf24', border: 'rgba(245, 158, 11, 0.35)' };
+        return { bg: 'rgba(240, 243, 189, 0.14)', text: '#F0F3BD', border: 'rgba(240, 243, 189, 0.4)' };
       case 'DELETE':
         return { bg: 'rgba(244, 63, 94, 0.15)', text: '#fb7185', border: 'rgba(244, 63, 94, 0.35)' };
       default:
-        return { bg: 'rgba(148, 163, 184, 0.15)', text: '#cbd5e1', border: 'rgba(148, 163, 184, 0.25)' };
+        return { bg: 'rgba(138, 170, 187, 0.15)', text: '#cbd5e1', border: 'rgba(138, 170, 187, 0.25)' };
     }
   };
 
@@ -87,7 +87,7 @@ export default function AuditLogsPage({ user, onNavigate }) {
       header: 'Log #', 
       key: 'log_id', 
       render: row => (
-        <span style={{ fontFamily: 'monospace', fontWeight: 700, color: '#38bdf8', fontSize: '0.82rem' }}>
+        <span style={{ fontFamily: 'monospace', fontWeight: 700, color: '#00A896', fontSize: '0.82rem' }}>
           #{row.log_id}
         </span>
       )
@@ -100,7 +100,7 @@ export default function AuditLogsPage({ user, onNavigate }) {
           <div style={{ fontWeight: 600, color: '#fff', fontSize: '0.84rem' }}>
             {new Date(row.changed_at).toLocaleDateString()}
           </div>
-          <div style={{ fontSize: '0.74rem', color: '#94a3b8' }}>
+          <div style={{ fontSize: '0.74rem', color: '#8aaabb' }}>
             {new Date(row.changed_at).toLocaleTimeString()}
           </div>
         </div>
@@ -132,7 +132,7 @@ export default function AuditLogsPage({ user, onNavigate }) {
       key: 'table_name', 
       render: row => (
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-          <Database size={13} color="#0ea5e9" />
+          <Database size={13} color="#028090" />
           <span style={{ fontFamily: 'monospace', fontWeight: 700, color: '#e2e8f0', fontSize: '0.84rem' }}>
             {row.table_name}
           </span>
@@ -143,29 +143,29 @@ export default function AuditLogsPage({ user, onNavigate }) {
       header: 'Record PK', 
       key: 'record_id', 
       render: row => (
-        <span style={{
-          fontFamily: 'monospace',
-          fontSize: '0.78rem',
-          color: '#cbd5e1',
-          backgroundColor: '#0b1120',
-          padding: '0.15rem 0.45rem',
-          borderRadius: '4px',
-          border: '1px solid #1e293b',
-        }}>
-          PK: {row.record_id}
+        <span style={{ fontFamily: 'monospace', fontWeight: 600, color: '#F0F3BD', fontSize: '0.82rem' }}>
+          ID: {row.record_id}
         </span>
       ) 
     },
     { 
-      header: 'Committed By', 
+      header: 'Executor', 
       key: 'changed_by_user', 
-      render: row => (
-        <span style={{ fontSize: '0.78rem', color: row.changed_by_user ? '#38bdf8' : '#94a3b8' }}>
-          {row.changed_by_user ? `@${row.changed_by_user}` : (
-            <span style={{ fontStyle: 'italic', color: '#64748b' }}>PostgreSQL Trigger</span>
-          )}
+      render: row => row.changed_by_user ? (
+        <span style={{
+          fontSize: '0.76rem',
+          color: '#02C39A',
+          backgroundColor: 'rgba(2, 195, 154, 0.12)',
+          padding: '0.15rem 0.45rem',
+          borderRadius: '4px',
+          fontWeight: 600,
+          border: '1px solid rgba(2, 195, 154, 0.25)',
+        }}>
+          @{row.changed_by_user}
         </span>
-      ) 
+      ) : (
+        <span style={{ fontSize: '0.72rem', color: '#64748b', fontStyle: 'italic' }}>system_trigger</span>
+      )
     },
     {
       header: 'Audit Snapshot',
@@ -187,8 +187,8 @@ export default function AuditLogsPage({ user, onNavigate }) {
     <div>
       {/* Executive Header Banner */}
       <div style={{
-        backgroundColor: '#0f172a',
-        border: '1px solid #1e293b',
+        backgroundColor: 'var(--bg-card)',
+        border: '1px solid var(--border-card)',
         borderRadius: '12px',
         padding: '1.25rem 1.5rem',
         marginBottom: '1.5rem',
@@ -203,12 +203,12 @@ export default function AuditLogsPage({ user, onNavigate }) {
             width: '52px',
             height: '52px',
             borderRadius: '12px',
-            backgroundColor: 'rgba(244, 63, 94, 0.15)',
-            border: '1px solid rgba(244, 63, 94, 0.35)',
+            backgroundColor: 'rgba(5, 102, 141, 0.22)',
+            border: '1px solid rgba(0, 168, 150, 0.45)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#fb7185',
+            color: '#00A896',
           }}>
             <ShieldAlert size={28} />
           </div>
@@ -219,9 +219,9 @@ export default function AuditLogsPage({ user, onNavigate }) {
               </h2>
               <span style={{
                 fontSize: '0.75rem',
-                backgroundColor: 'rgba(244, 63, 94, 0.15)',
-                color: '#fb7185',
-                border: '1px solid rgba(244, 63, 94, 0.35)',
+                backgroundColor: 'rgba(2, 128, 144, 0.2)',
+                color: '#02C39A',
+                border: '1px solid rgba(2, 195, 154, 0.4)',
                 padding: '0.2rem 0.6rem',
                 borderRadius: '6px',
                 fontWeight: 700,
@@ -233,7 +233,7 @@ export default function AuditLogsPage({ user, onNavigate }) {
                 CDC Engine
               </span>
             </div>
-            <p style={{ color: '#94a3b8', fontSize: '0.85rem', margin: '0.25rem 0 0 0' }}>
+            <p style={{ color: '#8aaabb', fontSize: '0.85rem', margin: '0.25rem 0 0 0' }}>
               Autonomous Change Data Capture (CDC) recorded by PostgreSQL AFTER UPDATE / AFTER DELETE triggers into the audit_logs table.
             </p>
           </div>
@@ -254,7 +254,7 @@ export default function AuditLogsPage({ user, onNavigate }) {
         gap: '1rem',
         marginBottom: '1.5rem',
       }}>
-        <div className="card stat-card" style={{ '--stat-color': '#0284c7' }}>
+        <div className="card stat-card" style={{ '--stat-color': '#05668D' }}>
           <div className="stat-info">
             <h3>Total CDC Events</h3>
             <div className="stat-value">{pagination.totalRecords || logs.length}</div>
@@ -265,7 +265,7 @@ export default function AuditLogsPage({ user, onNavigate }) {
           </div>
         </div>
 
-        <div className="card stat-card" style={{ '--stat-color': '#10b981' }}>
+        <div className="card stat-card" style={{ '--stat-color': '#028090' }}>
           <div className="stat-info">
             <h3>Monitored Relations</h3>
             <div className="stat-value">6 Tables</div>
@@ -276,7 +276,7 @@ export default function AuditLogsPage({ user, onNavigate }) {
           </div>
         </div>
 
-        <div className="card stat-card" style={{ '--stat-color': '#f59e0b' }}>
+        <div className="card stat-card" style={{ '--stat-color': '#00A896' }}>
           <div className="stat-info">
             <h3>Audit Storage Engine</h3>
             <div className="stat-value">JSONB</div>
@@ -287,7 +287,7 @@ export default function AuditLogsPage({ user, onNavigate }) {
           </div>
         </div>
 
-        <div className="card stat-card" style={{ '--stat-color': '#f43f5e' }}>
+        <div className="card stat-card" style={{ '--stat-color': '#02C39A' }}>
           <div className="stat-info">
             <h3>Autonomous Trigger</h3>
             <div className="stat-value">PL/pgSQL</div>
@@ -303,7 +303,7 @@ export default function AuditLogsPage({ user, onNavigate }) {
       <div className="card" style={{ marginBottom: '1.25rem' }}>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center' }}>
           <div style={{ flex: 1, minWidth: '220px', position: 'relative' }}>
-            <Search size={16} style={{ position: 'absolute', left: '10px', top: '10px', color: '#64748b' }} />
+            <Search size={16} style={{ position: 'absolute', left: '10px', top: '10px', color: '#5c7e91' }} />
             <input 
               type="text" 
               className="form-control" 
@@ -382,26 +382,26 @@ export default function AuditLogsPage({ user, onNavigate }) {
               justifyContent: 'space-between',
               alignItems: 'center',
               padding: '0.85rem 1.25rem',
-              backgroundColor: '#0b1120',
-              border: '1px solid #1e293b',
+              backgroundColor: 'var(--bg-main)',
+              border: '1px solid var(--border-card)',
               borderRadius: '8px',
               fontSize: '0.82rem',
               flexWrap: 'wrap',
               gap: '0.75rem',
             }}>
               <div>
-                <span style={{ color: '#94a3b8', display: 'block', fontSize: '0.72rem' }}>Relation & Record PK</span>
-                <span style={{ fontFamily: 'monospace', fontWeight: 700, color: '#38bdf8' }}>
+                <span style={{ color: '#8aaabb', display: 'block', fontSize: '0.72rem' }}>Relation & Record PK</span>
+                <span style={{ fontFamily: 'monospace', fontWeight: 700, color: '#00A896' }}>
                   {selectedLog.table_name} (ID: {selectedLog.record_id})
                 </span>
               </div>
 
               <div>
-                <span style={{ color: '#94a3b8', display: 'block', fontSize: '0.72rem' }}>DML Operation</span>
+                <span style={{ color: '#8aaabb', display: 'block', fontSize: '0.72rem' }}>DML Operation</span>
                 <span style={{
                   fontSize: '0.75rem',
                   fontWeight: 800,
-                  color: selectedLog.action === 'INSERT' ? '#34d399' : (selectedLog.action === 'UPDATE' ? '#fbbf24' : '#fb7185'),
+                  color: selectedLog.action === 'INSERT' ? '#02C39A' : (selectedLog.action === 'UPDATE' ? '#F0F3BD' : '#fb7185'),
                   fontFamily: 'monospace',
                 }}>
                   {selectedLog.action}
@@ -409,15 +409,15 @@ export default function AuditLogsPage({ user, onNavigate }) {
               </div>
 
               <div>
-                <span style={{ color: '#94a3b8', display: 'block', fontSize: '0.72rem' }}>Timestamp</span>
+                <span style={{ color: '#8aaabb', display: 'block', fontSize: '0.72rem' }}>Timestamp</span>
                 <span style={{ fontFamily: 'monospace', color: '#fff' }}>
                   {new Date(selectedLog.changed_at).toLocaleString()}
                 </span>
               </div>
 
               <div>
-                <span style={{ color: '#94a3b8', display: 'block', fontSize: '0.72rem' }}>Executor</span>
-                <span style={{ color: '#38bdf8' }}>
+                <span style={{ color: '#8aaabb', display: 'block', fontSize: '0.72rem' }}>Executor</span>
+                <span style={{ color: '#02C39A' }}>
                   {selectedLog.changed_by_user ? `@${selectedLog.changed_by_user}` : 'System Trigger'}
                 </span>
               </div>
@@ -430,8 +430,8 @@ export default function AuditLogsPage({ user, onNavigate }) {
                   <span>Prior State (old_values JSONB)</span>
                 </div>
                 <div style={{
-                  backgroundColor: '#070d18',
-                  border: '1px solid #1e293b',
+                  backgroundColor: 'var(--bg-main)',
+                  border: '1px solid var(--border-card)',
                   borderRadius: '8px',
                   padding: '0.85rem',
                   maxHeight: '320px',
@@ -450,12 +450,12 @@ export default function AuditLogsPage({ user, onNavigate }) {
               </div>
 
               <div>
-                <div style={{ fontSize: '0.78rem', fontWeight: 700, color: '#34d399', marginBottom: '0.4rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                <div style={{ fontSize: '0.78rem', fontWeight: 700, color: '#02C39A', marginBottom: '0.4rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                   <span>New Committed State (new_values JSONB)</span>
                 </div>
                 <div style={{
-                  backgroundColor: '#070d18',
-                  border: '1px solid #1e293b',
+                  backgroundColor: 'var(--bg-main)',
+                  border: '1px solid var(--border-card)',
                   borderRadius: '8px',
                   padding: '0.85rem',
                   maxHeight: '320px',
@@ -474,7 +474,7 @@ export default function AuditLogsPage({ user, onNavigate }) {
               </div>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', paddingTop: '0.5rem', borderTop: '1px solid #1e293b' }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', paddingTop: '0.5rem', borderTop: '1px solid var(--border-card)' }}>
               <button className="btn btn-secondary" onClick={() => setShowDiffModal(false)}>Close</button>
             </div>
           </div>

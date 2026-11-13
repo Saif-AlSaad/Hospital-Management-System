@@ -367,8 +367,8 @@ export default function AppointmentsPage({ user, onNavigate }) {
     <div>
       {/* Front Desk Identity & Operations Banner */}
       <div style={{
-        backgroundColor: '#0f172a',
-        border: '1px solid #1e293b',
+        backgroundColor: 'var(--bg-main)',
+        border: '1px solid var(--border-card)',
         borderRadius: '12px',
         padding: '1.25rem 1.5rem',
         marginBottom: '1.5rem',
@@ -937,8 +937,8 @@ export default function AppointmentsPage({ user, onNavigate }) {
                   key={w.ward_id}
                   style={{
                     padding: '1rem',
-                    backgroundColor: '#0b1120',
-                    border: '1px solid #1e293b',
+                    backgroundColor: 'var(--bg-main)',
+                    border: '1px solid var(--border-card)',
                     borderRadius: '8px',
                   }}
                 >
@@ -955,7 +955,7 @@ export default function AppointmentsPage({ user, onNavigate }) {
                     <span>Occupied: {w.occupied_beds} / {w.total_beds} beds</span>
                     <span>{occPct}%</span>
                   </div>
-                  <div style={{ width: '100%', height: '6px', backgroundColor: '#1e293b', borderRadius: '3px', overflow: 'hidden' }}>
+                  <div style={{ width: '100%', height: '6px', backgroundColor: 'var(--bg-card-hover)', borderRadius: '3px', overflow: 'hidden' }}>
                     <div style={{
                       width: `${Math.min(100, occPct)}%`,
                       height: '100%',

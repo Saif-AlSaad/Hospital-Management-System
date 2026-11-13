@@ -159,15 +159,15 @@ export default function StaffPage({ user, onNavigate }) {
   const getRoleBadgeStyle = (roleName) => {
     switch (roleName) {
       case 'Admin':
-        return { bg: 'rgba(244, 63, 94, 0.15)', text: '#fb7185', border: 'rgba(244, 63, 94, 0.35)' };
+        return { bg: 'rgba(5, 102, 141, 0.22)', text: '#00A896', border: 'rgba(0, 168, 150, 0.45)' };
       case 'Doctor':
-        return { bg: 'rgba(2, 132, 199, 0.15)', text: '#38bdf8', border: 'rgba(2, 132, 199, 0.35)' };
+        return { bg: 'rgba(2, 128, 144, 0.18)', text: '#028090', border: 'rgba(2, 128, 144, 0.45)' };
       case 'Receptionist':
-        return { bg: 'rgba(16, 185, 129, 0.15)', text: '#34d399', border: 'rgba(16, 185, 129, 0.35)' };
+        return { bg: 'rgba(2, 195, 154, 0.16)', text: '#02C39A', border: 'rgba(2, 195, 154, 0.45)' };
       case 'Accountant':
-        return { bg: 'rgba(245, 158, 11, 0.15)', text: '#fbbf24', border: 'rgba(245, 158, 11, 0.35)' };
+        return { bg: 'rgba(240, 243, 189, 0.14)', text: '#F0F3BD', border: 'rgba(240, 243, 189, 0.4)' };
       default:
-        return { bg: 'rgba(148, 163, 184, 0.12)', text: '#cbd5e1', border: 'rgba(148, 163, 184, 0.25)' };
+        return { bg: 'rgba(138, 170, 187, 0.12)', text: '#cbd5e1', border: 'rgba(138, 170, 187, 0.25)' };
     }
   };
 
@@ -191,10 +191,10 @@ export default function StaffPage({ user, onNavigate }) {
         <span style={{
           fontSize: '0.78rem',
           color: '#e2e8f0',
-          backgroundColor: '#0b1120',
+          backgroundColor: 'var(--bg-main)',
           padding: '0.2rem 0.6rem',
           borderRadius: '6px',
-          border: '1px solid #1e293b',
+          border: '1px solid var(--border-card)',
           fontWeight: 600,
         }}>
           {row.department_name}
@@ -236,12 +236,12 @@ export default function StaffPage({ user, onNavigate }) {
         <span style={{
           fontSize: '0.76rem',
           fontFamily: 'monospace',
-          color: '#38bdf8',
+          color: '#00A896',
           fontWeight: 700,
-          backgroundColor: 'rgba(2, 132, 199, 0.1)',
+          backgroundColor: 'rgba(0, 168, 150, 0.14)',
           padding: '0.15rem 0.5rem',
           borderRadius: '4px',
-          border: '1px solid rgba(2, 132, 199, 0.25)',
+          border: '1px solid rgba(0, 168, 150, 0.35)',
         }}>
           @{row.username}
         </span>
@@ -255,11 +255,11 @@ export default function StaffPage({ user, onNavigate }) {
       render: row => (
         <div style={{ fontSize: '0.78rem', color: '#cbd5e1' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-            <Phone size={12} color="#94a3b8" />
+            <Phone size={12} color="#00A896" />
             <span>{row.phone}</span>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: '#94a3b8', fontSize: '0.74rem' }}>
-            <Mail size={12} color="#64748b" />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: '#8aaabb', fontSize: '0.74rem' }}>
+            <Mail size={12} color="#5c7e91" />
             <span>{row.email}</span>
           </div>
         </div>
@@ -280,8 +280,8 @@ export default function StaffPage({ user, onNavigate }) {
     <div>
       {/* Executive Header Banner */}
       <div style={{
-        backgroundColor: '#0f172a',
-        border: '1px solid #1e293b',
+        backgroundColor: 'var(--bg-card)',
+        border: '1px solid var(--border-card)',
         borderRadius: '12px',
         padding: '1.25rem 1.5rem',
         marginBottom: '1.5rem',
@@ -296,12 +296,12 @@ export default function StaffPage({ user, onNavigate }) {
             width: '52px',
             height: '52px',
             borderRadius: '12px',
-            backgroundColor: 'rgba(2, 132, 199, 0.15)',
-            border: '1px solid rgba(2, 132, 199, 0.35)',
+            backgroundColor: 'rgba(5, 102, 141, 0.22)',
+            border: '1px solid rgba(0, 168, 150, 0.45)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#38bdf8',
+            color: '#00A896',
           }}>
             <Users size={28} />
           </div>
@@ -312,9 +312,9 @@ export default function StaffPage({ user, onNavigate }) {
               </h2>
               <span style={{
                 fontSize: '0.75rem',
-                backgroundColor: 'rgba(244, 63, 94, 0.15)',
-                color: '#fb7185',
-                border: '1px solid rgba(244, 63, 94, 0.35)',
+                backgroundColor: 'rgba(2, 128, 144, 0.2)',
+                color: '#02C39A',
+                border: '1px solid rgba(2, 195, 154, 0.4)',
                 padding: '0.2rem 0.6rem',
                 borderRadius: '6px',
                 fontWeight: 700,
@@ -326,7 +326,7 @@ export default function StaffPage({ user, onNavigate }) {
                 Administrator Governance
               </span>
             </div>
-            <p style={{ color: '#94a3b8', fontSize: '0.85rem', margin: '0.25rem 0 0 0' }}>
+            <p style={{ color: '#8aaabb', fontSize: '0.85rem', margin: '0.25rem 0 0 0' }}>
               Management of clinical and administrative personnel, PostgreSQL user credentials, and multi-stakeholder role allocation.
             </p>
           </div>
@@ -347,9 +347,9 @@ export default function StaffPage({ user, onNavigate }) {
       {/* Toast Alert */}
       {toastMessage && (
         <div style={{
-          backgroundColor: 'rgba(16, 185, 129, 0.15)',
-          border: '1px solid rgba(16, 185, 129, 0.35)',
-          color: '#34d399',
+          backgroundColor: 'rgba(2, 195, 154, 0.15)',
+          border: '1px solid rgba(2, 195, 154, 0.35)',
+          color: '#02C39A',
           borderRadius: '8px',
           padding: '0.85rem 1.25rem',
           marginBottom: '1.25rem',
@@ -370,7 +370,7 @@ export default function StaffPage({ user, onNavigate }) {
         gap: '1rem',
         marginBottom: '1.5rem',
       }}>
-        <div className="card stat-card" style={{ '--stat-color': '#0284c7' }}>
+        <div className="card stat-card" style={{ '--stat-color': '#05668D' }}>
           <div className="stat-info">
             <h3>Total Staff Personnel</h3>
             <div className="stat-value">{totalStaffCount}</div>
@@ -381,7 +381,7 @@ export default function StaffPage({ user, onNavigate }) {
           </div>
         </div>
 
-        <div className="card stat-card" style={{ '--stat-color': '#0ea5e9' }}>
+        <div className="card stat-card" style={{ '--stat-color': '#028090' }}>
           <div className="stat-info">
             <h3>Active Physicians</h3>
             <div className="stat-value">{doctorCount}</div>
@@ -392,7 +392,7 @@ export default function StaffPage({ user, onNavigate }) {
           </div>
         </div>
 
-        <div className="card stat-card" style={{ '--stat-color': '#10b981' }}>
+        <div className="card stat-card" style={{ '--stat-color': '#00A896' }}>
           <div className="stat-info">
             <h3>Provisioned Accounts</h3>
             <div className="stat-value">{userAccountCount}</div>
@@ -403,7 +403,7 @@ export default function StaffPage({ user, onNavigate }) {
           </div>
         </div>
 
-        <div className="card stat-card" style={{ '--stat-color': '#f43f5e' }}>
+        <div className="card stat-card" style={{ '--stat-color': '#02C39A' }}>
           <div className="stat-info">
             <h3>Root Administrators</h3>
             <div className="stat-value">{adminCount}</div>
@@ -587,9 +587,9 @@ export default function StaffPage({ user, onNavigate }) {
             </div>
           </div>
 
-          <div style={{ marginTop: '1.25rem', paddingTop: '1rem', borderTop: '1px solid #1e293b' }}>
+          <div style={{ marginTop: '1.25rem', paddingTop: '1rem', borderTop: '1px solid var(--border-card)' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
-              <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#38bdf8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#00A896', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                 2. User Account & RBAC Privileges
               </div>
               <label style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', color: '#cbd5e1', cursor: 'pointer' }}>
@@ -597,7 +597,7 @@ export default function StaffPage({ user, onNavigate }) {
                   type="checkbox" 
                   checked={staffForm.createAccount}
                   onChange={(e) => setStaffForm({ ...staffForm, createAccount: e.target.checked })}
-                  style={{ accentColor: '#0284c7' }}
+                  style={{ accentColor: '#00A896' }}
                 />
                 <span>Provision Login Account</span>
               </label>
@@ -605,8 +605,8 @@ export default function StaffPage({ user, onNavigate }) {
 
             {staffForm.createAccount && (
               <div style={{
-                backgroundColor: '#0b1120',
-                border: '1px solid #1e293b',
+                backgroundColor: 'var(--bg-main)',
+                border: '1px solid var(--border-card)',
                 borderRadius: '8px',
                 padding: '1rem',
               }}>
