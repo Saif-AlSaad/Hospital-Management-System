@@ -26,7 +26,13 @@ import {
   CheckCircle2,
   Lock,
   ChevronRight,
-  FileSpreadsheet
+  FileSpreadsheet,
+  Building2,
+  Settings,
+  History,
+  Layers,
+  Cpu,
+  Clock
 } from 'lucide-react';
 import { api } from '../services/api';
 
@@ -146,7 +152,7 @@ export default function DashboardPage({ user, onNavigate }) {
         border: '1px solid #1e293b',
         borderRadius: '12px',
         padding: '1.25rem 1.5rem',
-        marginBottom: '1.5rem',
+        marginBottom: '1.25rem',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -208,6 +214,128 @@ export default function DashboardPage({ user, onNavigate }) {
         </div>
       </div>
 
+      {/* Administrator Live Telemetry Strip */}
+      {isAdmin && (
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))',
+          gap: '0.85rem',
+          marginBottom: '1.5rem',
+        }}>
+          <div style={{
+            backgroundColor: '#0b1120',
+            border: '1px solid #1e293b',
+            borderRadius: '10px',
+            padding: '0.85rem 1rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.75rem',
+          }}>
+            <div style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '8px',
+              backgroundColor: 'rgba(56, 189, 248, 0.12)',
+              color: '#38bdf8',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              <Database size={18} />
+            </div>
+            <div>
+              <div style={{ fontSize: '0.72rem', color: '#94a3b8', fontWeight: 600, textTransform: 'uppercase' }}>DBMS Engine</div>
+              <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#fff' }}>PostgreSQL 18.6</div>
+              <div style={{ fontSize: '0.68rem', color: '#34d399' }}>Pure SQL • 3NF Normalized</div>
+            </div>
+          </div>
+
+          <div style={{
+            backgroundColor: '#0b1120',
+            border: '1px solid #1e293b',
+            borderRadius: '10px',
+            padding: '0.85rem 1rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.75rem',
+          }}>
+            <div style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '8px',
+              backgroundColor: 'rgba(244, 63, 94, 0.12)',
+              color: '#fb7185',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              <History size={18} />
+            </div>
+            <div>
+              <div style={{ fontSize: '0.72rem', color: '#94a3b8', fontWeight: 600, textTransform: 'uppercase' }}>CDC Audit Triggers</div>
+              <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#fff' }}>Autonomous Logs</div>
+              <div style={{ fontSize: '0.68rem', color: '#38bdf8' }}>Row-Level Before/After Diffs</div>
+            </div>
+          </div>
+
+          <div style={{
+            backgroundColor: '#0b1120',
+            border: '1px solid #1e293b',
+            borderRadius: '10px',
+            padding: '0.85rem 1rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.75rem',
+          }}>
+            <div style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '8px',
+              backgroundColor: 'rgba(16, 185, 129, 0.12)',
+              color: '#34d399',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              <Cpu size={18} />
+            </div>
+            <div>
+              <div style={{ fontSize: '0.72rem', color: '#94a3b8', fontWeight: 600, textTransform: 'uppercase' }}>Connection Pool</div>
+              <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#fff' }}>20 Client Clients</div>
+              <div style={{ fontSize: '0.68rem', color: '#34d399' }}>Zero Connection Leaks</div>
+            </div>
+          </div>
+
+          <div style={{
+            backgroundColor: '#0b1120',
+            border: '1px solid #1e293b',
+            borderRadius: '10px',
+            padding: '0.85rem 1rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.75rem',
+          }}>
+            <div style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '8px',
+              backgroundColor: 'rgba(245, 158, 11, 0.12)',
+              color: '#fbbf24',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              <DollarSign size={18} />
+            </div>
+            <div>
+              <div style={{ fontSize: '0.72rem', color: '#94a3b8', fontWeight: 600, textTransform: 'uppercase' }}>Fiscal Currency</div>
+              <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#fff' }}>BDT (৳) Bangladesh</div>
+              <div style={{ fontSize: '0.68rem', color: '#fbbf24' }}>MFS & Cash Handled</div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Success / Alert Toast */}
       {mvMessage && (
         <div style={{
@@ -247,13 +375,13 @@ export default function DashboardPage({ user, onNavigate }) {
         </div>
       )}
 
-      {/* Administrator Governance Quick Navigation Bar */}
+      {/* Administrator Governance Quick Navigation Grid */}
       {isAdmin && onNavigate && (
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
           gap: '0.85rem',
-          marginBottom: '1.5rem',
+          marginBottom: '1.75rem',
         }}>
           <button
             onClick={() => onNavigate('audit-logs')}
@@ -267,13 +395,14 @@ export default function DashboardPage({ user, onNavigate }) {
               border: '1px solid #1e293b',
               backgroundColor: '#0b1120',
               textAlign: 'left',
+              transition: 'all 0.15s ease',
             }}
           >
             <div style={{ padding: '0.5rem', borderRadius: '8px', backgroundColor: 'rgba(244, 63, 94, 0.15)', color: '#fb7185' }}>
               <ShieldCheck size={20} />
             </div>
             <div>
-              <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.88rem' }}>Trigger Audit Logs</div>
+              <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.86rem' }}>Trigger Audit Logs</div>
               <div style={{ fontSize: '0.72rem', color: '#94a3b8' }}>Inspect SQL Diffs & Rollbacks</div>
             </div>
           </button>
@@ -290,14 +419,63 @@ export default function DashboardPage({ user, onNavigate }) {
               border: '1px solid #1e293b',
               backgroundColor: '#0b1120',
               textAlign: 'left',
+              transition: 'all 0.15s ease',
             }}
           >
             <div style={{ padding: '0.5rem', borderRadius: '8px', backgroundColor: 'rgba(2, 132, 199, 0.15)', color: '#38bdf8' }}>
               <Users size={20} />
             </div>
             <div>
-              <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.88rem' }}>Staff & RBAC Accounts</div>
+              <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.86rem' }}>Staff & RBAC Accounts</div>
               <div style={{ fontSize: '0.72rem', color: '#94a3b8' }}>Manage System Users & Roles</div>
+            </div>
+          </button>
+
+          <button
+            onClick={() => onNavigate('departments')}
+            className="card"
+            style={{
+              padding: '0.85rem 1rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.75rem',
+              cursor: 'pointer',
+              border: '1px solid #1e293b',
+              backgroundColor: '#0b1120',
+              textAlign: 'left',
+              transition: 'all 0.15s ease',
+            }}
+          >
+            <div style={{ padding: '0.5rem', borderRadius: '8px', backgroundColor: 'rgba(168, 85, 247, 0.15)', color: '#c084fc' }}>
+              <Building2 size={20} />
+            </div>
+            <div>
+              <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.86rem' }}>Departments</div>
+              <div style={{ fontSize: '0.72rem', color: '#94a3b8' }}>Clinical Units & Head Doctors</div>
+            </div>
+          </button>
+
+          <button
+            onClick={() => onNavigate('doctors')}
+            className="card"
+            style={{
+              padding: '0.85rem 1rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.75rem',
+              cursor: 'pointer',
+              border: '1px solid #1e293b',
+              backgroundColor: '#0b1120',
+              textAlign: 'left',
+              transition: 'all 0.15s ease',
+            }}
+          >
+            <div style={{ padding: '0.5rem', borderRadius: '8px', backgroundColor: 'rgba(14, 165, 233, 0.15)', color: '#38bdf8' }}>
+              <UserCheck size={20} />
+            </div>
+            <div>
+              <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.86rem' }}>Medical Physicians</div>
+              <div style={{ fontSize: '0.72rem', color: '#94a3b8' }}>Specialists & Schedules</div>
             </div>
           </button>
 
@@ -313,14 +491,15 @@ export default function DashboardPage({ user, onNavigate }) {
               border: '1px solid #1e293b',
               backgroundColor: '#0b1120',
               textAlign: 'left',
+              transition: 'all 0.15s ease',
             }}
           >
             <div style={{ padding: '0.5rem', borderRadius: '8px', backgroundColor: 'rgba(16, 185, 129, 0.15)', color: '#34d399' }}>
               <BedDouble size={20} />
             </div>
             <div>
-              <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.88rem' }}>Wards & Bed Capacity</div>
-              <div style={{ fontSize: '0.72rem', color: '#94a3b8' }}>Infrastructure Allocations</div>
+              <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.86rem' }}>Wards & Bed Capacity</div>
+              <div style={{ fontSize: '0.72rem', color: '#94a3b8' }}>Interactive Bed Occupancy</div>
             </div>
           </button>
 
@@ -336,14 +515,39 @@ export default function DashboardPage({ user, onNavigate }) {
               border: '1px solid #1e293b',
               backgroundColor: '#0b1120',
               textAlign: 'left',
+              transition: 'all 0.15s ease',
             }}
           >
             <div style={{ padding: '0.5rem', borderRadius: '8px', backgroundColor: 'rgba(245, 158, 11, 0.15)', color: '#fbbf24' }}>
               <FileSpreadsheet size={20} />
             </div>
             <div>
-              <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.88rem' }}>EXPLAIN Analytics</div>
-              <div style={{ fontSize: '0.72rem', color: '#94a3b8' }}>Database Query Benchmark</div>
+              <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.86rem' }}>EXPLAIN Analytics</div>
+              <div style={{ fontSize: '0.72rem', color: '#94a3b8' }}>SQL Benchmark & Viva Hub</div>
+            </div>
+          </button>
+
+          <button
+            onClick={() => onNavigate('settings')}
+            className="card"
+            style={{
+              padding: '0.85rem 1rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.75rem',
+              cursor: 'pointer',
+              border: '1px solid #1e293b',
+              backgroundColor: '#0b1120',
+              textAlign: 'left',
+              transition: 'all 0.15s ease',
+            }}
+          >
+            <div style={{ padding: '0.5rem', borderRadius: '8px', backgroundColor: 'rgba(148, 163, 184, 0.15)', color: '#94a3b8' }}>
+              <Settings size={20} />
+            </div>
+            <div>
+              <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.86rem' }}>System Settings</div>
+              <div style={{ fontSize: '0.72rem', color: '#94a3b8' }}>DBMS Parameters & RBAC Matrix</div>
             </div>
           </button>
         </div>

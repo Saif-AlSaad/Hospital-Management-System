@@ -1,17 +1,28 @@
+// ============================================================================
+// HOSPITAL MANAGEMENT SYSTEM (HMS)
+// Staff Directory & RBAC User Management Page
+// Administrator Exclusive Module: HR Records & Role Provisioning
+// ============================================================================
+
 import React, { useState, useEffect } from 'react';
 import { 
   Users, Plus, Search, Filter, Shield, 
-  Mail, Phone, Calendar, CheckCircle2, UserCheck
+  Mail, Phone, Calendar, CheckCircle2, UserCheck,
+  Building2, Key, RefreshCw, AlertCircle, ShieldAlert,
+  Award, Lock
 } from 'lucide-react';
 import DataTable from '../components/DataTable';
 import Modal from '../components/Modal';
 import { fetchStaff, createStaff, fetchDepartments } from '../services/api';
 
-export default function StaffPage({ user }) {
+export default function StaffPage({ user, onNavigate }) {
   const [staffList, setStaffList] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [selectedDept, setSelectedDept] = useState('');
+  const [selectedRole, setSelectedRole] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
+  const [toastMessage, setToastMessage] = useState(null);
 
   // Add Staff Modal
   const [showAddModal, setShowAddModal] = useState(false);
@@ -19,8 +30,8 @@ export default function StaffPage({ user }) {
     firstName: '',
     lastName: '',
     gender: 'Male',
-    dateOfBirth: '1990-05-15',
-    phone: '+1-555-0100',
+    dateOfBirth: '1992-05-15',
+    phone: '01711000000',
     email: '',
     departmentId: '',
     roleId: '4', // Default Receptionist
@@ -29,6 +40,7 @@ export default function StaffPage({ user }) {
     password: 'password123'
   });
   const [submitting, setSubmitting] = useState(false);
+  const [formError, setFormError] = useState(null);
 
   useEffect(() => {
     loadDepartments();
@@ -38,12 +50,13 @@ export default function StaffPage({ user }) {
   const loadDepartments = async () => {
     try {
       const res = await fetchDepartments();
-      setDepartments(res.data || []);
-      if (res.data?.length > 0 && !staffForm.departmentId) {
-        setStaffForm(prev => ({ ...prev, departmentId: res.data[0].department_id }));
+      const depts = res.data || [];
+      setDepartments(depts);
+      if (depts.length > 0 && !staffForm.departmentId) {
+        setStaffForm(prev => ({ ...prev, departmentId: depts[0].department_id }));
       }
     } catch (err) {
-      console.error(err);
+      console.error('Failed to load departments:', err);
     }
   };
 
@@ -55,19 +68,20 @@ export default function StaffPage({ user }) {
       });
       setStaffList(res.data || []);
     } catch (err) {
-      console.error(err);
+      console.error('Failed to load staff directory:', err);
     } finally {
       setLoading(false);
     }
   };
 
   const openAddStaff = () => {
+    setFormError(null);
     setStaffForm({
       firstName: '',
       lastName: '',
       gender: 'Male',
-      dateOfBirth: '1990-05-15',
-      phone: `+1-555-0${Math.floor(100 + Math.random() * 899)}`,
+      dateOfBirth: '1992-05-15',
+      phone: `0171${Math.floor(1000000 + Math.random() * 8999999)}`,
       email: '',
       departmentId: departments[0]?.department_id || 1,
       roleId: '4',
@@ -80,110 +94,345 @@ export default function StaffPage({ user }) {
 
   const handleSaveStaff = async (e) => {
     e.preventDefault();
+    setFormError(null);
+
     if (!staffForm.firstName || !staffForm.lastName || !staffForm.email) {
-      alert('First name, last name, and email are mandatory.');
+      setFormError('First name, last name, and email are mandatory.');
+      return;
+    }
+
+    if (staffForm.createAccount && (!staffForm.username || !staffForm.password)) {
+      setFormError('Username and password are required to provision an active user account.');
       return;
     }
 
     setSubmitting(true);
     try {
       await createStaff({
-        firstName: staffForm.firstName,
-        lastName: staffForm.lastName,
+        firstName: staffForm.firstName.trim(),
+        lastName: staffForm.lastName.trim(),
         gender: staffForm.gender,
         dateOfBirth: staffForm.dateOfBirth,
-        phone: staffForm.phone,
-        email: staffForm.email,
+        phone: staffForm.phone.trim(),
+        email: staffForm.email.trim(),
         departmentId: parseInt(staffForm.departmentId),
         roleId: staffForm.createAccount ? parseInt(staffForm.roleId) : null,
-        username: staffForm.createAccount ? staffForm.username : null,
+        username: staffForm.createAccount ? staffForm.username.trim() : null,
         password: staffForm.createAccount ? staffForm.password : null
       });
 
-      alert('Staff member and user credentials registered successfully!');
+      setToastMessage(`Staff member "${staffForm.firstName} ${staffForm.lastName}" registered successfully!`);
+      setTimeout(() => setToastMessage(null), 5000);
       setShowAddModal(false);
       loadStaff();
     } catch (err) {
-      alert('Registration failed: ' + (err.response?.data?.message || err.message));
+      setFormError(err.response?.data?.message || err.message || 'Failed to register staff member.');
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  // Filter staff locally by search query and role filter
+  const filteredStaff = staffList.filter((s) => {
+    if (selectedRole) {
+      const hasRole = Array.isArray(s.roles) && s.roles.includes(selectedRole);
+      if (!hasRole) return false;
+    }
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase().trim();
+      const matchName = (s.full_name || '').toLowerCase().includes(q);
+      const matchUsername = (s.username || '').toLowerCase().includes(q);
+      const matchEmail = (s.email || '').toLowerCase().includes(q);
+      const matchPhone = (s.phone || '').toLowerCase().includes(q);
+      const matchDept = (s.department_name || '').toLowerCase().includes(q);
+      return matchName || matchUsername || matchEmail || matchPhone || matchDept;
+    }
+    return true;
+  });
+
+  // Telemetry Metrics
+  const totalStaffCount = staffList.length;
+  const userAccountCount = staffList.filter(s => !!s.username).length;
+  const doctorCount = staffList.filter(s => Array.isArray(s.roles) && s.roles.includes('Doctor')).length;
+  const adminCount = staffList.filter(s => Array.isArray(s.roles) && s.roles.includes('Admin')).length;
+
+  const getRoleBadgeStyle = (roleName) => {
+    switch (roleName) {
+      case 'Admin':
+        return { bg: 'rgba(244, 63, 94, 0.15)', text: '#fb7185', border: 'rgba(244, 63, 94, 0.35)' };
+      case 'Doctor':
+        return { bg: 'rgba(2, 132, 199, 0.15)', text: '#38bdf8', border: 'rgba(2, 132, 199, 0.35)' };
+      case 'Receptionist':
+        return { bg: 'rgba(16, 185, 129, 0.15)', text: '#34d399', border: 'rgba(16, 185, 129, 0.35)' };
+      case 'Accountant':
+        return { bg: 'rgba(245, 158, 11, 0.15)', text: '#fbbf24', border: 'rgba(245, 158, 11, 0.35)' };
+      default:
+        return { bg: 'rgba(148, 163, 184, 0.12)', text: '#cbd5e1', border: 'rgba(148, 163, 184, 0.25)' };
     }
   };
 
   const columns = [
     { 
       header: 'Staff Member', 
+      key: 'full_name',
       render: row => (
         <div>
-          <span className="font-semibold text-foreground">{row.full_name}</span>
-          <span className="text-xs text-muted block">{row.gender} • Born {new Date(row.date_of_birth).toLocaleDateString()}</span>
+          <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.88rem' }}>{row.full_name}</div>
+          <div style={{ fontSize: '0.74rem', color: '#94a3b8' }}>
+            {row.gender} • Born {new Date(row.date_of_birth).toLocaleDateString()}
+          </div>
         </div>
       ) 
     },
-    { header: 'Department', accessor: 'department_name' },
     { 
-      header: 'Assigned Roles', 
+      header: 'Department', 
+      key: 'department_name',
       render: row => (
-        <div className="flex flex-wrap gap-1">
-          {row.roles?.filter(Boolean).length > 0 ? (
-            row.roles.filter(Boolean).map((r, i) => (
-              <span key={i} className="badge badge-info text-xs">{r}</span>
-            ))
+        <span style={{
+          fontSize: '0.78rem',
+          color: '#e2e8f0',
+          backgroundColor: '#0b1120',
+          padding: '0.2rem 0.6rem',
+          borderRadius: '6px',
+          border: '1px solid #1e293b',
+          fontWeight: 600,
+        }}>
+          {row.department_name}
+        </span>
+      )
+    },
+    { 
+      header: 'RBAC Roles', 
+      key: 'roles',
+      render: row => (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem' }}>
+          {Array.isArray(row.roles) && row.roles.filter(Boolean).length > 0 ? (
+            row.roles.filter(Boolean).map((r, i) => {
+              const badgeStyle = getRoleBadgeStyle(r);
+              return (
+                <span key={i} style={{
+                  fontSize: '0.72rem',
+                  fontWeight: 700,
+                  backgroundColor: badgeStyle.bg,
+                  color: badgeStyle.text,
+                  border: `1px solid ${badgeStyle.border}`,
+                  padding: '0.15rem 0.5rem',
+                  borderRadius: '6px',
+                }}>
+                  {r}
+                </span>
+              );
+            })
           ) : (
-            <span className="badge badge-neutral text-xs">Staff Only</span>
+            <span style={{ fontSize: '0.72rem', color: '#64748b', fontStyle: 'italic' }}>Staff Only</span>
           )}
         </div>
       ) 
     },
     { 
       header: 'User Account', 
+      key: 'username',
       render: row => row.username ? (
-        <span className="text-xs font-mono text-primary font-semibold">@{row.username}</span>
-      ) : <span className="text-xs text-muted italic">No Login</span> 
+        <span style={{
+          fontSize: '0.76rem',
+          fontFamily: 'monospace',
+          color: '#38bdf8',
+          fontWeight: 700,
+          backgroundColor: 'rgba(2, 132, 199, 0.1)',
+          padding: '0.15rem 0.5rem',
+          borderRadius: '4px',
+          border: '1px solid rgba(2, 132, 199, 0.25)',
+        }}>
+          @{row.username}
+        </span>
+      ) : (
+        <span style={{ fontSize: '0.72rem', color: '#64748b', fontStyle: 'italic' }}>No User Account</span>
+      ) 
     },
     { 
-      header: 'Contact', 
+      header: 'Contact Information', 
+      key: 'phone',
       render: row => (
-        <div className="text-xs text-muted">
-          <div>{row.phone}</div>
-          <div>{row.email}</div>
+        <div style={{ fontSize: '0.78rem', color: '#cbd5e1' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+            <Phone size={12} color="#94a3b8" />
+            <span>{row.phone}</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: '#94a3b8', fontSize: '0.74rem' }}>
+            <Mail size={12} color="#64748b" />
+            <span>{row.email}</span>
+          </div>
         </div>
       ) 
     },
     { 
       header: 'Status', 
-      render: row => <span className="badge badge-success">{row.employment_status}</span> 
+      key: 'employment_status',
+      render: row => (
+        <span className="badge badge-green" style={{ fontSize: '0.72rem' }}>
+          {row.employment_status || 'Active'}
+        </span>
+      ) 
     }
   ];
 
   return (
-    <div className="page-container">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="page-title flex items-center gap-2">
-            <Users className="text-primary" /> Hospital Staff & Administration
-          </h1>
-          <p className="page-subtitle">Manage clinical and administrative personnel, login accounts, and role-based permissions</p>
+    <div>
+      {/* Executive Header Banner */}
+      <div style={{
+        backgroundColor: '#0f172a',
+        border: '1px solid #1e293b',
+        borderRadius: '12px',
+        padding: '1.25rem 1.5rem',
+        marginBottom: '1.5rem',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
+        gap: '1rem',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <div style={{
+            width: '52px',
+            height: '52px',
+            borderRadius: '12px',
+            backgroundColor: 'rgba(2, 132, 199, 0.15)',
+            border: '1px solid rgba(2, 132, 199, 0.35)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#38bdf8',
+          }}>
+            <Users size={28} />
+          </div>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
+              <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: '#fff', margin: 0 }}>
+                Hospital Staff Directory & RBAC Security
+              </h2>
+              <span style={{
+                fontSize: '0.75rem',
+                backgroundColor: 'rgba(244, 63, 94, 0.15)',
+                color: '#fb7185',
+                border: '1px solid rgba(244, 63, 94, 0.35)',
+                padding: '0.2rem 0.6rem',
+                borderRadius: '6px',
+                fontWeight: 700,
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.3rem',
+              }}>
+                <Shield size={12} />
+                Administrator Governance
+              </span>
+            </div>
+            <p style={{ color: '#94a3b8', fontSize: '0.85rem', margin: '0.25rem 0 0 0' }}>
+              Management of clinical and administrative personnel, PostgreSQL user credentials, and multi-stakeholder role allocation.
+            </p>
+          </div>
         </div>
-        <div>
-          {user?.role === 'Admin' && (
-            <button className="btn btn-primary" onClick={openAddStaff}>
-              <Plus size={16} /> Register New Staff
-            </button>
-          )}
+
+        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+          <button className="btn btn-secondary btn-sm" onClick={loadStaff}>
+            <RefreshCw size={14} className={loading ? 'spin' : ''} />
+            <span>Refresh</span>
+          </button>
+          <button className="btn btn-primary btn-sm" onClick={openAddStaff}>
+            <Plus size={15} />
+            <span>Register New Staff</span>
+          </button>
         </div>
       </div>
 
-      {/* Filters */}
-      <div className="card mb-6">
-        <div className="flex flex-wrap gap-4 items-center">
-          <div className="flex items-center gap-2">
-            <Filter size={16} className="text-muted" />
-            <span className="text-sm font-medium">Department:</span>
+      {/* Toast Alert */}
+      {toastMessage && (
+        <div style={{
+          backgroundColor: 'rgba(16, 185, 129, 0.15)',
+          border: '1px solid rgba(16, 185, 129, 0.35)',
+          color: '#34d399',
+          borderRadius: '8px',
+          padding: '0.85rem 1.25rem',
+          marginBottom: '1.25rem',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          fontSize: '0.88rem',
+        }}>
+          <CheckCircle2 size={18} />
+          <span>{toastMessage}</span>
+        </div>
+      )}
+
+      {/* Staff Telemetry KPI Bar */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))',
+        gap: '1rem',
+        marginBottom: '1.5rem',
+      }}>
+        <div className="card stat-card" style={{ '--stat-color': '#0284c7' }}>
+          <div className="stat-info">
+            <h3>Total Staff Personnel</h3>
+            <div className="stat-value">{totalStaffCount}</div>
+            <div className="stat-subtext">Across {departments.length} departments</div>
           </div>
+          <div className="stat-icon-wrapper">
+            <Users size={22} />
+          </div>
+        </div>
+
+        <div className="card stat-card" style={{ '--stat-color': '#0ea5e9' }}>
+          <div className="stat-info">
+            <h3>Active Physicians</h3>
+            <div className="stat-value">{doctorCount}</div>
+            <div className="stat-subtext">BMDC verified doctors</div>
+          </div>
+          <div className="stat-icon-wrapper">
+            <UserCheck size={22} />
+          </div>
+        </div>
+
+        <div className="card stat-card" style={{ '--stat-color': '#10b981' }}>
+          <div className="stat-info">
+            <h3>Provisioned Accounts</h3>
+            <div className="stat-value">{userAccountCount}</div>
+            <div className="stat-subtext">Active login credentials</div>
+          </div>
+          <div className="stat-icon-wrapper">
+            <Key size={22} />
+          </div>
+        </div>
+
+        <div className="card stat-card" style={{ '--stat-color': '#f43f5e' }}>
+          <div className="stat-info">
+            <h3>Root Administrators</h3>
+            <div className="stat-value">{adminCount}</div>
+            <div className="stat-subtext">Superuser privileges</div>
+          </div>
+          <div className="stat-icon-wrapper">
+            <Shield size={22} />
+          </div>
+        </div>
+      </div>
+
+      {/* Filter and Search Bar */}
+      <div className="card" style={{ marginBottom: '1.25rem' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center' }}>
+          <div style={{ flex: 1, minWidth: '240px', position: 'relative' }}>
+            <Search size={16} style={{ position: 'absolute', left: '10px', top: '10px', color: '#64748b' }} />
+            <input 
+              type="text" 
+              className="form-control" 
+              style={{ paddingLeft: '2.2rem', fontSize: '0.85rem' }}
+              placeholder="Search by staff name, username, email, or department..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+
           <select 
-            className="input text-sm w-64" 
+            className="form-control" 
+            style={{ width: '220px', fontSize: '0.85rem' }}
             value={selectedDept} 
             onChange={(e) => setSelectedDept(e.target.value)}
           >
@@ -192,63 +441,118 @@ export default function StaffPage({ user }) {
               <option key={d.department_id} value={d.department_id}>{d.department_name}</option>
             ))}
           </select>
-          {selectedDept && (
+
+          <select 
+            className="form-control" 
+            style={{ width: '180px', fontSize: '0.85rem' }}
+            value={selectedRole} 
+            onChange={(e) => setSelectedRole(e.target.value)}
+          >
+            <option value="">All RBAC Roles</option>
+            <option value="Admin">Administrator</option>
+            <option value="Doctor">Doctor</option>
+            <option value="Receptionist">Receptionist</option>
+            <option value="Accountant">Accountant</option>
+          </select>
+
+          {(searchQuery || selectedDept || selectedRole) && (
             <button 
               className="btn btn-secondary btn-sm"
-              onClick={() => setSelectedDept('')}
+              onClick={() => { setSearchQuery(''); setSelectedDept(''); setSelectedRole(''); }}
             >
-              Clear Filter
+              Clear Filters
             </button>
           )}
         </div>
       </div>
 
-      {/* Staff Table */}
+      {/* Staff Data Table */}
       <DataTable 
         columns={columns}
-        data={staffList}
+        data={filteredStaff}
         loading={loading}
-        showPagination={false}
       />
 
       {/* Register Staff Modal */}
       <Modal 
         isOpen={showAddModal}
         onClose={() => setShowAddModal(false)}
-        title="Register Hospital Personnel & User Account"
-        size="md"
+        title="Register Staff Member & Provision User Account"
+        size="lg"
+        footer={
+          <>
+            <button className="btn btn-secondary" onClick={() => setShowAddModal(false)}>Cancel</button>
+            <button className="btn btn-primary" onClick={handleSaveStaff} disabled={submitting}>
+              {submitting ? 'Registering in PostgreSQL...' : 'Register Staff & Account'}
+            </button>
+          </>
+        }
       >
-        <form onSubmit={handleSaveStaff} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="label">First Name *</label>
+        {formError && (
+          <div style={{ padding: '0.75rem', backgroundColor: 'rgba(244, 63, 94, 0.15)', color: '#fb7185', borderRadius: '6px', marginBottom: '1rem', fontSize: '0.85rem' }}>
+            <AlertCircle size={16} style={{ display: 'inline', marginRight: '0.4rem' }} />
+            {formError}
+          </div>
+        )}
+
+        <form onSubmit={handleSaveStaff}>
+          <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#38bdf8', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            1. Personal & Employment Information
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label className="form-label">First Name *</label>
               <input 
                 type="text" 
-                className="input" 
-                value={staffForm.firstName} 
-                onChange={(e) => setStaffForm({...staffForm, firstName: e.target.value})}
-                required 
+                className="form-control"
+                value={staffForm.firstName}
+                onChange={(e) => setStaffForm({ ...staffForm, firstName: e.target.value })}
+                placeholder="e.g. Mahbubur"
+                required
               />
             </div>
-            <div>
-              <label className="label">Last Name *</label>
+            <div className="form-group">
+              <label className="form-label">Last Name *</label>
               <input 
                 type="text" 
-                className="input" 
-                value={staffForm.lastName} 
-                onChange={(e) => setStaffForm({...staffForm, lastName: e.target.value})}
-                required 
+                className="form-control"
+                value={staffForm.lastName}
+                onChange={(e) => setStaffForm({ ...staffForm, lastName: e.target.value })}
+                placeholder="e.g. Rahman"
+                required
               />
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="label">Department *</label>
+          <div className="form-row">
+            <div className="form-group">
+              <label className="form-label">Gender</label>
               <select 
-                className="input" 
-                value={staffForm.departmentId} 
-                onChange={(e) => setStaffForm({...staffForm, departmentId: e.target.value})}
+                className="form-control"
+                value={staffForm.gender}
+                onChange={(e) => setStaffForm({ ...staffForm, gender: e.target.value })}
+              >
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label className="form-label">Date of Birth</label>
+              <input 
+                type="date" 
+                className="form-control"
+                value={staffForm.dateOfBirth}
+                onChange={(e) => setStaffForm({ ...staffForm, dateOfBirth: e.target.value })}
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Hospital Department *</label>
+              <select 
+                className="form-control"
+                value={staffForm.departmentId}
+                onChange={(e) => setStaffForm({ ...staffForm, departmentId: e.target.value })}
                 required
               >
                 {departments.map(d => (
@@ -256,107 +560,96 @@ export default function StaffPage({ user }) {
                 ))}
               </select>
             </div>
-            <div>
-              <label className="label">Gender</label>
-              <select 
-                className="input" 
-                value={staffForm.gender} 
-                onChange={(e) => setStaffForm({...staffForm, gender: e.target.value})}
-              >
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="label">Email Address *</label>
+          <div className="form-row">
+            <div className="form-group">
+              <label className="form-label">Phone Number *</label>
+              <input 
+                type="tel" 
+                className="form-control"
+                value={staffForm.phone}
+                onChange={(e) => setStaffForm({ ...staffForm, phone: e.target.value })}
+                placeholder="017xxxxxxxx"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Email Address *</label>
               <input 
                 type="email" 
-                className="input" 
-                value={staffForm.email} 
-                onChange={(e) => {
-                  const val = e.target.value;
-                  setStaffForm(prev => ({
-                    ...prev,
-                    email: val,
-                    username: prev.username || val.split('@')[0].toLowerCase()
-                  }));
-                }}
-                required 
-              />
-            </div>
-            <div>
-              <label className="label">Phone Number *</label>
-              <input 
-                type="text" 
-                className="input" 
-                value={staffForm.phone} 
-                onChange={(e) => setStaffForm({...staffForm, phone: e.target.value})}
-                required 
+                className="form-control"
+                value={staffForm.email}
+                onChange={(e) => setStaffForm({ ...staffForm, email: e.target.value })}
+                placeholder="staff@hospital.bd"
+                required
               />
             </div>
           </div>
 
-          {/* Account Login Option */}
-          <div className="p-3 bg-slate-50 border border-border rounded space-y-3">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input 
-                type="checkbox" 
-                checked={staffForm.createAccount}
-                onChange={(e) => setStaffForm({...staffForm, createAccount: e.target.checked})}
-              />
-              <span className="text-sm font-semibold text-foreground">Create System Login Account</span>
-            </label>
+          <div style={{ marginTop: '1.25rem', paddingTop: '1rem', borderTop: '1px solid #1e293b' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+              <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#38bdf8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                2. User Account & RBAC Privileges
+              </div>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', color: '#cbd5e1', cursor: 'pointer' }}>
+                <input 
+                  type="checkbox" 
+                  checked={staffForm.createAccount}
+                  onChange={(e) => setStaffForm({ ...staffForm, createAccount: e.target.checked })}
+                  style={{ accentColor: '#0284c7' }}
+                />
+                <span>Provision Login Account</span>
+              </label>
+            </div>
 
             {staffForm.createAccount && (
-              <div className="space-y-3 pt-2 border-t border-border">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="label">Assigned Role</label>
-                    <select 
-                      className="input text-xs" 
-                      value={staffForm.roleId} 
-                      onChange={(e) => setStaffForm({...staffForm, roleId: e.target.value})}
-                    >
-                      <option value="1">Administrator</option>
-                      <option value="2">Doctor</option>
-                      <option value="4">Receptionist</option>
-                      <option value="7">Accountant</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="label">Username</label>
+              <div style={{
+                backgroundColor: '#0b1120',
+                border: '1px solid #1e293b',
+                borderRadius: '8px',
+                padding: '1rem',
+              }}>
+                <div className="form-row">
+                  <div className="form-group" style={{ marginBottom: 0 }}>
+                    <label className="form-label">Login Username *</label>
                     <input 
                       type="text" 
-                      className="input text-xs font-mono" 
-                      value={staffForm.username} 
-                      onChange={(e) => setStaffForm({...staffForm, username: e.target.value})}
+                      className="form-control"
+                      value={staffForm.username}
+                      onChange={(e) => setStaffForm({ ...staffForm, username: e.target.value.toLowerCase() })}
+                      placeholder="e.g. mrahman"
                       required={staffForm.createAccount}
                     />
                   </div>
-                </div>
-                <div>
-                  <label className="label">Initial Password</label>
-                  <input 
-                    type="password" 
-                    className="input text-xs font-mono" 
-                    value={staffForm.password} 
-                    onChange={(e) => setStaffForm({...staffForm, password: e.target.value})}
-                    required={staffForm.createAccount}
-                  />
+                  <div className="form-group" style={{ marginBottom: 0 }}>
+                    <label className="form-label">Initial Password *</label>
+                    <input 
+                      type="password" 
+                      className="form-control"
+                      value={staffForm.password}
+                      onChange={(e) => setStaffForm({ ...staffForm, password: e.target.value })}
+                      placeholder="password123"
+                      required={staffForm.createAccount}
+                    />
+                  </div>
+                  <div className="form-group" style={{ marginBottom: 0 }}>
+                    <label className="form-label">Assigned Stakeholder Role *</label>
+                    <select 
+                      className="form-control"
+                      value={staffForm.roleId}
+                      onChange={(e) => setStaffForm({ ...staffForm, roleId: e.target.value })}
+                      required={staffForm.createAccount}
+                    >
+                      <option value="1">Administrator (Full Access)</option>
+                      <option value="2">Doctor (Clinical Hub)</option>
+                      <option value="4">Receptionist (Front Desk)</option>
+                      <option value="5">Accountant (Treasury & Invoicing)</option>
+                    </select>
+                  </div>
                 </div>
               </div>
             )}
-          </div>
-
-          <div className="flex justify-end gap-2 pt-4 border-t border-border">
-            <button type="button" className="btn btn-secondary" onClick={() => setShowAddModal(false)}>Cancel</button>
-            <button type="submit" className="btn btn-primary" disabled={submitting}>
-              {submitting ? 'Registering...' : 'Register Staff'}
-            </button>
           </div>
         </form>
       </Modal>
