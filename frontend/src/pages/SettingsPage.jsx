@@ -69,7 +69,7 @@ export default function SettingsPage({ user, onNavigate }) {
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
-              <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: '#fff', margin: 0 }}>
+              <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: 'var(--text-main)', margin: 0 }}>
                 System Settings & Database Architecture
               </h2>
               <span style={{
@@ -88,7 +88,7 @@ export default function SettingsPage({ user, onNavigate }) {
                 {health?.status === 'UP' ? `PostgreSQL 18 (${pingLatency ? `${pingLatency}ms` : 'Connected'})` : 'DBMS Disconnected'}
               </span>
             </div>
-            <p style={{ color: '#8aaabb', fontSize: '0.85rem', margin: '0.25rem 0 0 0' }}>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', margin: '0.25rem 0 0 0' }}>
               Relational engine specifications, connection pooling, trigger audit telemetry, and PostgreSQL RBAC permissions matrix.
             </p>
           </div>
@@ -165,38 +165,38 @@ export default function SettingsPage({ user, onNavigate }) {
         <div className="card">
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', paddingBottom: '0.85rem', marginBottom: '1rem', borderBottom: '1px solid var(--border-card)' }}>
             <Database size={18} color="#00A896" />
-            <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#fff', margin: 0 }}>
+            <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-main)', margin: 0 }}>
               Relational Database Engine Parameters
             </h3>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', fontSize: '0.84rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.5rem', borderBottom: '1px solid var(--border-card)' }}>
-              <span style={{ color: '#8aaabb' }}>DBMS Version:</span>
+              <span style={{ color: 'var(--text-muted)' }}>DBMS Version:</span>
               <span style={{ fontFamily: 'monospace', fontWeight: 700, color: '#02C39A' }}>PostgreSQL 18.6 (64-bit)</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.5rem', borderBottom: '1px solid var(--border-card)' }}>
-              <span style={{ color: '#8aaabb' }}>Target Database:</span>
-              <span style={{ fontFamily: 'monospace', fontWeight: 700, color: '#fff' }}>hospital_db</span>
+              <span style={{ color: 'var(--text-muted)' }}>Target Database:</span>
+              <span style={{ fontFamily: 'monospace', fontWeight: 700, color: 'var(--text-main)' }}>hospital_db</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.5rem', borderBottom: '1px solid var(--border-card)' }}>
-              <span style={{ color: '#8aaabb' }}>Database Port:</span>
-              <span style={{ fontFamily: 'monospace', color: '#e2e8f0' }}>5432 (Localhost)</span>
+              <span style={{ color: 'var(--text-muted)' }}>Database Port:</span>
+              <span style={{ fontFamily: 'monospace', color: 'var(--text-main)' }}>5432 (Localhost)</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.5rem', borderBottom: '1px solid var(--border-card)' }}>
-              <span style={{ color: '#8aaabb' }}>Connection Driver:</span>
+              <span style={{ color: 'var(--text-muted)' }}>Connection Driver:</span>
               <span style={{ fontFamily: 'monospace', color: '#00A896', fontWeight: 600 }}>pg (node-postgres)</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.5rem', borderBottom: '1px solid var(--border-card)' }}>
-              <span style={{ color: '#8aaabb' }}>Query Execution Style:</span>
+              <span style={{ color: 'var(--text-muted)' }}>Query Execution Style:</span>
               <span className="badge badge-green" style={{ fontSize: '0.72rem' }}>Raw Parameterized SQL ($1, $2)</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.5rem', borderBottom: '1px solid var(--border-card)' }}>
-              <span style={{ color: '#8aaabb' }}>Max Pool Connections:</span>
-              <span style={{ fontFamily: 'monospace', color: '#fff' }}>20 Active Connections</span>
+              <span style={{ color: 'var(--text-muted)' }}>Max Pool Connections:</span>
+              <span style={{ fontFamily: 'monospace', color: 'var(--text-main)' }}>20 Active Connections</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ color: '#8aaabb' }}>Health Status:</span>
+              <span style={{ color: 'var(--text-muted)' }}>Health Status:</span>
               {health?.status === 'UP' ? (
                 <span className="badge badge-green" style={{ fontSize: '0.72rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
                   <CheckCircle2 size={11} /> HEALTHY (hospital_db)
@@ -214,7 +214,7 @@ export default function SettingsPage({ user, onNavigate }) {
         <div className="card">
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', paddingBottom: '0.85rem', marginBottom: '1rem', borderBottom: '1px solid var(--border-card)' }}>
             <Cpu size={18} color="#02C39A" />
-            <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#fff', margin: 0 }}>
+            <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-main)', margin: 0 }}>
               Active PostgreSQL Database Triggers & Routines
             </h3>
           </div>
@@ -267,12 +267,12 @@ export default function SettingsPage({ user, onNavigate }) {
       <div className="card" style={{ padding: 0, overflow: 'hidden', marginBottom: '1.5rem' }}>
         <div style={{ padding: '1rem 1.25rem', borderBottom: '1px solid var(--border-card)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-            <Key size={18} color="#F0F3BD" />
-            <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#fff', margin: 0 }}>
+            <Key size={18} color="var(--theme-teal)" />
+            <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-main)', margin: 0 }}>
               PostgreSQL Stakeholder Roles & Granted SQL Privileges Matrix
             </h3>
           </div>
-          <span style={{ fontSize: '0.74rem', color: '#8aaabb' }}>
+          <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>
             Strict RBAC Security Specification
           </span>
         </div>
@@ -291,26 +291,26 @@ export default function SettingsPage({ user, onNavigate }) {
               <tr>
                 <td style={{ fontFamily: 'monospace', fontWeight: 700, color: '#00A896' }}>hms_admin</td>
                 <td><span className="badge badge-blue">ALL PRIVILEGES</span></td>
-                <td style={{ color: '#fff' }}>All 37 Tables + Database Sequences</td>
+                <td style={{ color: 'var(--text-main)' }}>All 37 Tables + Database Sequences</td>
                 <td style={{ fontFamily: 'monospace', color: '#02C39A' }}>ALL FUNCTIONS &amp; PROCEDURES</td>
               </tr>
               <tr>
                 <td style={{ fontFamily: 'monospace', fontWeight: 700, color: '#028090' }}>hms_doctor</td>
                 <td><span className="badge badge-blue">SELECT, INSERT, UPDATE</span></td>
-                <td style={{ color: '#cbd5e1' }}>patients, appointments, consultations, prescriptions, lab_orders, admissions</td>
+                <td style={{ color: 'var(--text-main)' }}>patients, appointments, consultations, prescriptions, lab_orders, admissions</td>
                 <td style={{ fontFamily: 'monospace', color: '#00A896' }}>fn_check_doctor_availability</td>
               </tr>
               <tr>
                 <td style={{ fontFamily: 'monospace', fontWeight: 700, color: '#02C39A' }}>hms_receptionist</td>
                 <td><span className="badge badge-green">SELECT, INSERT, UPDATE</span></td>
-                <td style={{ color: '#cbd5e1' }}>patients, appointments, wards, beds, admissions</td>
+                <td style={{ color: 'var(--text-main)' }}>patients, appointments, wards, beds, admissions</td>
                 <td style={{ fontFamily: 'monospace', color: '#02C39A' }}>sp_admit_patient, fn_get_available_beds</td>
               </tr>
               <tr>
-                <td style={{ fontFamily: 'monospace', fontWeight: 700, color: '#F0F3BD' }}>hms_accountant</td>
+                <td style={{ fontFamily: 'monospace', fontWeight: 700, color: 'var(--theme-baltic)' }}>hms_accountant</td>
                 <td><span className="badge badge-amber">SELECT, INSERT, UPDATE</span></td>
-                <td style={{ color: '#cbd5e1' }}>invoices, invoice_items, payments, services, pharmacy</td>
-                <td style={{ fontFamily: 'monospace', color: '#F0F3BD' }}>sp_process_payment, fn_calculate_patient_balance</td>
+                <td style={{ color: 'var(--text-main)' }}>invoices, invoice_items, payments, services, pharmacy</td>
+                <td style={{ fontFamily: 'monospace', color: 'var(--theme-teal)' }}>sp_process_payment, fn_calculate_patient_balance</td>
               </tr>
             </tbody>
           </table>
@@ -321,11 +321,11 @@ export default function SettingsPage({ user, onNavigate }) {
       <div className="card" style={{ backgroundColor: 'var(--bg-main)', border: '1px solid var(--border-card)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.75rem' }}>
           <Info size={18} color="#00A896" />
-          <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#fff', margin: 0 }}>
+          <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-main)', margin: 0 }}>
             Academic Engineering & Relational 3NF Verification
           </h3>
         </div>
-        <p style={{ fontSize: '0.82rem', color: '#8aaabb', lineHeight: 1.6, margin: 0 }}>
+        <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', lineHeight: 1.6, margin: 0 }}>
           This Hospital Management System was constructed to demonstrate full Third Normal Form (3NF) relational compliance, strict ACID transaction boundaries, parameterized SQL injection immunity, autonomous AFTER triggers, and fine-grained Role-Based Access Control (RBAC) in PostgreSQL 18.
         </p>
       </div>

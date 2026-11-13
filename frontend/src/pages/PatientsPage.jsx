@@ -127,15 +127,15 @@ export default function PatientsPage({ user }) {
     {
       header: 'Code',
       key: 'patient_code',
-      render: (row) => <strong style={{ color: '#38bdf8' }}>{row.patient_code}</strong>,
+      render: (row) => <strong style={{ color: 'var(--theme-teal)' }}>{row.patient_code}</strong>,
     },
     {
       header: 'Patient Name',
       key: 'full_name',
       render: (row) => (
         <div>
-          <div style={{ fontWeight: 600, color: '#fff' }}>{row.full_name}</div>
-          <div style={{ fontSize: '0.78rem', color: '#94a3b8' }}>
+          <div style={{ fontWeight: 600, color: 'var(--text-main)' }}>{row.full_name}</div>
+          <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
             {row.gender} • {row.age} yrs • Blood: <span style={{ color: '#fb7185' }}>{row.blood_group || 'N/A'}</span>
           </div>
         </div>
@@ -146,8 +146,8 @@ export default function PatientsPage({ user }) {
       key: 'phone',
       render: (row) => (
         <div>
-          <div style={{ color: '#e2e8f0', fontSize: '0.84rem' }}>{row.phone}</div>
-          <div style={{ color: '#64748b', fontSize: '0.75rem' }}>{row.email || 'No email provided'}</div>
+          <div style={{ color: 'var(--text-main)', fontSize: '0.84rem' }}>{row.phone}</div>
+          <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>{row.email || 'No email provided'}</div>
         </div>
       ),
     },
@@ -155,9 +155,9 @@ export default function PatientsPage({ user }) {
       header: 'Emergency Contact',
       key: 'emergency_contact_name',
       render: (row) => (
-        <div style={{ fontSize: '0.84rem' }}>
+        <div style={{ fontSize: '0.84rem', color: 'var(--text-main)' }}>
           <div>{row.emergency_contact_name}</div>
-          <div style={{ color: '#94a3b8', fontSize: '0.75rem' }}>{row.emergency_contact_phone}</div>
+          <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>{row.emergency_contact_phone}</div>
         </div>
       ),
     },
@@ -214,8 +214,8 @@ export default function PatientsPage({ user }) {
       {/* Top Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
-          <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: '#fff' }}>Patient Registry & Master File</h2>
-          <p style={{ color: '#94a3b8', fontSize: '0.85rem' }}>
+          <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: 'var(--text-main)', margin: 0 }}>Patient Registry & Master File</h2>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', margin: '0.25rem 0 0 0' }}>
             Relational patient records integrated with appointments, clinical consultations, admissions, and billing.
           </p>
         </div>
@@ -410,21 +410,21 @@ export default function PatientsPage({ user }) {
             fontSize: '0.85rem',
           }}>
             <div>
-              <span style={{ color: '#94a3b8' }}>Age/Gender:</span>{' '}
-              <strong style={{ color: '#fff' }}>{selectedPatient360.patient.age} yrs • {selectedPatient360.patient.gender}</strong>
+              <span style={{ color: 'var(--text-muted)' }}>Age/Gender:</span>{' '}
+              <strong style={{ color: 'var(--text-main)' }}>{selectedPatient360.patient.age} yrs • {selectedPatient360.patient.gender}</strong>
             </div>
             <div>
-              <span style={{ color: '#94a3b8' }}>Blood Group:</span>{' '}
+              <span style={{ color: 'var(--text-muted)' }}>Blood Group:</span>{' '}
               <strong style={{ color: '#fb7185' }}>{selectedPatient360.patient.blood_group || 'N/A'}</strong>
             </div>
             <div>
-              <span style={{ color: '#94a3b8' }}>Phone:</span>{' '}
-              <strong style={{ color: '#fff' }}>{selectedPatient360.patient.phone}</strong>
+              <span style={{ color: 'var(--text-muted)' }}>Phone:</span>{' '}
+              <strong style={{ color: 'var(--text-main)' }}>{selectedPatient360.patient.phone}</strong>
             </div>
             <div>
-              <span style={{ color: '#94a3b8' }}>Balance Due:</span>{' '}
+              <span style={{ color: 'var(--text-muted)' }}>Balance Due:</span>{' '}
               <strong style={{ color: parseFloat(selectedPatient360.patient.outstanding_balance) > 0 ? '#fb7185' : '#34d399' }}>
-                ${parseFloat(selectedPatient360.patient.outstanding_balance || 0).toFixed(2)}
+                ৳{parseFloat(selectedPatient360.patient.outstanding_balance || 0).toFixed(2)}
               </strong>
             </div>
           </div>
@@ -448,8 +448,8 @@ export default function PatientsPage({ user }) {
                   fontWeight: 600,
                   border: 'none',
                   background: 'transparent',
-                  color: activeTab360 === tab.id ? '#38bdf8' : '#94a3b8',
-                  borderBottom: activeTab360 === tab.id ? '2px solid #38bdf8' : '2px solid transparent',
+                  color: activeTab360 === tab.id ? 'var(--theme-teal)' : 'var(--text-muted)',
+                  borderBottom: activeTab360 === tab.id ? '2px solid var(--theme-teal)' : '2px solid transparent',
                   cursor: 'pointer',
                   whiteSpace: 'nowrap',
                 }}
@@ -463,7 +463,7 @@ export default function PatientsPage({ user }) {
           {activeTab360 === 'history' && (
             <div>
               {medicalHistory.length === 0 ? (
-                <div style={{ textAlign: 'center', padding: '2rem', color: '#64748b' }}>
+                <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>
                   No historical consultation encounters documented yet.
                 </div>
               ) : (
@@ -477,8 +477,8 @@ export default function PatientsPage({ user }) {
                     }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
                         <div>
-                          <strong style={{ color: '#38bdf8', fontSize: '0.95rem' }}>{item.consultation_number}</strong>
-                          <span style={{ fontSize: '0.8rem', color: '#94a3b8', marginLeft: '0.75rem' }}>
+                          <strong style={{ color: 'var(--theme-teal)', fontSize: '0.95rem' }}>{item.consultation_number}</strong>
+                          <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginLeft: '0.75rem' }}>
                             {new Date(item.consultation_date).toLocaleDateString()} with {item.attending_physician} ({item.specialization})
                           </span>
                         </div>
@@ -488,15 +488,15 @@ export default function PatientsPage({ user }) {
                       </div>
 
                       <div style={{ fontSize: '0.85rem', marginBottom: '0.4rem' }}>
-                        <span style={{ color: '#94a3b8' }}>Diagnoses:</span>{' '}
-                        <strong style={{ color: '#fbbf24' }}>{item.diagnoses_list || 'None formally coded'}</strong>
+                        <span style={{ color: 'var(--text-muted)' }}>Diagnoses:</span>{' '}
+                        <strong style={{ color: 'var(--theme-baltic)' }}>{item.diagnoses_list || 'None formally coded'}</strong>
                       </div>
 
-                      <div style={{ fontSize: '0.85rem', color: '#cbd5e1', marginBottom: '0.5rem' }}>
+                      <div style={{ fontSize: '0.85rem', color: 'var(--text-main)', marginBottom: '0.5rem' }}>
                         <strong>Symptoms:</strong> {item.symptoms}
                       </div>
 
-                      <div style={{ fontSize: '0.85rem', color: '#cbd5e1', marginBottom: '0.5rem' }}>
+                      <div style={{ fontSize: '0.85rem', color: 'var(--text-main)', marginBottom: '0.5rem' }}>
                         <strong>Assessment & Notes:</strong> {item.clinical_notes}
                       </div>
 

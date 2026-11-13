@@ -87,9 +87,9 @@ export default function WardsPage() {
       {/* Top Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.75rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
-          <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: '#fff' }}>Wards &amp; Bed Occupancy Grid</h2>
-          <p style={{ color: '#94a3b8', fontSize: '0.85rem' }}>
-            Interactive ward facility maps and live bed availability backed by PostgreSQL view <code style={{ color: '#38bdf8' }}>v_bed_occupancy_by_ward</code>.
+          <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: 'var(--text-main)', margin: 0 }}>Wards &amp; Bed Occupancy Grid</h2>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', margin: '0.25rem 0 0 0' }}>
+            Interactive ward facility maps and live bed availability backed by PostgreSQL view <code style={{ color: 'var(--theme-teal)' }}>v_bed_occupancy_by_ward</code>.
           </p>
         </div>
 
@@ -114,8 +114,8 @@ export default function WardsPage() {
               key={w.ward_id}
               onClick={() => setSelectedWardId(w.ward_id)}
               style={{
-                backgroundColor: isSelected ? '#15233e' : 'var(--bg-card)',
-                border: isSelected ? '2px solid #0284c7' : '1px solid var(--border-card)',
+                backgroundColor: isSelected ? 'rgba(5, 102, 141, 0.12)' : 'var(--bg-card)',
+                border: isSelected ? '2px solid var(--theme-teal)' : '1px solid var(--border-card)',
                 borderRadius: '12px',
                 padding: '1.15rem',
                 cursor: 'pointer',
@@ -124,17 +124,17 @@ export default function WardsPage() {
               }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
-                <h4 style={{ color: isSelected ? '#38bdf8' : '#fff', fontWeight: 700, fontSize: '0.95rem' }}>
+                <h4 style={{ color: isSelected ? 'var(--theme-baltic)' : 'var(--text-main)', fontWeight: 700, fontSize: '0.95rem' }}>
                   {w.ward_name}
                 </h4>
                 <span className="badge badge-blue">{w.ward_type}</span>
               </div>
 
-              <div style={{ fontSize: '0.78rem', color: '#94a3b8', marginBottom: '0.75rem' }}>
+              <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginBottom: '0.75rem' }}>
                 Department: {w.department_name}
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', marginBottom: '0.4rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: 'var(--text-main)', marginBottom: '0.4rem' }}>
                 <span>Occupancy:</span>
                 <strong>{w.occupied_beds} / {w.total_beds} beds ({occPct}%)</strong>
               </div>
@@ -157,11 +157,11 @@ export default function WardsPage() {
         <div className="card" style={{ padding: '1.75rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
             <div>
-              <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#fff' }}>
+              <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-main)', margin: 0 }}>
                 {selectedWard.ward_name} — Visual Bed Layout
               </h3>
-              <p style={{ fontSize: '0.82rem', color: '#94a3b8' }}>
-                Total: {selectedWard.total_beds} beds • Available: <span style={{ color: '#34d399', fontWeight: 600 }}>{selectedWard.available_beds}</span> • Occupied: <span style={{ color: '#fb7185', fontWeight: 600 }}>{selectedWard.occupied_beds}</span> • Maintenance: <span style={{ color: '#fbbf24', fontWeight: 600 }}>{selectedWard.maintenance_beds}</span>
+              <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', margin: '0.25rem 0 0 0' }}>
+                Total: {selectedWard.total_beds} beds • Available: <span style={{ color: '#02C39A', fontWeight: 600 }}>{selectedWard.available_beds}</span> • Occupied: <span style={{ color: '#fb7185', fontWeight: 600 }}>{selectedWard.occupied_beds}</span> • Maintenance: <span style={{ color: '#fbbf24', fontWeight: 600 }}>{selectedWard.maintenance_beds}</span>
               </p>
             </div>
 
@@ -183,7 +183,7 @@ export default function WardsPage() {
           </div>
 
           {loadingBeds ? (
-            <div style={{ textAlign: 'center', padding: '3rem', color: '#94a3b8' }}>Loading bed grid...</div>
+            <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>Loading bed grid...</div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
               {Object.entries(bedsByRoom).map(([roomLabel, roomBeds], idx) => (
@@ -193,7 +193,7 @@ export default function WardsPage() {
                   border: '1px solid var(--border-card)',
                   borderRadius: '10px',
                 }}>
-                  <div style={{ fontWeight: 700, color: '#e2e8f0', fontSize: '0.92rem', marginBottom: '1rem' }}>
+                  <div style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '0.92rem', marginBottom: '1rem' }}>
                     {roomLabel}
                   </div>
 
@@ -221,20 +221,20 @@ export default function WardsPage() {
                         >
                           <div>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
-                              <strong style={{ color: '#fff', fontSize: '1.05rem' }}>{bed.bed_number}</strong>
+                              <strong style={{ color: 'var(--text-main)', fontSize: '1.05rem' }}>{bed.bed_number}</strong>
                               <span className={`badge ${isOccupied ? 'badge-rose' : (isAvail ? 'badge-green' : 'badge-amber')}`}>
                                 {bed.status}
                               </span>
                             </div>
 
-                            <div style={{ fontSize: '0.78rem', color: '#94a3b8', marginBottom: '0.5rem' }}>
+                            <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
                               Rate: ৳{bed.daily_rate}/day
                             </div>
 
                             {isOccupied && bed.current_patient_name && (
-                              <div style={{ padding: '0.45rem', backgroundColor: '#0e172a', borderRadius: '6px', fontSize: '0.76rem', marginBottom: '0.5rem' }}>
+                              <div style={{ padding: '0.45rem', backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-card)', borderRadius: '6px', fontSize: '0.76rem', marginBottom: '0.5rem' }}>
                                 <div style={{ color: '#fb7185', fontWeight: 600 }}>{bed.current_patient_name}</div>
-                                <div style={{ color: '#64748b' }}>{bed.patient_code} • {bed.admission_number}</div>
+                                <div style={{ color: 'var(--text-muted)' }}>{bed.patient_code} • {bed.admission_number}</div>
                               </div>
                             )}
                           </div>

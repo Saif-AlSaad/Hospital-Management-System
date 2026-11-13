@@ -57,7 +57,7 @@ export default function DataTable({
             {loading ? (
               <tr>
                 <td colSpan={columns.length} style={{ textAlign: 'center', padding: '3.5rem 1rem' }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem', color: '#94a3b8' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem', color: 'var(--text-muted)' }}>
                     <Loader2 size={32} className="spin" style={{ animation: 'spin 1s linear infinite' }} />
                     <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>Executing parameterized PostgreSQL query...</span>
                   </div>
@@ -66,7 +66,7 @@ export default function DataTable({
             ) : data.length === 0 ? (
               <tr>
                 <td colSpan={columns.length} style={{ textAlign: 'center', padding: '3.5rem 1rem' }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem', color: '#64748b' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem', color: 'var(--text-muted)' }}>
                     <Inbox size={36} strokeWidth={1.5} />
                     <span style={{ fontSize: '0.9rem' }}>{emptyMessage}</span>
                   </div>

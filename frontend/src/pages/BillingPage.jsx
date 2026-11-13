@@ -354,15 +354,15 @@ export default function BillingPage({ user, onNavigate }) {
       header: 'Patient', 
       render: row => (
         <div>
-          <span style={{ fontWeight: 600, color: '#fff' }}>{row.patient_name}</span>
-          <span style={{ fontSize: '0.75rem', color: '#64748b', display: 'block' }}>{row.patient_code} • {row.patient_phone}</span>
+          <span style={{ fontWeight: 600, color: 'var(--text-main)' }}>{row.patient_name}</span>
+          <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block' }}>{row.patient_code} • {row.patient_phone}</span>
         </div>
       ) 
     },
     { 
       header: 'Total Amount', 
       render: row => (
-        <span style={{ fontFamily: 'monospace', fontWeight: 700, color: '#fff' }}>
+        <span style={{ fontFamily: 'monospace', fontWeight: 700, color: 'var(--text-main)' }}>
           ৳{parseFloat(row.total_amount).toFixed(2)}
         </span>
       ) 
@@ -455,7 +455,7 @@ export default function BillingPage({ user, onNavigate }) {
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
-              <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: '#fff', margin: 0 }}>
+              <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: 'var(--text-main)', margin: 0 }}>
                 {isAccountant ? 'Hospital Treasury & Billing Counter' : 'Hospital Billing & Invoices'}
               </h2>
               {isAccountant && (
@@ -476,7 +476,7 @@ export default function BillingPage({ user, onNavigate }) {
                 </span>
               )}
             </div>
-            <p style={{ color: '#94a3b8', fontSize: '0.85rem', margin: '0.25rem 0 0 0' }}>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', margin: '0.25rem 0 0 0' }}>
               Itemized billing schedules, MFS collections (bKash/Nagad/Rocket), stored routine sp_process_payment, and accounts receivable aging.
             </p>
           </div>
@@ -638,7 +638,7 @@ export default function BillingPage({ user, onNavigate }) {
             <span style={{
               fontSize: '0.7rem',
               backgroundColor: activeTab === 'aging' ? '#f43f5e' : 'var(--border-card)',
-              color: '#fff',
+              color: activeTab === 'aging' ? '#fff' : 'var(--text-main)',
               padding: '0.1rem 0.5rem',
               borderRadius: '10px',
               fontWeight: 800,
@@ -656,7 +656,7 @@ export default function BillingPage({ user, onNavigate }) {
               backgroundColor: 'transparent',
               border: 'none',
               borderBottom: activeTab === 'payments' ? '2px solid #f59e0b' : '2px solid transparent',
-              color: activeTab === 'payments' ? '#fbbf24' : '#94a3b8',
+              color: activeTab === 'payments' ? '#fbbf24' : 'var(--text-muted)',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
@@ -668,7 +668,7 @@ export default function BillingPage({ user, onNavigate }) {
             <span style={{
               fontSize: '0.7rem',
               backgroundColor: activeTab === 'payments' ? '#10b981' : 'var(--border-card)',
-              color: '#fff',
+              color: activeTab === 'payments' ? '#fff' : 'var(--text-main)',
               padding: '0.1rem 0.5rem',
               borderRadius: '10px',
               fontWeight: 800,
@@ -785,8 +785,8 @@ export default function BillingPage({ user, onNavigate }) {
           <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
             <div style={{ padding: '1rem 1.25rem', borderBottom: '1px solid var(--border-card)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>
-                <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#fff', margin: 0 }}>Outstanding Patient Receivables Ledger</h3>
-                <p style={{ fontSize: '0.78rem', color: '#94a3b8', margin: '0.2rem 0 0 0' }}>Aggregated across all unpaid and partially paid hospital invoices</p>
+                <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-main)', margin: 0 }}>Outstanding Patient Receivables Ledger</h3>
+                <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', margin: '0.2rem 0 0 0' }}>Aggregated across all unpaid and partially paid hospital invoices</p>
               </div>
               <div style={{ fontSize: '0.85rem', color: '#f43f5e', fontWeight: 700 }}>
                 Total Cumulative Debt: ৳{totalOverdueDebt.toLocaleString(undefined, { minimumFractionDigits: 2 })}
@@ -794,7 +794,7 @@ export default function BillingPage({ user, onNavigate }) {
             </div>
 
             {debtAgingLoading ? (
-              <div style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>
+              <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>
                 <div style={{
                   width: '32px',
                   height: '32px',
@@ -807,9 +807,9 @@ export default function BillingPage({ user, onNavigate }) {
                 Computing SQL Accounts Receivable Aging Breakdown...
               </div>
             ) : debtAging.length === 0 ? (
-              <div style={{ padding: '3rem', textAlign: 'center', color: '#64748b' }}>
+              <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>
                 <CheckCircle2 size={36} color="#10b981" style={{ margin: '0 auto 0.75rem auto' }} />
-                <div style={{ fontWeight: 600, color: '#e2e8f0' }}>Zero Delinquent Debt</div>
+                <div style={{ fontWeight: 600, color: 'var(--text-main)' }}>Zero Delinquent Debt</div>
                 <p style={{ fontSize: '0.82rem' }}>All issued invoices are fully paid or reconciled.</p>
               </div>
             ) : (
@@ -832,17 +832,17 @@ export default function BillingPage({ user, onNavigate }) {
                   <tbody>
                     {debtAging.map((row) => (
                       <tr key={row.patient_id}>
-                        <td style={{ fontWeight: 700, color: '#38bdf8' }}>{row.patient_code}</td>
-                        <td style={{ fontWeight: 600, color: '#fff' }}>{row.patient_name}</td>
-                        <td style={{ color: '#94a3b8' }}>{row.phone}</td>
+                        <td style={{ fontWeight: 700, color: 'var(--theme-teal)' }}>{row.patient_code}</td>
+                        <td style={{ fontWeight: 600, color: 'var(--text-main)' }}>{row.patient_name}</td>
+                        <td style={{ color: 'var(--text-muted)' }}>{row.phone}</td>
                         <td style={{ textAlign: 'center' }}>
                           <span className="badge badge-amber">{row.unpaid_invoices_count}</span>
                         </td>
-                        <td style={{ textAlign: 'right', fontFamily: 'monospace', color: '#94a3b8' }}>৳{parseFloat(row.aging_0_to_30_days).toFixed(2)}</td>
+                        <td style={{ textAlign: 'right', fontFamily: 'monospace', color: 'var(--text-muted)' }}>৳{parseFloat(row.aging_0_to_30_days).toFixed(2)}</td>
                         <td style={{ textAlign: 'right', fontFamily: 'monospace', color: '#fbbf24' }}>৳{parseFloat(row.aging_31_to_60_days).toFixed(2)}</td>
                         <td style={{ textAlign: 'right', fontFamily: 'monospace', color: '#fb923c' }}>৳{parseFloat(row.aging_61_to_90_days).toFixed(2)}</td>
                         <td style={{ textAlign: 'right', fontFamily: 'monospace', color: '#f43f5e', fontWeight: 700 }}>৳{parseFloat(row.aging_over_90_days).toFixed(2)}</td>
-                        <td style={{ textAlign: 'right', fontFamily: 'monospace', fontWeight: 800, color: '#fff' }}>৳{parseFloat(row.total_debt_due).toFixed(2)}</td>
+                        <td style={{ textAlign: 'right', fontFamily: 'monospace', fontWeight: 800, color: 'var(--text-main)' }}>৳{parseFloat(row.total_debt_due).toFixed(2)}</td>
                         <td style={{ textAlign: 'right' }}>
                           <button
                             className="btn btn-primary btn-sm"
@@ -930,8 +930,8 @@ export default function BillingPage({ user, onNavigate }) {
                           <td style={{ fontWeight: 600, color: '#fbbf24' }}>{p.invoice_number}</td>
                           <td>{new Date(p.payment_date).toLocaleString()}</td>
                           <td>
-                            <div style={{ fontWeight: 600, color: '#fff' }}>{p.patient_name}</div>
-                            <div style={{ fontSize: '0.72rem', color: '#64748b' }}>{p.patient_code}</div>
+                            <div style={{ fontWeight: 600, color: 'var(--text-main)' }}>{p.patient_name}</div>
+                            <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>{p.patient_code}</div>
                           </td>
                           <td>
                             <span style={{
@@ -946,10 +946,10 @@ export default function BillingPage({ user, onNavigate }) {
                               {p.payment_method}
                             </span>
                           </td>
-                          <td style={{ fontFamily: 'monospace', color: '#94a3b8', fontSize: '0.78rem' }}>
+                          <td style={{ fontFamily: 'monospace', color: 'var(--text-muted)', fontSize: '0.78rem' }}>
                             {p.transaction_reference || 'N/A'}
                           </td>
-                          <td style={{ color: '#cbd5e1' }}>{p.cashier_username || 'System'}</td>
+                          <td style={{ color: 'var(--text-main)' }}>{p.cashier_username || 'System'}</td>
                           <td style={{ textAlign: 'right', fontFamily: 'monospace', fontWeight: 800, color: '#34d399', fontSize: '0.92rem' }}>
                             ৳{parseFloat(p.amount).toFixed(2)}
                           </td>
@@ -1008,8 +1008,8 @@ export default function BillingPage({ user, onNavigate }) {
                         onClick={() => selectPatientForInvoice(p)}
                       >
                         <div>
-                          <span style={{ fontWeight: 600, color: '#fff' }}>{p.first_name} {p.last_name}</span> ({p.patient_code})
-                          <span style={{ fontSize: '0.75rem', color: '#94a3b8', marginLeft: '0.5rem' }}>{p.phone}</span>
+                          <span style={{ fontWeight: 600, color: 'var(--text-main)' }}>{p.first_name} {p.last_name}</span> ({p.patient_code})
+                          <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginLeft: '0.5rem' }}>{p.phone}</span>
                         </div>
                         <span className="badge badge-blue">{p.gender}</span>
                       </div>
@@ -1233,15 +1233,15 @@ export default function BillingPage({ user, onNavigate }) {
                 <h3 style={{ fontWeight: 800, fontSize: '1.1rem', color: '#38bdf8', margin: 0 }}>City General Hospital, Dhaka</h3>
                 <p style={{ fontSize: '0.75rem', color: '#94a3b8', margin: '0.2rem 0 0 0' }}>Plot 12, Road 4, Dhanmondi, Dhaka 1205 • Tel: +880 2 9660000</p>
                 <div style={{ marginTop: '0.75rem', fontSize: '0.8rem' }}>
-                  <span style={{ color: '#94a3b8' }}>Billed To: </span>
-                  <span style={{ fontWeight: 700, color: '#fff' }}>{selectedInvoice.invoice.patient_name}</span> ({selectedInvoice.invoice.patient_code})
-                  <div style={{ color: '#94a3b8', fontSize: '0.75rem' }}>{selectedInvoice.invoice.phone} • {selectedInvoice.invoice.address}</div>
+                  <span style={{ color: 'var(--text-muted)' }}>Billed To: </span>
+                  <span style={{ fontWeight: 700, color: 'var(--text-main)' }}>{selectedInvoice.invoice.patient_name}</span> ({selectedInvoice.invoice.patient_code})
+                  <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>{selectedInvoice.invoice.phone} • {selectedInvoice.invoice.address}</div>
                 </div>
               </div>
               <div style={{ textAlign: 'right', fontSize: '0.8rem' }}>
                 <div style={{ fontFamily: 'monospace', fontWeight: 800, fontSize: '1rem', color: '#fbbf24' }}>{selectedInvoice.invoice.invoice_number}</div>
-                <div style={{ color: '#94a3b8' }}>Issue Date: {new Date(selectedInvoice.invoice.issue_date).toLocaleDateString()}</div>
-                <div style={{ color: '#94a3b8' }}>Due Date: {new Date(selectedInvoice.invoice.due_date).toLocaleDateString()}</div>
+                <div style={{ color: 'var(--text-muted)' }}>Issue Date: {new Date(selectedInvoice.invoice.issue_date).toLocaleDateString()}</div>
+                <div style={{ color: 'var(--text-muted)' }}>Due Date: {new Date(selectedInvoice.invoice.due_date).toLocaleDateString()}</div>
                 <div style={{ marginTop: '0.5rem' }}>
                   <span className={`badge ${selectedInvoice.invoice.status === 'Paid' ? 'badge-green' : 'badge-rose'}`}>
                     {selectedInvoice.invoice.status}
@@ -1253,7 +1253,7 @@ export default function BillingPage({ user, onNavigate }) {
             {/* Line Items */}
             <div style={{ border: '1px solid var(--border-card)', borderRadius: '8px', overflow: 'hidden' }}>
               <table style={{ width: '100%', fontSize: '0.82rem', borderCollapse: 'collapse' }}>
-                <thead style={{ backgroundColor: 'var(--bg-main)', borderBottom: '1px solid var(--border-card)', color: '#94a3b8' }}>
+                <thead style={{ backgroundColor: 'var(--bg-main)', borderBottom: '1px solid var(--border-card)', color: 'var(--text-muted)' }}>
                   <tr>
                     <th style={{ padding: '0.6rem', textAlign: 'left' }}>Description</th>
                     <th style={{ padding: '0.6rem', textAlign: 'right' }}>Qty</th>
@@ -1265,11 +1265,11 @@ export default function BillingPage({ user, onNavigate }) {
                 <tbody>
                   {selectedInvoice.items.map(item => (
                     <tr key={item.item_id} style={{ borderBottom: '1px solid var(--border-card)' }}>
-                      <td style={{ padding: '0.6rem', fontWeight: 600, color: '#fff' }}>{item.item_description}</td>
+                      <td style={{ padding: '0.6rem', fontWeight: 600, color: 'var(--text-main)' }}>{item.item_description}</td>
                       <td style={{ padding: '0.6rem', textAlign: 'right', fontFamily: 'monospace' }}>{item.quantity}</td>
                       <td style={{ padding: '0.6rem', textAlign: 'right', fontFamily: 'monospace' }}>৳{parseFloat(item.unit_price).toFixed(2)}</td>
-                      <td style={{ padding: '0.6rem', textAlign: 'right', fontFamily: 'monospace', color: '#94a3b8' }}>৳{parseFloat(item.discount).toFixed(2)}</td>
-                      <td style={{ padding: '0.6rem', textAlign: 'right', fontFamily: 'monospace', fontWeight: 700, color: '#38bdf8' }}>৳{parseFloat(item.total_price).toFixed(2)}</td>
+                      <td style={{ padding: '0.6rem', textAlign: 'right', fontFamily: 'monospace', color: 'var(--text-muted)' }}>৳{parseFloat(item.discount).toFixed(2)}</td>
+                      <td style={{ padding: '0.6rem', textAlign: 'right', fontFamily: 'monospace', fontWeight: 700, color: 'var(--theme-teal)' }}>৳{parseFloat(item.total_price).toFixed(2)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -1279,19 +1279,19 @@ export default function BillingPage({ user, onNavigate }) {
             {/* Financial Reconciliation */}
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
               <div style={{ width: '260px', fontSize: '0.85rem', fontFamily: 'monospace', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', color: '#94a3b8' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-muted)' }}>
                   <span>Subtotal:</span>
                   <span>৳{parseFloat(selectedInvoice.invoice.subtotal).toFixed(2)}</span>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', color: '#94a3b8' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-muted)' }}>
                   <span>Discount:</span>
                   <span>-৳{parseFloat(selectedInvoice.invoice.discount_amount).toFixed(2)}</span>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', color: '#94a3b8' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-muted)' }}>
                   <span>Tax (5%):</span>
                   <span>+৳{parseFloat(selectedInvoice.invoice.tax_amount).toFixed(2)}</span>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 800, color: '#fff', borderTop: '1px solid var(--border-card)', paddingTop: '0.25rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 800, color: 'var(--text-main)', borderTop: '1px solid var(--border-card)', paddingTop: '0.25rem' }}>
                   <span>Total Amount:</span>
                   <span>৳{parseFloat(selectedInvoice.invoice.total_amount).toFixed(2)}</span>
                 </div>
@@ -1309,7 +1309,7 @@ export default function BillingPage({ user, onNavigate }) {
             {/* Payment Receipts History */}
             {selectedInvoice.payments.length > 0 && (
               <div>
-                <h4 style={{ fontWeight: 700, fontSize: '0.88rem', color: '#fff', marginBottom: '0.5rem' }}>Payment Receipts on this Invoice</h4>
+                <h4 style={{ fontWeight: 700, fontSize: '0.88rem', color: 'var(--text-main)', marginBottom: '0.5rem' }}>Payment Receipts on this Invoice</h4>
                 <div style={{ border: '1px solid var(--border-card)', borderRadius: '8px', overflow: 'hidden' }}>
                   <table style={{ width: '100%', fontSize: '0.78rem', borderCollapse: 'collapse' }}>
                     <thead style={{ backgroundColor: 'var(--bg-main)', borderBottom: '1px solid var(--border-card)', color: '#94a3b8' }}>
@@ -1370,11 +1370,11 @@ export default function BillingPage({ user, onNavigate }) {
               marginBottom: '1rem',
             }}>
               <div>
-                <span style={{ fontSize: '0.75rem', color: '#94a3b8', display: 'block' }}>Total Invoiced</span>
-                <span style={{ fontFamily: 'monospace', fontWeight: 700, color: '#fff' }}>৳{parseFloat(selectedInvoice.invoice.total_amount).toFixed(2)}</span>
+                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block' }}>Total Invoiced</span>
+                <span style={{ fontFamily: 'monospace', fontWeight: 700, color: 'var(--text-main)' }}>৳{parseFloat(selectedInvoice.invoice.total_amount).toFixed(2)}</span>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <span style={{ fontSize: '0.75rem', color: '#94a3b8', display: 'block' }}>Remaining Balance</span>
+                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block' }}>Remaining Balance</span>
                 <span style={{ fontFamily: 'monospace', fontWeight: 800, color: '#fb7185', fontSize: '1.1rem' }}>৳{parseFloat(selectedInvoice.invoice.balance_due).toFixed(2)}</span>
               </div>
             </div>

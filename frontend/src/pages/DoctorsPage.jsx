@@ -1,7 +1,7 @@
 // ============================================================================
 // HOSPITAL MANAGEMENT SYSTEM (HMS)
-// Medical Staff & Physician Directory Console
-// Turquoise Harmony Theme: Baltic Blue, Teal, Verdigris, Mint Leaf & Cream
+// Medical Staff & Physician Directory Console - Turquoise Harmony Edition
+// Modern Clinical Registry, BMDC Verifications & Clinic Duty Rosters
 // ============================================================================
 
 import React, { useState, useEffect } from 'react';
@@ -9,7 +9,7 @@ import {
   Stethoscope, Search, Filter, Plus, Calendar, 
   Award, Phone, Mail, Clock, Eye, CheckCircle2,
   DollarSign, ShieldCheck, UserCheck, Activity,
-  Briefcase, Check
+  Briefcase, Check, Building2, ChevronRight, User
 } from 'lucide-react';
 import DataTable from '../components/DataTable';
 import Modal from '../components/Modal';
@@ -97,29 +97,39 @@ export default function DoctorsPage({ user, onNavigate }) {
       header: 'Physician & BMDC License', 
       key: 'full_name',
       render: row => (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <div style={{
-            width: '36px',
-            height: '36px',
-            borderRadius: '50%',
-            backgroundColor: 'rgba(2, 128, 144, 0.2)',
-            border: '1px solid rgba(0, 168, 150, 0.45)',
+            width: '38px',
+            height: '38px',
+            borderRadius: '10px',
+            background: 'linear-gradient(135deg, #05668D 0%, #028090 100%)',
+            border: '1.5px solid rgba(0, 168, 150, 0.4)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#00A896',
-            fontSize: '0.8rem',
-            fontWeight: 700,
+            color: '#ffffff',
+            fontSize: '0.82rem',
+            fontWeight: 800,
             flexShrink: 0,
+            boxShadow: '0 2px 6px rgba(5, 102, 141, 0.2)',
           }}>
             Dr
           </div>
           <div>
-            <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.88rem' }}>
+            <div style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '0.90rem' }}>
               Dr. {row.full_name}
             </div>
-            <div style={{ fontSize: '0.74rem', color: '#8aaabb', fontFamily: 'monospace' }}>
-              {row.license_number}
+            <div style={{
+              fontSize: '0.72rem',
+              color: '#028090',
+              fontFamily: 'var(--font-mono)',
+              fontWeight: 600,
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.25rem',
+            }}>
+              <Award size={11} color="#00A896" />
+              <span>{row.license_number}</span>
             </div>
           </div>
         </div>
@@ -130,15 +140,19 @@ export default function DoctorsPage({ user, onNavigate }) {
       key: 'department_name',
       render: row => (
         <span style={{
-          fontSize: '0.78rem',
-          color: '#e2e8f0',
-          backgroundColor: 'var(--bg-main)',
-          padding: '0.2rem 0.6rem',
+          fontSize: '0.76rem',
+          color: 'var(--theme-baltic)',
+          backgroundColor: 'rgba(2, 128, 144, 0.1)',
+          padding: '0.25rem 0.65rem',
           borderRadius: '6px',
           border: '1px solid var(--border-card)',
-          fontWeight: 600,
+          fontWeight: 700,
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '0.35rem',
         }}>
-          {row.department_name}
+          <Building2 size={12} color="#028090" />
+          <span>{row.department_name}</span>
         </span>
       )
     },
@@ -146,8 +160,16 @@ export default function DoctorsPage({ user, onNavigate }) {
       header: 'Specialization', 
       key: 'specialization',
       render: row => (
-        <span style={{ fontSize: '0.82rem', color: '#00A896', fontWeight: 600 }}>
-          {row.specialization}
+        <span style={{
+          fontSize: '0.82rem',
+          color: '#008778',
+          fontWeight: 700,
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '0.3rem',
+        }}>
+          <Briefcase size={13} color="#00A896" />
+          <span>{row.specialization}</span>
         </span>
       )
     },
@@ -155,18 +177,28 @@ export default function DoctorsPage({ user, onNavigate }) {
       header: 'Consultation Fee', 
       key: 'consultation_fee', 
       render: row => (
-        <span style={{ fontFamily: 'monospace', fontWeight: 700, color: '#02C39A', fontSize: '0.88rem' }}>
+        <span style={{
+          fontFamily: 'var(--font-mono)',
+          fontWeight: 800,
+          color: '#008767',
+          fontSize: '0.90rem',
+          backgroundColor: 'rgba(2, 195, 154, 0.12)',
+          padding: '0.2rem 0.55rem',
+          borderRadius: '6px',
+          border: '1px solid rgba(2, 195, 154, 0.3)',
+          display: 'inline-block',
+        }}>
           ৳{parseFloat(row.consultation_fee).toFixed(2)}
         </span>
       ) 
     },
     { 
-      header: 'Handled Appointments', 
+      header: 'Handled Encounters', 
       key: 'total_appointments_handled',
       render: row => (
-        <div style={{ fontSize: '0.8rem' }}>
-          <span style={{ fontWeight: 700, color: '#00A896' }}>{row.completed_appointments}</span>
-          <span style={{ color: '#8aaabb' }}> / {row.total_appointments_handled} completed</span>
+        <div style={{ fontSize: '0.82rem' }}>
+          <span style={{ fontWeight: 800, color: 'var(--theme-baltic)' }}>{row.completed_appointments}</span>
+          <span style={{ color: 'var(--text-muted)' }}> / {row.total_appointments_handled} completed</span>
         </div>
       ) 
     },
@@ -174,9 +206,15 @@ export default function DoctorsPage({ user, onNavigate }) {
       header: 'Direct Contact', 
       key: 'phone',
       render: row => (
-        <div style={{ fontSize: '0.76rem', color: '#8aaabb' }}>
-          <div style={{ color: '#cbd5e1' }}>{row.phone}</div>
-          <div style={{ fontSize: '0.72rem' }}>{row.email}</div>
+        <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+          <div style={{ color: 'var(--text-main)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+            <Phone size={11} color="#028090" />
+            <span>{row.phone}</span>
+          </div>
+          <div style={{ fontSize: '0.72rem', color: 'var(--text-dim)', display: 'flex', alignItems: 'center', gap: '0.3rem', marginTop: '0.1rem' }}>
+            <Mail size={11} />
+            <span>{row.email}</span>
+          </div>
         </div>
       ) 
     },
@@ -185,27 +223,12 @@ export default function DoctorsPage({ user, onNavigate }) {
       key: 'is_active',
       width: '90px',
       render: row => row.is_active ? (
-        <span style={{
-          fontSize: '0.72rem',
-          fontWeight: 700,
-          color: '#02C39A',
-          backgroundColor: 'rgba(2, 195, 154, 0.15)',
-          border: '1px solid rgba(2, 195, 154, 0.35)',
-          padding: '0.2rem 0.55rem',
-          borderRadius: '6px',
-        }}>
-          ACTIVE
+        <span className="badge badge-green">
+          <Check size={11} strokeWidth={3} />
+          <span>ACTIVE</span>
         </span>
       ) : (
-        <span style={{
-          fontSize: '0.72rem',
-          fontWeight: 700,
-          color: '#8aaabb',
-          backgroundColor: 'rgba(138, 170, 187, 0.15)',
-          border: '1px solid rgba(138, 170, 187, 0.25)',
-          padding: '0.2rem 0.55rem',
-          borderRadius: '6px',
-        }}>
+        <span className="badge" style={{ backgroundColor: 'rgba(112, 147, 162, 0.15)', color: 'var(--text-dim)' }}>
           INACTIVE
         </span>
       )
@@ -219,7 +242,7 @@ export default function DoctorsPage({ user, onNavigate }) {
           onClick={() => openProfile(row.doctor_id)}
           style={{ padding: '0.35rem 0.65rem', fontSize: '0.78rem' }}
         >
-          <Eye size={13} />
+          <Eye size={13} color="#028090" />
           <span>Profile & Duty</span>
         </button>
       )
@@ -240,44 +263,45 @@ export default function DoctorsPage({ user, onNavigate }) {
         justifyContent: 'space-between',
         flexWrap: 'wrap',
         gap: '1rem',
+        boxShadow: 'var(--shadow-sm)',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <div style={{
             width: '52px',
             height: '52px',
             borderRadius: '12px',
-            backgroundColor: 'rgba(5, 102, 141, 0.22)',
-            border: '1px solid rgba(0, 168, 150, 0.45)',
+            backgroundColor: 'rgba(5, 102, 141, 0.12)',
+            border: '1.5px solid #05668D',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#00A896',
+            color: '#05668D',
           }}>
             <Stethoscope size={28} />
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
-              <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: '#fff', margin: 0 }}>
+              <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: 'var(--text-main)', margin: 0 }}>
                 Medical Staff & Physician Directory
               </h2>
               <span style={{
-                fontSize: '0.75rem',
-                backgroundColor: 'rgba(2, 128, 144, 0.2)',
-                color: '#02C39A',
+                fontSize: '0.74rem',
+                backgroundColor: 'rgba(2, 195, 154, 0.15)',
+                color: '#008767',
                 border: '1px solid rgba(2, 195, 154, 0.4)',
                 padding: '0.2rem 0.6rem',
                 borderRadius: '6px',
-                fontWeight: 700,
+                fontWeight: 800,
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.3rem',
               }}>
-                <ShieldCheck size={12} />
+                <ShieldCheck size={13} />
                 BMDC Verified
               </span>
             </div>
-            <p style={{ color: '#8aaabb', fontSize: '0.85rem', margin: '0.25rem 0 0 0' }}>
-              Consultant practitioner profiles, medical council license registry, weekly clinic schedules, and outpatient consultation rates.
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', margin: '0.25rem 0 0 0' }}>
+              Consultant practitioner profiles, medical council license registry, weekly clinic duty schedules, and OPD rates.
             </p>
           </div>
         </div>
@@ -303,7 +327,7 @@ export default function DoctorsPage({ user, onNavigate }) {
             <div className="stat-value">{totalDoctors}</div>
             <div className="stat-subtext">Registered Doctors</div>
           </div>
-          <div className="stat-icon-wrapper">
+          <div className="stat-icon-wrapper" style={{ color: '#05668D', backgroundColor: 'rgba(5, 102, 141, 0.12)', borderColor: 'rgba(5, 102, 141, 0.25)' }}>
             <Stethoscope size={22} />
           </div>
         </div>
@@ -314,7 +338,7 @@ export default function DoctorsPage({ user, onNavigate }) {
             <div className="stat-value">{uniqueSpecialties}</div>
             <div className="stat-subtext">Disciplines Practiced</div>
           </div>
-          <div className="stat-icon-wrapper">
+          <div className="stat-icon-wrapper" style={{ color: '#028090', backgroundColor: 'rgba(2, 128, 144, 0.12)', borderColor: 'rgba(2, 128, 144, 0.25)' }}>
             <Award size={22} />
           </div>
         </div>
@@ -325,7 +349,7 @@ export default function DoctorsPage({ user, onNavigate }) {
             <div className="stat-value">{totalAppointmentsHandled}</div>
             <div className="stat-subtext">Total OPD Appointments</div>
           </div>
-          <div className="stat-icon-wrapper">
+          <div className="stat-icon-wrapper" style={{ color: '#00A896', backgroundColor: 'rgba(0, 168, 150, 0.12)', borderColor: 'rgba(0, 168, 150, 0.25)' }}>
             <Calendar size={22} />
           </div>
         </div>
@@ -334,9 +358,9 @@ export default function DoctorsPage({ user, onNavigate }) {
           <div className="stat-info">
             <h3>Avg Consultation</h3>
             <div className="stat-value">৳{avgFee}</div>
-            <div className="stat-subtext" style={{ color: '#F0F3BD' }}>Standard OPD Fee</div>
+            <div className="stat-subtext" style={{ color: '#008767', fontWeight: 600 }}>Standard OPD Fee</div>
           </div>
-          <div className="stat-icon-wrapper">
+          <div className="stat-icon-wrapper" style={{ color: '#02C39A', backgroundColor: 'rgba(2, 195, 154, 0.12)', borderColor: 'rgba(2, 195, 154, 0.25)' }}>
             <DollarSign size={22} />
           </div>
         </div>
@@ -344,7 +368,7 @@ export default function DoctorsPage({ user, onNavigate }) {
 
       {/* Filter Toolbar */}
       <div style={{
-        backgroundColor: 'var(--bg-main)',
+        backgroundColor: 'var(--bg-card)',
         border: '1px solid var(--border-card)',
         borderRadius: '10px',
         padding: '0.85rem 1.25rem',
@@ -354,27 +378,25 @@ export default function DoctorsPage({ user, onNavigate }) {
         justifyContent: 'space-between',
         flexWrap: 'wrap',
         gap: '1rem',
+        boxShadow: 'var(--shadow-sm)',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap', flex: 1 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#8aaabb', fontSize: '0.82rem' }}>
-            <Filter size={16} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', fontSize: '0.82rem', fontWeight: 600 }}>
+            <Filter size={16} color="#028090" />
             <span>Filter Department:</span>
           </div>
           <select 
             value={selectedDept} 
             onChange={(e) => setSelectedDept(e.target.value)}
+            className="form-control"
             style={{
               padding: '0.45rem 0.85rem',
-              backgroundColor: 'var(--bg-card)',
-              border: '1px solid var(--border-card)',
-              borderRadius: '8px',
-              color: '#ffffff',
-              fontSize: '0.84rem',
-              outline: 'none',
-              minWidth: '220px',
+              minWidth: '240px',
+              width: 'auto',
+              fontWeight: 600,
             }}
           >
-            <option value="">All Hospital Departments</option>
+            <option value="">All Hospital Departments ({departments.length})</option>
             {departments.map(d => (
               <option key={d.department_id} value={d.department_id}>{d.department_name}</option>
             ))}
@@ -408,6 +430,7 @@ export default function DoctorsPage({ user, onNavigate }) {
           isOpen={showDetailModal}
           onClose={() => setShowDetailModal(false)}
           title={`Physician Profile: Dr. ${selectedDoc.doctor.full_name}`}
+          size="lg"
         >
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
             
@@ -415,37 +438,47 @@ export default function DoctorsPage({ user, onNavigate }) {
             <div style={{
               backgroundColor: 'var(--bg-main)',
               border: '1px solid var(--border-card)',
-              borderRadius: '10px',
-              padding: '1.15rem',
+              borderRadius: '12px',
+              padding: '1.25rem',
               display: 'flex',
               alignItems: 'center',
               gap: '1rem',
             }}>
               <div style={{
-                width: '56px',
-                height: '56px',
+                width: '60px',
+                height: '60px',
                 borderRadius: '50%',
-                backgroundColor: 'rgba(2, 128, 144, 0.2)',
-                border: '2px solid rgba(0, 168, 150, 0.45)',
+                background: 'linear-gradient(135deg, #05668D 0%, #028090 100%)',
+                border: '2px solid #00A896',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#00A896',
-                fontSize: '1.2rem',
+                color: '#ffffff',
+                fontSize: '1.3rem',
                 fontWeight: 800,
                 flexShrink: 0,
+                boxShadow: '0 4px 12px rgba(5, 102, 141, 0.25)',
               }}>
                 Dr
               </div>
               <div style={{ flex: 1 }}>
-                <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#fff', margin: 0 }}>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-main)', margin: 0 }}>
                   Dr. {selectedDoc.doctor.full_name}
                 </h3>
-                <div style={{ fontSize: '0.82rem', color: '#00A896', fontWeight: 600, marginTop: '0.15rem' }}>
+                <div style={{ fontSize: '0.84rem', color: '#008778', fontWeight: 700, marginTop: '0.15rem' }}>
                   {selectedDoc.doctor.specialization} • {selectedDoc.doctor.department_name}
                 </div>
-                <div style={{ fontSize: '0.74rem', color: '#8aaabb', fontFamily: 'monospace', marginTop: '0.25rem' }}>
-                  BMDC Registration: <strong style={{ color: '#fff' }}>{selectedDoc.doctor.license_number}</strong>
+                <div style={{
+                  fontSize: '0.74rem',
+                  color: 'var(--text-muted)',
+                  fontFamily: 'var(--font-mono)',
+                  marginTop: '0.25rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.4rem',
+                }}>
+                  <Award size={13} color="#00A896" />
+                  <span>BMDC Registration: <strong style={{ color: 'var(--text-main)' }}>{selectedDoc.doctor.license_number}</strong></span>
                 </div>
               </div>
             </div>
@@ -456,12 +489,12 @@ export default function DoctorsPage({ user, onNavigate }) {
                 backgroundColor: 'var(--bg-main)',
                 border: '1px solid var(--border-card)',
                 borderRadius: '8px',
-                padding: '0.85rem',
+                padding: '0.85rem 1rem',
               }}>
-                <span style={{ fontSize: '0.72rem', color: '#8aaabb', textTransform: 'uppercase', display: 'block' }}>
+                <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700, display: 'block' }}>
                   Consultation Fee
                 </span>
-                <span style={{ fontSize: '1.25rem', fontFamily: 'monospace', fontWeight: 800, color: '#02C39A', display: 'block', marginTop: '0.2rem' }}>
+                <span style={{ fontSize: '1.35rem', fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#008767', display: 'block', marginTop: '0.2rem' }}>
                   ৳{parseFloat(selectedDoc.doctor.consultation_fee).toFixed(2)}
                 </span>
               </div>
@@ -470,15 +503,15 @@ export default function DoctorsPage({ user, onNavigate }) {
                 backgroundColor: 'var(--bg-main)',
                 border: '1px solid var(--border-card)',
                 borderRadius: '8px',
-                padding: '0.85rem',
+                padding: '0.85rem 1rem',
               }}>
-                <span style={{ fontSize: '0.72rem', color: '#8aaabb', textTransform: 'uppercase', display: 'block' }}>
+                <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700, display: 'block' }}>
                   Contact Information
                 </span>
-                <span style={{ fontSize: '0.84rem', fontWeight: 600, color: '#fff', display: 'block', marginTop: '0.2rem' }}>
+                <span style={{ fontSize: '0.86rem', fontWeight: 700, color: 'var(--text-main)', display: 'block', marginTop: '0.2rem' }}>
                   {selectedDoc.doctor.phone}
                 </span>
-                <span style={{ fontSize: '0.72rem', color: '#8aaabb' }}>
+                <span style={{ fontSize: '0.74rem', color: 'var(--text-dim)' }}>
                   {selectedDoc.doctor.email}
                 </span>
               </div>
@@ -490,12 +523,12 @@ export default function DoctorsPage({ user, onNavigate }) {
                 backgroundColor: 'var(--bg-main)',
                 border: '1px solid var(--border-card)',
                 borderRadius: '8px',
-                padding: '0.85rem 1rem',
-                fontSize: '0.8rem',
-                color: '#cbd5e1',
-                lineHeight: 1.5,
+                padding: '0.9rem 1rem',
+                fontSize: '0.82rem',
+                color: 'var(--text-muted)',
+                lineHeight: 1.6,
               }}>
-                <strong style={{ color: '#fff' }}>Physician Background: </strong>
+                <strong style={{ color: 'var(--text-main)', fontWeight: 700 }}>Physician Background: </strong>
                 {selectedDoc.doctor.bio}
               </div>
             )}
@@ -503,13 +536,13 @@ export default function DoctorsPage({ user, onNavigate }) {
             {/* Weekly Clinic Duty Schedule */}
             <div>
               <div style={{
-                fontSize: '0.86rem',
-                fontWeight: 700,
-                color: '#fff',
-                marginBottom: '0.6rem',
+                fontSize: '0.88rem',
+                fontWeight: 800,
+                color: 'var(--text-main)',
+                marginBottom: '0.65rem',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '0.4rem',
+                gap: '0.45rem',
               }}>
                 <Clock size={16} color="#00A896" />
                 <span>Weekly Clinic Duty Schedule</span>
@@ -519,14 +552,14 @@ export default function DoctorsPage({ user, onNavigate }) {
                 border: '1px solid var(--border-card)',
                 borderRadius: '8px',
                 overflow: 'hidden',
-                backgroundColor: 'var(--bg-main)',
+                backgroundColor: 'var(--bg-card)',
               }}>
-                <table style={{ width: '100%', fontSize: '0.8rem', borderCollapse: 'collapse' }}>
+                <table style={{ width: '100%', fontSize: '0.82rem', borderCollapse: 'collapse' }}>
                   <thead>
-                    <tr style={{ backgroundColor: '#061926', borderBottom: '1px solid var(--border-card)' }}>
-                      <th style={{ padding: '0.6rem 0.85rem', textAlign: 'left', color: '#8aaabb' }}>Day of Week</th>
-                      <th style={{ padding: '0.6rem 0.85rem', textAlign: 'left', color: '#8aaabb' }}>Clinic Hours</th>
-                      <th style={{ padding: '0.6rem 0.85rem', textAlign: 'right', color: '#8aaabb' }}>Max Patient Cap</th>
+                    <tr style={{ backgroundColor: 'rgba(2, 128, 144, 0.08)', borderBottom: '2px solid var(--border-card)' }}>
+                      <th style={{ padding: '0.65rem 0.95rem', textAlign: 'left', color: 'var(--theme-baltic)', fontWeight: 800 }}>Day of Week</th>
+                      <th style={{ padding: '0.65rem 0.95rem', textAlign: 'left', color: 'var(--theme-baltic)', fontWeight: 800 }}>Clinic Hours</th>
+                      <th style={{ padding: '0.65rem 0.95rem', textAlign: 'right', color: 'var(--theme-baltic)', fontWeight: 800 }}>Max Patient Cap</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -534,14 +567,14 @@ export default function DoctorsPage({ user, onNavigate }) {
                       selectedDoc.schedules.map((s) => {
                         const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
                         return (
-                          <tr key={s.schedule_id} style={{ borderBottom: '1px solid var(--border-card)' }}>
-                            <td style={{ padding: '0.6rem 0.85rem', fontWeight: 600, color: '#fff' }}>
+                          <tr key={s.schedule_id} style={{ borderBottom: '1px solid var(--border-subtle)' }}>
+                            <td style={{ padding: '0.65rem 0.95rem', fontWeight: 700, color: 'var(--text-main)' }}>
                               {days[s.day_of_week]}
                             </td>
-                            <td style={{ padding: '0.6rem 0.85rem', fontFamily: 'monospace', color: '#00A896' }}>
+                            <td style={{ padding: '0.65rem 0.95rem', fontFamily: 'var(--font-mono)', color: '#028090', fontWeight: 600 }}>
                               {s.start_time.slice(0, 5)} - {s.end_time.slice(0, 5)}
                             </td>
-                            <td style={{ padding: '0.6rem 0.85rem', textAlign: 'right', fontFamily: 'monospace', color: '#02C39A', fontWeight: 700 }}>
+                            <td style={{ padding: '0.65rem 0.95rem', textAlign: 'right', fontFamily: 'var(--font-mono)', color: '#008767', fontWeight: 700 }}>
                               {s.max_patients} patients
                             </td>
                           </tr>
@@ -549,7 +582,7 @@ export default function DoctorsPage({ user, onNavigate }) {
                       })
                     ) : (
                       <tr>
-                        <td colSpan="3" style={{ padding: '1rem', textAlign: 'center', color: '#5c7e91', fontStyle: 'italic' }}>
+                        <td colSpan="3" style={{ padding: '1.25rem', textAlign: 'center', color: 'var(--text-dim)', fontStyle: 'italic' }}>
                           Standard weekday clinical rounds (09:00 - 17:00)
                         </td>
                       </tr>

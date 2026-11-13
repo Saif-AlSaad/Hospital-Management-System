@@ -609,7 +609,7 @@ export default function DashboardPage({ user, onNavigate }) {
           <div className="stat-info">
             <h3>Today's Collected Revenue</h3>
             <div className="stat-value">৳{stats?.revenueToday ? stats.revenueToday.toLocaleString() : '0.00'}</div>
-            <div className="stat-subtext" style={{ color: '#F0F3BD' }}>Outstanding Debt: ৳{stats?.totalOutstandingDebt ? stats.totalOutstandingDebt.toLocaleString() : '0.00'}</div>
+            <div className="stat-subtext" style={{ color: 'var(--text-muted)' }}>Outstanding Debt: ৳{stats?.totalOutstandingDebt ? stats.totalOutstandingDebt.toLocaleString() : '0.00'}</div>
           </div>
           <div className="stat-icon-wrapper" style={{ color: '#02C39A' }}>
             <DollarSign size={24} />

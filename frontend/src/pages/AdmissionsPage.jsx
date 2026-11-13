@@ -181,8 +181,8 @@ export default function AdmissionsPage({ user }) {
       key: 'patient_name',
       render: (row) => (
         <div>
-          <div style={{ fontWeight: 600 }}>{row.patient_name}</div>
-          <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{row.patient_code} • {row.patient_gender}</div>
+          <div style={{ fontWeight: 600, color: 'var(--text-main)' }}>{row.patient_name}</div>
+          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{row.patient_code} • {row.patient_gender}</div>
         </div>
       ),
     },
@@ -191,10 +191,10 @@ export default function AdmissionsPage({ user }) {
       key: 'bed_number',
       render: (row) => (
         <div>
-          <div style={{ fontWeight: 600, color: '#fbbf24' }}>
+          <div style={{ fontWeight: 600, color: 'var(--theme-baltic)' }}>
             {row.ward_name || 'Ward Assigned'} • Bed {row.bed_number || 'N/A'}
           </div>
-          <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>
+          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
             Room {row.room_number || '-'} ({row.room_type || 'Standard'}) • ৳{row.daily_rate}/day
           </div>
         </div>
@@ -205,8 +205,8 @@ export default function AdmissionsPage({ user }) {
       key: 'doctor_name',
       render: (row) => (
         <div>
-          <div style={{ fontWeight: 600, color: '#e2e8f0' }}>{row.doctor_name}</div>
-          <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{row.specialization}</div>
+          <div style={{ fontWeight: 600, color: 'var(--text-main)' }}>{row.doctor_name}</div>
+          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{row.specialization}</div>
         </div>
       ),
     },
@@ -215,9 +215,9 @@ export default function AdmissionsPage({ user }) {
       key: 'admission_date',
       render: (row) => (
         <div>
-          <div style={{ fontSize: '0.82rem' }}>In: {new Date(row.admission_date).toLocaleDateString()}</div>
-          <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>
-            Stay: <strong style={{ color: '#38bdf8' }}>{row.days_stayed} days</strong>
+          <div style={{ fontSize: '0.82rem', color: 'var(--text-main)' }}>In: {new Date(row.admission_date).toLocaleDateString()}</div>
+          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+            Stay: <strong style={{ color: 'var(--theme-teal)' }}>{row.days_stayed} days</strong>
           </div>
         </div>
       ),
@@ -269,15 +269,15 @@ export default function AdmissionsPage({ user }) {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-            <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: '#fff' }}>
+            <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: 'var(--text-main)', margin: 0 }}>
               {isDoctor ? 'Inpatients Under My Clinical Care' : 'Inpatient Admissions & Discharges'}
             </h2>
             {isDoctor && (
               <span style={{
                 fontSize: '0.72rem',
-                backgroundColor: 'rgba(2, 132, 199, 0.15)',
-                color: '#38bdf8',
-                border: '1px solid rgba(2, 132, 199, 0.35)',
+                backgroundColor: 'rgba(2, 128, 144, 0.12)',
+                color: 'var(--theme-teal)',
+                border: '1px solid rgba(2, 128, 144, 0.3)',
                 padding: '0.2rem 0.55rem',
                 borderRadius: '6px',
                 fontWeight: 700,
@@ -286,7 +286,7 @@ export default function AdmissionsPage({ user }) {
               </span>
             )}
           </div>
-          <p style={{ color: '#94a3b8', fontSize: '0.85rem' }}>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', margin: '0.25rem 0 0 0' }}>
             {isDoctor
               ? 'Inpatient care management and discharge execution via stored procedure sp_discharge_patient.'
               : 'Multi-table workflows orchestrated by PostgreSQL stored procedures sp_admit_patient and sp_discharge_patient.'}

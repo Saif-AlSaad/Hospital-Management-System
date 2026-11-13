@@ -138,10 +138,10 @@ export default function DepartmentsPage({ user }) {
       key: 'department_name',
       render: row => (
         <div>
-          <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.9rem' }}>
+          <div style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '0.9rem' }}>
             {row.department_name}
           </div>
-          <div style={{ fontSize: '0.74rem', color: '#8aaabb', marginTop: '0.15rem' }}>
+          <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)', marginTop: '0.15rem' }}>
             {row.description || 'Clinical inpatient and outpatient services'}
           </div>
         </div>
@@ -168,16 +168,16 @@ export default function DepartmentsPage({ user }) {
             Dr
           </div>
           <div>
-            <div style={{ fontWeight: 600, color: '#e2e8f0', fontSize: '0.84rem' }}>
+            <div style={{ fontWeight: 600, color: 'var(--text-main)', fontSize: '0.84rem' }}>
               Dr. {row.head_doctor_name}
             </div>
-            <div style={{ fontSize: '0.72rem', color: '#8aaabb' }}>
+            <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
               {row.head_doctor_specialization || 'Consultant Specialist'}
             </div>
           </div>
         </div>
       ) : (
-        <span style={{ color: '#5c7e91', fontSize: '0.78rem', fontStyle: 'italic' }}>
+        <span style={{ color: 'var(--text-muted)', fontSize: '0.78rem', fontStyle: 'italic' }}>
           Unassigned
         </span>
       ) 
@@ -192,7 +192,7 @@ export default function DepartmentsPage({ user }) {
           gap: '0.4rem',
           fontSize: '0.82rem',
           fontWeight: 600,
-          color: '#e2e8f0',
+          color: 'var(--text-main)',
         }}>
           <Stethoscope size={14} color="#02C39A" />
           <span>{row.total_doctors} Physicians</span>
@@ -203,9 +203,9 @@ export default function DepartmentsPage({ user }) {
       header: 'Wards & Beds Allocated', 
       key: 'total_allocated_beds',
       render: row => (
-        <div style={{ fontSize: '0.8rem', color: '#cbd5e1' }}>
+        <div style={{ fontSize: '0.8rem', color: 'var(--text-main)' }}>
           <div style={{ fontWeight: 600 }}>{row.total_allocated_beds} Beds</div>
-          <div style={{ fontSize: '0.72rem', color: '#8aaabb' }}>{row.total_wards} Wards Allocated</div>
+          <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>{row.total_wards} Wards Allocated</div>
         </div>
       ) 
     },
@@ -260,7 +260,7 @@ export default function DepartmentsPage({ user }) {
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
-              <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: '#fff', margin: 0 }}>
+              <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: 'var(--text-main)', margin: 0 }}>
                 Hospital Departments & Clinical Units
               </h2>
               <span style={{
@@ -356,7 +356,7 @@ export default function DepartmentsPage({ user }) {
           <div className="stat-info">
             <h3>Allocated Beds</h3>
             <div className="stat-value">{totalBeds}</div>
-            <div className="stat-subtext" style={{ color: '#F0F3BD' }}>Hospital Bed Infrastructure</div>
+            <div className="stat-subtext" style={{ color: 'var(--text-muted)' }}>Hospital Bed Infrastructure</div>
           </div>
           <div className="stat-icon-wrapper">
             <BedDouble size={22} />
@@ -401,7 +401,7 @@ export default function DepartmentsPage({ user }) {
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 600, color: '#cbd5e1', marginBottom: '0.35rem' }}>
+              <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.35rem' }}>
                 Department Name *
               </label>
               <input 
@@ -416,7 +416,7 @@ export default function DepartmentsPage({ user }) {
                   backgroundColor: 'var(--bg-main)',
                   border: '1px solid var(--border-card)',
                   borderRadius: '8px',
-                  color: '#ffffff',
+                  color: 'var(--text-main)',
                   fontSize: '0.86rem',
                   outline: 'none',
                 }}
@@ -424,7 +424,7 @@ export default function DepartmentsPage({ user }) {
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 600, color: '#cbd5e1', marginBottom: '0.35rem' }}>
+              <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.35rem' }}>
                 Unique Code (3-5 letters) *
               </label>
               <input 
@@ -439,7 +439,7 @@ export default function DepartmentsPage({ user }) {
                   backgroundColor: 'var(--bg-main)',
                   border: '1px solid var(--border-card)',
                   borderRadius: '8px',
-                  color: '#ffffff',
+                  color: 'var(--text-main)',
                   fontSize: '0.86rem',
                   outline: 'none',
                   textTransform: 'uppercase',
@@ -450,7 +450,7 @@ export default function DepartmentsPage({ user }) {
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 600, color: '#cbd5e1', marginBottom: '0.35rem' }}>
+            <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.35rem' }}>
               Head of Department (Lead Physician)
             </label>
             <select 
@@ -462,7 +462,7 @@ export default function DepartmentsPage({ user }) {
                 backgroundColor: 'var(--bg-main)',
                 border: '1px solid var(--border-card)',
                 borderRadius: '8px',
-                color: '#ffffff',
+                color: 'var(--text-main)',
                 fontSize: '0.86rem',
                 outline: 'none',
               }}
@@ -477,7 +477,7 @@ export default function DepartmentsPage({ user }) {
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 600, color: '#cbd5e1', marginBottom: '0.35rem' }}>
+            <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.35rem' }}>
               Description & Clinical Scope
             </label>
             <textarea 
@@ -491,7 +491,7 @@ export default function DepartmentsPage({ user }) {
                 backgroundColor: 'var(--bg-main)',
                 border: '1px solid var(--border-card)',
                 borderRadius: '8px',
-                color: '#ffffff',
+                color: 'var(--text-main)',
                 fontSize: '0.86rem',
                 outline: 'none',
                 resize: 'vertical',

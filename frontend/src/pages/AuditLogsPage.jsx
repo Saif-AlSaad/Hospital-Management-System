@@ -97,10 +97,10 @@ export default function AuditLogsPage({ user, onNavigate }) {
       key: 'changed_at', 
       render: row => (
         <div>
-          <div style={{ fontWeight: 600, color: '#fff', fontSize: '0.84rem' }}>
+          <div style={{ fontWeight: 600, color: 'var(--text-main)', fontSize: '0.84rem' }}>
             {new Date(row.changed_at).toLocaleDateString()}
           </div>
-          <div style={{ fontSize: '0.74rem', color: '#8aaabb' }}>
+          <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>
             {new Date(row.changed_at).toLocaleTimeString()}
           </div>
         </div>
@@ -133,7 +133,7 @@ export default function AuditLogsPage({ user, onNavigate }) {
       render: row => (
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
           <Database size={13} color="#028090" />
-          <span style={{ fontFamily: 'monospace', fontWeight: 700, color: '#e2e8f0', fontSize: '0.84rem' }}>
+          <span style={{ fontFamily: 'monospace', fontWeight: 700, color: 'var(--text-main)', fontSize: '0.84rem' }}>
             {row.table_name}
           </span>
         </div>
@@ -143,7 +143,7 @@ export default function AuditLogsPage({ user, onNavigate }) {
       header: 'Record PK', 
       key: 'record_id', 
       render: row => (
-        <span style={{ fontFamily: 'monospace', fontWeight: 600, color: '#F0F3BD', fontSize: '0.82rem' }}>
+        <span style={{ fontFamily: 'monospace', fontWeight: 600, color: 'var(--theme-teal)', fontSize: '0.82rem' }}>
           ID: {row.record_id}
         </span>
       ) 
@@ -214,7 +214,7 @@ export default function AuditLogsPage({ user, onNavigate }) {
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
-              <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: '#fff', margin: 0 }}>
+              <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: 'var(--text-main)', margin: 0 }}>
                 System Audit Trail & Database Triggers
               </h2>
               <span style={{
@@ -233,7 +233,7 @@ export default function AuditLogsPage({ user, onNavigate }) {
                 CDC Engine
               </span>
             </div>
-            <p style={{ color: '#8aaabb', fontSize: '0.85rem', margin: '0.25rem 0 0 0' }}>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', margin: '0.25rem 0 0 0' }}>
               Autonomous Change Data Capture (CDC) recorded by PostgreSQL AFTER UPDATE / AFTER DELETE triggers into the audit_logs table.
             </p>
           </div>
@@ -397,7 +397,7 @@ export default function AuditLogsPage({ user, onNavigate }) {
               </div>
 
               <div>
-                <span style={{ color: '#8aaabb', display: 'block', fontSize: '0.72rem' }}>DML Operation</span>
+                <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: '0.72rem' }}>DML Operation</span>
                 <span style={{
                   fontSize: '0.75rem',
                   fontWeight: 800,
@@ -409,14 +409,14 @@ export default function AuditLogsPage({ user, onNavigate }) {
               </div>
 
               <div>
-                <span style={{ color: '#8aaabb', display: 'block', fontSize: '0.72rem' }}>Timestamp</span>
-                <span style={{ fontFamily: 'monospace', color: '#fff' }}>
+                <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: '0.72rem' }}>Timestamp</span>
+                <span style={{ fontFamily: 'monospace', color: 'var(--text-main)' }}>
                   {new Date(selectedLog.changed_at).toLocaleString()}
                 </span>
               </div>
 
               <div>
-                <span style={{ color: '#8aaabb', display: 'block', fontSize: '0.72rem' }}>Executor</span>
+                <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: '0.72rem' }}>Executor</span>
                 <span style={{ color: '#02C39A' }}>
                   {selectedLog.changed_by_user ? `@${selectedLog.changed_by_user}` : 'System Trigger'}
                 </span>
@@ -438,7 +438,7 @@ export default function AuditLogsPage({ user, onNavigate }) {
                   overflowY: 'auto',
                 }}>
                   <pre style={{
-                    color: '#cbd5e1',
+                    color: 'var(--text-main)',
                     fontSize: '0.76rem',
                     fontFamily: 'monospace',
                     margin: 0,
@@ -462,7 +462,7 @@ export default function AuditLogsPage({ user, onNavigate }) {
                   overflowY: 'auto',
                 }}>
                   <pre style={{
-                    color: '#cbd5e1',
+                    color: 'var(--text-main)',
                     fontSize: '0.76rem',
                     fontFamily: 'monospace',
                     margin: 0,

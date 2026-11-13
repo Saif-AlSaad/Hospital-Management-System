@@ -275,15 +275,15 @@ export default function AppointmentsPage({ user, onNavigate }) {
     {
       header: 'Appt #',
       key: 'appointment_number',
-      render: (row) => <strong style={{ color: '#38bdf8' }}>{row.appointment_number}</strong>,
+      render: (row) => <strong style={{ color: 'var(--theme-teal)' }}>{row.appointment_number}</strong>,
     },
     {
       header: 'Date & Time',
       key: 'appointment_date',
       render: (row) => (
         <div>
-          <div style={{ fontWeight: 600, color: '#fff' }}>{row.appointment_date}</div>
-          <div style={{ fontSize: '0.78rem', color: '#94a3b8' }}>
+          <div style={{ fontWeight: 600, color: 'var(--text-main)' }}>{row.appointment_date}</div>
+          <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
             <Clock size={12} style={{ display: 'inline', marginRight: '3px' }} />
             {row.start_time} - {row.end_time}
           </div>
@@ -295,8 +295,8 @@ export default function AppointmentsPage({ user, onNavigate }) {
       key: 'patient_name',
       render: (row) => (
         <div>
-          <div style={{ fontWeight: 600 }}>{row.patient_name}</div>
-          <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{row.patient_code} • {row.patient_phone}</div>
+          <div style={{ fontWeight: 600, color: 'var(--text-main)' }}>{row.patient_name}</div>
+          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{row.patient_code} • {row.patient_phone}</div>
         </div>
       ),
     },
@@ -305,8 +305,8 @@ export default function AppointmentsPage({ user, onNavigate }) {
       key: 'doctor_name',
       render: (row) => (
         <div>
-          <div style={{ fontWeight: 600, color: '#e2e8f0' }}>{row.doctor_name}</div>
-          <div style={{ fontSize: '0.75rem', color: '#38bdf8' }}>{row.department_name} ({row.specialization})</div>
+          <div style={{ fontWeight: 600, color: 'var(--text-main)' }}>{row.doctor_name}</div>
+          <div style={{ fontSize: '0.75rem', color: 'var(--theme-teal)' }}>{row.department_name} ({row.specialization})</div>
         </div>
       ),
     },
@@ -394,15 +394,15 @@ export default function AppointmentsPage({ user, onNavigate }) {
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
-              <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: '#fff', margin: 0 }}>
+              <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: 'var(--text-main)', margin: 0 }}>
                 {isReceptionist ? 'Front Desk & Patient Registrar Hub' : 'Outpatient Appointment Scheduling'}
               </h2>
               {isReceptionist && (
                 <span style={{
                   fontSize: '0.75rem',
-                  backgroundColor: 'rgba(16, 185, 129, 0.2)',
-                  color: '#34d399',
-                  border: '1px solid rgba(16, 185, 129, 0.4)',
+                  backgroundColor: 'rgba(2, 195, 154, 0.16)',
+                  color: 'var(--text-mint)',
+                  border: '1px solid rgba(2, 195, 154, 0.4)',
                   padding: '0.2rem 0.6rem',
                   borderRadius: '6px',
                   fontWeight: 700,
@@ -415,7 +415,7 @@ export default function AppointmentsPage({ user, onNavigate }) {
                 </span>
               )}
             </div>
-            <p style={{ color: '#94a3b8', fontSize: '0.85rem', margin: '0.25rem 0 0 0' }}>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', margin: '0.25rem 0 0 0' }}>
               Real-time slot availability, walk-in patient triage, and database trigger conflict enforcement (trg_check_appointment_conflict).
             </p>
           </div>
@@ -943,15 +943,15 @@ export default function AppointmentsPage({ user, onNavigate }) {
                   }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
-                    <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.95rem' }}>{w.ward_name}</div>
+                    <div style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '0.95rem' }}>{w.ward_name}</div>
                     <span className={`badge ${isFull ? 'badge-rose' : 'badge-green'}`} style={{ fontSize: '0.7rem' }}>
                       {isFull ? 'Ward Full' : `${w.available_beds} Free`}
                     </span>
                   </div>
-                  <div style={{ fontSize: '0.78rem', color: '#94a3b8', marginBottom: '0.5rem' }}>
-                    Type: <strong style={{ color: '#e2e8f0' }}>{w.ward_type}</strong>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
+                    Type: <strong style={{ color: 'var(--text-main)' }}>{w.ward_type}</strong>
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: '#64748b', marginBottom: '0.35rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '0.35rem' }}>
                     <span>Occupied: {w.occupied_beds} / {w.total_beds} beds</span>
                     <span>{occPct}%</span>
                   </div>

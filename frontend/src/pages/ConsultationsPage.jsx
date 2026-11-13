@@ -2,6 +2,7 @@
 // HOSPITAL MANAGEMENT SYSTEM (HMS)
 // Outpatient Clinical Consultations & Doctor Landing Workspace
 // Multi-Table Atomic Transaction: Encounters + ICD-10 Diagnoses + Vitals JSONB
+// Turquoise Harmony Clinical Edition: Baltic Blue, Teal, Verdigris, Mint Leaf & Cream
 // ============================================================================
 
 import React, { useState, useEffect } from 'react';
@@ -25,7 +26,10 @@ import {
   ArrowRight,
   RefreshCw,
   Search,
-  Check
+  Check,
+  User,
+  ShieldCheck,
+  ChevronRight
 } from 'lucide-react';
 import DataTable from '../components/DataTable';
 import Modal from '../components/Modal';
@@ -256,15 +260,21 @@ export default function ConsultationsPage({ user, onNavigate }) {
     {
       header: 'Encounter #',
       key: 'consultation_number',
-      render: (row) => <strong style={{ color: '#38bdf8' }}>{row.consultation_number}</strong>,
+      render: (row) => (
+        <strong style={{ color: 'var(--theme-baltic)', fontFamily: 'var(--font-mono)' }}>
+          {row.consultation_number}
+        </strong>
+      ),
     },
     {
       header: 'Date & Time',
       key: 'consultation_date',
       render: (row) => (
         <div>
-          <div style={{ fontWeight: 600, color: '#fff' }}>{new Date(row.consultation_date).toLocaleDateString()}</div>
-          <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>
+          <div style={{ fontWeight: 700, color: 'var(--text-main)' }}>
+            {new Date(row.consultation_date).toLocaleDateString()}
+          </div>
+          <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
             {new Date(row.consultation_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
           </div>
         </div>
@@ -275,8 +285,10 @@ export default function ConsultationsPage({ user, onNavigate }) {
       key: 'patient_name',
       render: (row) => (
         <div>
-          <div style={{ fontWeight: 600 }}>{row.patient_name}</div>
-          <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{row.patient_code} • {row.patient_gender}</div>
+          <div style={{ fontWeight: 700, color: 'var(--text-main)' }}>{row.patient_name}</div>
+          <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 600 }}>{row.patient_code}</span> • {row.patient_gender}
+          </div>
         </div>
       ),
     },
@@ -285,8 +297,8 @@ export default function ConsultationsPage({ user, onNavigate }) {
       key: 'doctor_name',
       render: (row) => (
         <div>
-          <div style={{ fontWeight: 600, color: '#e2e8f0' }}>{row.doctor_name}</div>
-          <div style={{ fontSize: '0.75rem', color: '#38bdf8' }}>{row.department_name}</div>
+          <div style={{ fontWeight: 700, color: 'var(--text-main)' }}>{row.doctor_name}</div>
+          <div style={{ fontSize: '0.74rem', color: '#008778', fontWeight: 600 }}>{row.department_name}</div>
         </div>
       ),
     },
@@ -294,8 +306,16 @@ export default function ConsultationsPage({ user, onNavigate }) {
       header: 'Diagnoses Summary',
       key: 'diagnoses_summary',
       render: (row) => (
-        <span style={{ fontSize: '0.8rem', color: '#fbbf24' }}>
-          {row.diagnoses_summary || 'Unspecified Clinical Review'}
+        <span style={{
+          fontSize: '0.80rem',
+          color: 'var(--theme-baltic)',
+          backgroundColor: 'rgba(2, 128, 144, 0.1)',
+          padding: '0.2rem 0.55rem',
+          borderRadius: '6px',
+          fontWeight: 600,
+          border: '1px solid var(--border-card)',
+        }}>
+          {row.diagnoses_summary || 'Clinical Review'}
         </span>
       ),
     },
@@ -307,7 +327,7 @@ export default function ConsultationsPage({ user, onNavigate }) {
           className="btn btn-secondary btn-sm"
           onClick={() => handleOpenView(row.consultation_id)}
         >
-          <Eye size={14} />
+          <Eye size={13} color="#028090" />
           <span>Review Notes</span>
         </button>
       ),
@@ -318,7 +338,7 @@ export default function ConsultationsPage({ user, onNavigate }) {
     <div>
       {/* Doctor Identity & Workspace Header */}
       <div style={{
-        backgroundColor: 'var(--bg-main)',
+        backgroundColor: 'var(--bg-card)',
         border: '1px solid var(--border-card)',
         borderRadius: '12px',
         padding: '1.25rem 1.5rem',
@@ -328,45 +348,47 @@ export default function ConsultationsPage({ user, onNavigate }) {
         justifyContent: 'space-between',
         flexWrap: 'wrap',
         gap: '1rem',
+        boxShadow: 'var(--shadow-sm)',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <div style={{
             width: '52px',
             height: '52px',
             borderRadius: '12px',
-            backgroundColor: 'rgba(2, 132, 199, 0.15)',
-            border: '1px solid rgba(2, 132, 199, 0.35)',
+            background: 'linear-gradient(135deg, #05668D 0%, #028090 100%)',
+            border: '1.5px solid #00A896',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#38bdf8',
+            color: '#ffffff',
+            boxShadow: '0 4px 12px rgba(5, 102, 141, 0.25)',
           }}>
             <Stethoscope size={28} />
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
-              <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: '#fff', margin: 0 }}>
+              <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: 'var(--text-main)', margin: 0 }}>
                 {isDoctor ? `Dr. ${user?.fullName || 'Physician'} — Clinical Hub` : 'Clinical Consultations & OPD Hub'}
               </h2>
               {isDoctor && (
                 <span style={{
-                  fontSize: '0.75rem',
-                  backgroundColor: 'rgba(2, 132, 199, 0.2)',
-                  color: '#38bdf8',
-                  border: '1px solid rgba(2, 132, 199, 0.4)',
+                  fontSize: '0.74rem',
+                  backgroundColor: 'rgba(2, 195, 154, 0.15)',
+                  color: '#008767',
+                  border: '1px solid rgba(2, 195, 154, 0.4)',
                   padding: '0.2rem 0.6rem',
                   borderRadius: '6px',
-                  fontWeight: 700,
+                  fontWeight: 800,
                   display: 'flex',
                   alignItems: 'center',
                   gap: '0.3rem',
                 }}>
-                  <Award size={13} />
-                  BMDC: {user?.doctorProfile?.licenseNumber || 'BMDC-A-48291'}
+                  <Award size={13} color="#008767" />
+                  BMDC: {user?.doctorProfile?.licenseNumber || 'Verified Physician'}
                 </span>
               )}
             </div>
-            <p style={{ color: '#94a3b8', fontSize: '0.85rem', margin: '0.25rem 0 0 0' }}>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', margin: '0.25rem 0 0 0' }}>
               {isDoctor
                 ? `${user?.doctorProfile?.specialization || 'Clinical Specialist'} • Consultation Fee: ৳${user?.doctorProfile?.consultationFee || '1,200'} • Scoped to Outpatient Encounters`
                 : 'Hospital-wide outpatient encounter documentation, ICD-10 diagnostic classifications, and physiological vitals.'}
@@ -375,7 +397,7 @@ export default function ConsultationsPage({ user, onNavigate }) {
         </div>
 
         {/* Quick Clinical Navigation Shortcuts */}
-        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }}>
           {onNavigate && (
             <>
               <button
@@ -383,7 +405,7 @@ export default function ConsultationsPage({ user, onNavigate }) {
                 onClick={() => onNavigate('prescriptions')}
                 title="Write Electronic Prescription"
               >
-                <Pill size={14} color="#06b6d4" />
+                <Pill size={14} color="#00A896" />
                 <span>Prescriptions</span>
               </button>
               <button
@@ -391,7 +413,7 @@ export default function ConsultationsPage({ user, onNavigate }) {
                 onClick={() => onNavigate('laboratory')}
                 title="Requisition Diagnostic Tests"
               >
-                <FlaskConical size={14} color="#f59e0b" />
+                <FlaskConical size={14} color="#028090" />
                 <span>Lab Orders</span>
               </button>
             </>
@@ -424,9 +446,9 @@ export default function ConsultationsPage({ user, onNavigate }) {
       {/* Success Toast Alert */}
       {successToast && (
         <div style={{
-          backgroundColor: 'rgba(16, 185, 129, 0.15)',
-          border: '1px solid rgba(16, 185, 129, 0.35)',
-          color: '#34d399',
+          backgroundColor: 'rgba(2, 195, 154, 0.15)',
+          border: '1px solid rgba(2, 195, 154, 0.4)',
+          color: '#008767',
           borderRadius: '8px',
           padding: '0.85rem 1.25rem',
           marginBottom: '1.25rem',
@@ -434,6 +456,7 @@ export default function ConsultationsPage({ user, onNavigate }) {
           alignItems: 'center',
           justifyContent: 'space-between',
           fontSize: '0.88rem',
+          fontWeight: 600,
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <CheckCircle2 size={18} />
@@ -469,46 +492,46 @@ export default function ConsultationsPage({ user, onNavigate }) {
         gap: '1rem',
         marginBottom: '1.5rem',
       }}>
-        <div className="card stat-card" style={{ '--stat-color': '#0284c7' }}>
+        <div className="card stat-card" style={{ '--stat-color': '#028090' }}>
           <div className="stat-info">
             <h3>Waiting in OPD Queue</h3>
             <div className="stat-value">{queueWaitingCount}</div>
             <div className="stat-subtext">Scheduled for consultation</div>
           </div>
-          <div className="stat-icon-wrapper">
+          <div className="stat-icon-wrapper" style={{ color: '#028090', backgroundColor: 'rgba(2, 128, 144, 0.12)', borderColor: 'rgba(2, 128, 144, 0.25)' }}>
             <Clock size={22} />
           </div>
         </div>
 
-        <div className="card stat-card" style={{ '--stat-color': '#f59e0b' }}>
+        <div className="card stat-card" style={{ '--stat-color': '#05668D' }}>
           <div className="stat-info">
             <h3>In-Progress Visits</h3>
             <div className="stat-value">{queueInProgressCount}</div>
             <div className="stat-subtext">Currently in examination</div>
           </div>
-          <div className="stat-icon-wrapper">
+          <div className="stat-icon-wrapper" style={{ color: '#05668D', backgroundColor: 'rgba(5, 102, 141, 0.12)', borderColor: 'rgba(5, 102, 141, 0.25)' }}>
             <Activity size={22} />
           </div>
         </div>
 
-        <div className="card stat-card" style={{ '--stat-color': '#10b981' }}>
+        <div className="card stat-card" style={{ '--stat-color': '#02C39A' }}>
           <div className="stat-info">
             <h3>Completed Today</h3>
             <div className="stat-value">{queueCompletedCount}</div>
-            <div className="stat-subtext">Encounters finished</div>
+            <div className="stat-subtext" style={{ color: '#008767', fontWeight: 600 }}>Encounters finished</div>
           </div>
-          <div className="stat-icon-wrapper">
+          <div className="stat-icon-wrapper" style={{ color: '#008767', backgroundColor: 'rgba(2, 195, 154, 0.12)', borderColor: 'rgba(2, 195, 154, 0.25)' }}>
             <CheckCircle2 size={22} />
           </div>
         </div>
 
-        <div className="card stat-card" style={{ '--stat-color': '#8b5cf6' }}>
+        <div className="card stat-card" style={{ '--stat-color': '#00A896' }}>
           <div className="stat-info">
             <h3>Total Clinical Encounters</h3>
             <div className="stat-value">{totalEncountersCount}</div>
             <div className="stat-subtext">Documented records</div>
           </div>
-          <div className="stat-icon-wrapper">
+          <div className="stat-icon-wrapper" style={{ color: '#00A896', backgroundColor: 'rgba(0, 168, 150, 0.12)', borderColor: 'rgba(0, 168, 150, 0.25)' }}>
             <FileText size={22} />
           </div>
         </div>
@@ -519,7 +542,7 @@ export default function ConsultationsPage({ user, onNavigate }) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        borderBottom: '1px solid var(--border-card)',
+        borderBottom: '2px solid var(--border-card)',
         marginBottom: '1.25rem',
         flexWrap: 'wrap',
         gap: '0.75rem',
@@ -528,26 +551,27 @@ export default function ConsultationsPage({ user, onNavigate }) {
           <button
             onClick={() => setActiveTab('queue')}
             style={{
-              padding: '0.65rem 1.25rem',
-              fontWeight: 700,
-              fontSize: '0.9rem',
+              padding: '0.75rem 1.25rem',
+              fontWeight: 800,
+              fontSize: '0.90rem',
               backgroundColor: 'transparent',
               border: 'none',
-              borderBottom: activeTab === 'queue' ? '2px solid #0284c7' : '2px solid transparent',
-              color: activeTab === 'queue' ? '#38bdf8' : '#94a3b8',
+              borderBottom: activeTab === 'queue' ? '3px solid #00A896' : '3px solid transparent',
+              color: activeTab === 'queue' ? '#008778' : 'var(--text-muted)',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               gap: '0.5rem',
+              transition: 'all 0.15s ease',
             }}
           >
             <Clock size={16} />
             <span>Today's OPD Patient Queue</span>
             <span style={{
-              fontSize: '0.7rem',
-              backgroundColor: activeTab === 'queue' ? '#0284c7' : 'var(--border-card)',
-              color: '#fff',
-              padding: '0.1rem 0.5rem',
+              fontSize: '0.72rem',
+              backgroundColor: activeTab === 'queue' ? '#028090' : 'rgba(2, 128, 144, 0.12)',
+              color: activeTab === 'queue' ? '#ffffff' : 'var(--text-main)',
+              padding: '0.15rem 0.55rem',
               borderRadius: '10px',
               fontWeight: 800,
             }}>
@@ -558,26 +582,27 @@ export default function ConsultationsPage({ user, onNavigate }) {
           <button
             onClick={() => setActiveTab('history')}
             style={{
-              padding: '0.65rem 1.25rem',
-              fontWeight: 700,
-              fontSize: '0.9rem',
+              padding: '0.75rem 1.25rem',
+              fontWeight: 800,
+              fontSize: '0.90rem',
               backgroundColor: 'transparent',
               border: 'none',
-              borderBottom: activeTab === 'history' ? '2px solid #0284c7' : '2px solid transparent',
-              color: activeTab === 'history' ? '#38bdf8' : '#94a3b8',
+              borderBottom: activeTab === 'history' ? '3px solid #00A896' : '3px solid transparent',
+              color: activeTab === 'history' ? '#008778' : 'var(--text-muted)',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               gap: '0.5rem',
+              transition: 'all 0.15s ease',
             }}
           >
             <FileText size={16} />
             <span>Documented Encounters History</span>
             <span style={{
-              fontSize: '0.7rem',
-              backgroundColor: activeTab === 'history' ? '#0284c7' : 'var(--border-card)',
-              color: '#fff',
-              padding: '0.1rem 0.5rem',
+              fontSize: '0.72rem',
+              backgroundColor: activeTab === 'history' ? '#028090' : 'rgba(2, 128, 144, 0.12)',
+              color: activeTab === 'history' ? '#ffffff' : 'var(--text-main)',
+              padding: '0.15rem 0.55rem',
               borderRadius: '10px',
               fontWeight: 800,
             }}>
@@ -590,7 +615,7 @@ export default function ConsultationsPage({ user, onNavigate }) {
           <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
             <select
               className="form-control"
-              style={{ width: '150px', padding: '0.35rem 0.6rem', fontSize: '0.8rem' }}
+              style={{ width: '160px', padding: '0.35rem 0.65rem', fontSize: '0.82rem', fontWeight: 600 }}
               value={queueFilter}
               onChange={(e) => setQueueFilter(e.target.value)}
             >
@@ -611,23 +636,23 @@ export default function ConsultationsPage({ user, onNavigate }) {
       {activeTab === 'queue' && (
         <div className="card" style={{ padding: '0', overflow: 'hidden' }}>
           {queueLoading ? (
-            <div style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>
+            <div style={{ padding: '3.5rem', textAlign: 'center', color: 'var(--text-muted)' }}>
               <div style={{
-                width: '32px',
-                height: '32px',
-                border: '3px solid #0284c7',
+                width: '36px',
+                height: '36px',
+                border: '3px solid #00A896',
                 borderTopColor: 'transparent',
                 borderRadius: '50%',
                 margin: '0 auto 0.75rem auto',
                 animation: 'spin 1s linear infinite',
               }}></div>
-              Loading Physician Outpatient Queue...
+              <span style={{ fontWeight: 600 }}>Loading Physician Outpatient Queue...</span>
             </div>
           ) : queue.length === 0 ? (
-            <div style={{ padding: '3rem', textAlign: 'center', color: '#64748b' }}>
-              <Users size={36} style={{ margin: '0 auto 0.75rem auto', opacity: 0.5 }} />
-              <div style={{ fontWeight: 600, color: '#e2e8f0', fontSize: '1rem' }}>No Patients in OPD Queue</div>
-              <p style={{ fontSize: '0.82rem', marginTop: '0.25rem' }}>
+            <div style={{ padding: '3.5rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+              <Users size={40} color="#7093a2" style={{ margin: '0 auto 0.75rem auto', opacity: 0.6 }} />
+              <div style={{ fontWeight: 800, color: 'var(--text-main)', fontSize: '1.05rem' }}>No Patients in OPD Queue</div>
+              <p style={{ fontSize: '0.85rem', marginTop: '0.25rem' }}>
                 {queueFilter ? `No appointments matching "${queueFilter}" filter.` : 'No scheduled outpatient appointments currently queued for this physician.'}
               </p>
             </div>
@@ -652,16 +677,20 @@ export default function ConsultationsPage({ user, onNavigate }) {
                     const isCancelled = item.status === 'Cancelled';
                     return (
                       <tr key={item.appointment_id} style={{ opacity: isCancelled ? 0.6 : 1 }}>
-                        <td style={{ fontWeight: 700, color: '#38bdf8' }}>{item.appointment_number}</td>
-                        <td>
-                          <div style={{ fontWeight: 600, color: '#fff' }}>{item.start_time} - {item.end_time}</div>
-                          <div style={{ fontSize: '0.72rem', color: '#94a3b8' }}>{item.appointment_date}</div>
+                        <td style={{ fontWeight: 800, color: 'var(--theme-baltic)', fontFamily: 'var(--font-mono)' }}>
+                          {item.appointment_number}
                         </td>
                         <td>
-                          <div style={{ fontWeight: 600, color: '#fff' }}>{item.patient_name}</div>
-                          <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{item.patient_code} • {item.patient_gender}</div>
+                          <div style={{ fontWeight: 700, color: 'var(--text-main)' }}>{item.start_time} - {item.end_time}</div>
+                          <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>{item.appointment_date}</div>
                         </td>
-                        <td style={{ color: '#94a3b8', fontSize: '0.8rem' }}>{item.patient_phone || 'N/A'}</td>
+                        <td>
+                          <div style={{ fontWeight: 700, color: 'var(--text-main)' }}>{item.patient_name}</div>
+                          <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>
+                            <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 600 }}>{item.patient_code}</span> • {item.patient_gender}
+                          </div>
+                        </td>
+                        <td style={{ color: 'var(--text-muted)', fontSize: '0.80rem' }}>{item.patient_phone || 'N/A'}</td>
                         <td>
                           <span className="badge badge-blue" style={{ fontSize: '0.72rem' }}>
                             {item.appointment_type}
@@ -671,30 +700,30 @@ export default function ConsultationsPage({ user, onNavigate }) {
                           <span className={`badge ${
                             item.status === 'Completed' ? 'badge-green' :
                             item.status === 'In-Progress' ? 'badge-amber' :
-                            item.status === 'Cancelled' ? 'badge-rose' : 'badge-purple'
+                            item.status === 'Cancelled' ? 'badge-rose' : 'badge-blue'
                           }`}>
                             {item.status}
                           </span>
                         </td>
-                        <td style={{ maxWidth: '220px', color: '#cbd5e1', fontSize: '0.8rem' }}>
-                          {item.notes || <span style={{ color: '#64748b', fontStyle: 'italic' }}>None specified</span>}
+                        <td style={{ maxWidth: '240px', color: 'var(--text-main)', fontSize: '0.82rem' }}>
+                          {item.notes || <span style={{ color: 'var(--text-dim)', fontStyle: 'italic' }}>None specified</span>}
                         </td>
                         <td style={{ textAlign: 'right' }}>
-                          <div style={{ display: 'inline-flex', gap: '0.4rem', alignItems: 'center' }}>
+                          <div style={{ display: 'inline-flex', gap: '0.45rem', alignItems: 'center' }}>
                             {!isCompleted && !isCancelled && (
                               <>
                                 <button
                                   className="btn btn-primary btn-sm"
                                   onClick={() => handleStartConsultationFromQueue(item)}
                                   title="Document Clinical Encounter"
-                                  style={{ padding: '0.3rem 0.65rem', fontSize: '0.78rem' }}
+                                  style={{ padding: '0.35rem 0.70rem', fontSize: '0.78rem' }}
                                 >
                                   <Stethoscope size={13} />
                                   <span>Start Encounter</span>
                                 </button>
                                 <select
                                   className="form-control"
-                                  style={{ padding: '0.2rem 0.4rem', fontSize: '0.72rem', width: 'auto' }}
+                                  style={{ padding: '0.25rem 0.5rem', fontSize: '0.74rem', width: 'auto', fontWeight: 600 }}
                                   value={item.status}
                                   onChange={(e) => handleUpdateQueueStatus(item.appointment_id, e.target.value)}
                                 >
@@ -706,8 +735,8 @@ export default function ConsultationsPage({ user, onNavigate }) {
                               </>
                             )}
                             {isCompleted && (
-                              <span style={{ fontSize: '0.75rem', color: '#34d399', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
-                                <Check size={14} /> Encounter Recorded
+                              <span style={{ fontSize: '0.78rem', color: '#008767', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
+                                <Check size={14} strokeWidth={3} /> Encounter Recorded
                               </span>
                             )}
                           </div>
@@ -749,7 +778,7 @@ export default function ConsultationsPage({ user, onNavigate }) {
         }
       >
         {formError && (
-          <div style={{ padding: '0.75rem', backgroundColor: 'rgba(244, 63, 94, 0.15)', color: '#fb7185', borderRadius: '6px', marginBottom: '1rem', fontSize: '0.85rem' }}>
+          <div style={{ padding: '0.75rem 1rem', backgroundColor: '#fef2f2', border: '1px solid #fecaca', color: '#dc2626', borderRadius: '8px', marginBottom: '1rem', fontSize: '0.85rem' }}>
             <AlertCircle size={16} style={{ display: 'inline', marginRight: '0.4rem' }} />
             {formError}
           </div>
@@ -768,7 +797,7 @@ export default function ConsultationsPage({ user, onNavigate }) {
                 required
               />
               {selectedQueuePatient && (
-                <div style={{ fontSize: '0.72rem', color: '#34d399', marginTop: '0.2rem' }}>
+                <div style={{ fontSize: '0.74rem', color: '#008767', fontWeight: 600, marginTop: '0.25rem' }}>
                   Linked: {selectedQueuePatient.patient_name}
                 </div>
               )}
@@ -781,7 +810,7 @@ export default function ConsultationsPage({ user, onNavigate }) {
                   className="form-control"
                   value={`Dr. ${user?.fullName || 'Self'} (${user?.doctorProfile?.specialization || 'Consultant'})`}
                   disabled
-                  style={{ backgroundColor: 'var(--bg-card-hover)', color: '#38bdf8', fontWeight: 600 }}
+                  style={{ backgroundColor: 'var(--bg-card-hover)', color: '#028090', fontWeight: 700 }}
                 />
               ) : (
                 <select
@@ -813,14 +842,14 @@ export default function ConsultationsPage({ user, onNavigate }) {
 
           {/* Vitals Box */}
           <div style={{
-            padding: '1rem',
+            padding: '1.15rem',
             backgroundColor: 'var(--bg-main)',
             border: '1px solid var(--border-card)',
-            borderRadius: '8px',
+            borderRadius: '10px',
             marginBottom: '1.25rem',
           }}>
-            <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#38bdf8', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-              <Activity size={14} />
+            <div style={{ fontSize: '0.84rem', fontWeight: 800, color: 'var(--theme-baltic)', marginBottom: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+              <Activity size={16} color="#00A896" />
               <span>Patient Physiological Vitals (Stored as JSONB in PostgreSQL):</span>
             </div>
             <div className="form-row">
@@ -964,46 +993,103 @@ export default function ConsultationsPage({ user, onNavigate }) {
           footer={<button className="btn btn-secondary" onClick={() => setShowViewModal(false)}>Close Encounter</button>}
         >
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem', backgroundColor: 'var(--bg-main)', borderRadius: '8px' }}>
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              padding: '1.1rem 1.25rem',
+              backgroundColor: 'var(--bg-main)',
+              borderRadius: '10px',
+              border: '1px solid var(--border-card)',
+              flexWrap: 'wrap',
+              gap: '1rem',
+            }}>
               <div>
-                <span style={{ color: '#94a3b8', fontSize: '0.8rem' }}>Patient:</span>
-                <div style={{ fontWeight: 700, color: '#fff' }}>{selectedCon.consultation.patient_name} ({selectedCon.consultation.patient_code})</div>
+                <span style={{ color: 'var(--text-muted)', fontSize: '0.76rem', textTransform: 'uppercase', fontWeight: 700 }}>Patient:</span>
+                <div style={{ fontWeight: 800, color: 'var(--text-main)', fontSize: '1.05rem' }}>
+                  {selectedCon.consultation.patient_name} <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', color: 'var(--text-muted)' }}>({selectedCon.consultation.patient_code})</span>
+                </div>
               </div>
               <div>
-                <span style={{ color: '#94a3b8', fontSize: '0.8rem' }}>Physician:</span>
-                <div style={{ fontWeight: 700, color: '#38bdf8' }}>{selectedCon.consultation.doctor_name} ({selectedCon.consultation.specialization})</div>
+                <span style={{ color: 'var(--text-muted)', fontSize: '0.76rem', textTransform: 'uppercase', fontWeight: 700 }}>Physician:</span>
+                <div style={{ fontWeight: 800, color: '#028090', fontSize: '1.05rem' }}>
+                  {selectedCon.consultation.doctor_name} <span style={{ fontSize: '0.82rem', color: '#008778' }}>({selectedCon.consultation.specialization})</span>
+                </div>
               </div>
               <div>
-                <span style={{ color: '#94a3b8', fontSize: '0.8rem' }}>Encounter Date:</span>
-                <div style={{ fontWeight: 600, color: '#fff' }}>{new Date(selectedCon.consultation.consultation_date).toLocaleString()}</div>
+                <span style={{ color: 'var(--text-muted)', fontSize: '0.76rem', textTransform: 'uppercase', fontWeight: 700 }}>Encounter Date:</span>
+                <div style={{ fontWeight: 700, color: 'var(--text-main)' }}>
+                  {new Date(selectedCon.consultation.consultation_date).toLocaleString()}
+                </div>
               </div>
             </div>
 
+            {/* Vitals Summary Strip */}
+            {selectedCon.consultation.vitals && (
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))',
+                gap: '0.65rem',
+              }}>
+                <div style={{ padding: '0.65rem', backgroundColor: 'var(--bg-card-hover)', borderRadius: '8px', border: '1px solid var(--border-card)', textAlign: 'center' }}>
+                  <span style={{ fontSize: '0.70rem', color: 'var(--text-muted)', display: 'block' }}>BP</span>
+                  <span style={{ fontSize: '0.92rem', fontWeight: 800, color: 'var(--text-main)', fontFamily: 'var(--font-mono)' }}>
+                    {selectedCon.consultation.vitals.bp_systolic}/{selectedCon.consultation.vitals.bp_diastolic}
+                  </span>
+                </div>
+                <div style={{ padding: '0.65rem', backgroundColor: 'var(--bg-card-hover)', borderRadius: '8px', border: '1px solid var(--border-card)', textAlign: 'center' }}>
+                  <span style={{ fontSize: '0.70rem', color: 'var(--text-muted)', display: 'block' }}>Pulse</span>
+                  <span style={{ fontSize: '0.92rem', fontWeight: 800, color: 'var(--text-main)', fontFamily: 'var(--font-mono)' }}>
+                    {selectedCon.consultation.vitals.pulse} bpm
+                  </span>
+                </div>
+                <div style={{ padding: '0.65rem', backgroundColor: 'var(--bg-card-hover)', borderRadius: '8px', border: '1px solid var(--border-card)', textAlign: 'center' }}>
+                  <span style={{ fontSize: '0.70rem', color: 'var(--text-muted)', display: 'block' }}>Temp</span>
+                  <span style={{ fontSize: '0.92rem', fontWeight: 800, color: 'var(--text-main)', fontFamily: 'var(--font-mono)' }}>
+                    {selectedCon.consultation.vitals.temperature_f}°F
+                  </span>
+                </div>
+                <div style={{ padding: '0.65rem', backgroundColor: 'var(--bg-card-hover)', borderRadius: '8px', border: '1px solid var(--border-card)', textAlign: 'center' }}>
+                  <span style={{ fontSize: '0.70rem', color: 'var(--text-muted)', display: 'block' }}>SpO2</span>
+                  <span style={{ fontSize: '0.92rem', fontWeight: 800, color: '#008767', fontFamily: 'var(--font-mono)' }}>
+                    {selectedCon.consultation.vitals.spo2}%
+                  </span>
+                </div>
+                <div style={{ padding: '0.65rem', backgroundColor: 'var(--bg-card-hover)', borderRadius: '8px', border: '1px solid var(--border-card)', textAlign: 'center' }}>
+                  <span style={{ fontSize: '0.70rem', color: 'var(--text-muted)', display: 'block' }}>Weight</span>
+                  <span style={{ fontSize: '0.92rem', fontWeight: 800, color: 'var(--text-main)', fontFamily: 'var(--font-mono)' }}>
+                    {selectedCon.consultation.vitals.weight_kg} kg
+                  </span>
+                </div>
+              </div>
+            )}
+
             <div>
-              <h4 style={{ color: '#fbbf24', fontSize: '0.9rem', marginBottom: '0.4rem' }}>Clinical Diagnoses:</h4>
+              <h4 style={{ color: 'var(--theme-baltic)', fontSize: '0.88rem', fontWeight: 800, marginBottom: '0.45rem' }}>
+                Clinical Diagnoses:
+              </h4>
               <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                 {selectedCon.diagnoses.map((d, i) => (
-                  <span key={i} className="badge badge-amber">
+                  <span key={i} className="badge badge-blue">
                     [{d.icd_code}] {d.diagnosis_name} ({d.diagnosis_type})
                   </span>
                 ))}
               </div>
             </div>
 
-            <div>
-              <h4 style={{ color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.2rem' }}>Symptoms:</h4>
-              <p style={{ color: '#e2e8f0', fontSize: '0.9rem' }}>{selectedCon.consultation.symptoms}</p>
+            <div style={{ padding: '0.85rem 1rem', backgroundColor: 'var(--bg-main)', borderRadius: '8px', border: '1px solid var(--border-card)' }}>
+              <h4 style={{ color: 'var(--text-muted)', fontSize: '0.78rem', textTransform: 'uppercase', fontWeight: 700, marginBottom: '0.25rem' }}>Symptoms:</h4>
+              <p style={{ color: 'var(--text-main)', fontSize: '0.9rem', margin: 0 }}>{selectedCon.consultation.symptoms}</p>
             </div>
 
-            <div>
-              <h4 style={{ color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.2rem' }}>Physician Examination Notes:</h4>
-              <p style={{ color: '#cbd5e1', fontSize: '0.9rem', whiteSpace: 'pre-wrap' }}>{selectedCon.consultation.clinical_notes}</p>
+            <div style={{ padding: '0.85rem 1rem', backgroundColor: 'var(--bg-main)', borderRadius: '8px', border: '1px solid var(--border-card)' }}>
+              <h4 style={{ color: 'var(--text-muted)', fontSize: '0.78rem', textTransform: 'uppercase', fontWeight: 700, marginBottom: '0.25rem' }}>Physician Examination Notes:</h4>
+              <p style={{ color: 'var(--text-main)', fontSize: '0.9rem', whiteSpace: 'pre-wrap', margin: 0 }}>{selectedCon.consultation.clinical_notes}</p>
             </div>
 
             {selectedCon.consultation.treatment_plan && (
-              <div>
-                <h4 style={{ color: '#34d399', fontSize: '0.85rem', marginBottom: '0.2rem' }}>Treatment Plan:</h4>
-                <p style={{ color: '#34d399', fontSize: '0.9rem' }}>{selectedCon.consultation.treatment_plan}</p>
+              <div style={{ padding: '0.85rem 1rem', backgroundColor: 'rgba(2, 195, 154, 0.1)', borderRadius: '8px', border: '1px solid rgba(2, 195, 154, 0.3)' }}>
+                <h4 style={{ color: '#008767', fontSize: '0.78rem', textTransform: 'uppercase', fontWeight: 800, marginBottom: '0.25rem' }}>Treatment Plan:</h4>
+                <p style={{ color: '#072a38', fontSize: '0.9rem', fontWeight: 600, margin: 0 }}>{selectedCon.consultation.treatment_plan}</p>
               </div>
             )}
           </div>

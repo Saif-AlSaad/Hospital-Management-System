@@ -70,12 +70,12 @@ function AccessDeniedView({ activeTab, user, onNavigate }) {
           <ShieldAlert size={36} />
         </div>
 
-        <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: '#f8fafc', marginBottom: '0.5rem' }}>
+        <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: 'var(--text-main)', marginBottom: '0.5rem' }}>
           403 - Module Access Restricted
         </h2>
 
-        <p style={{ fontSize: '0.90rem', color: '#94a3b8', lineHeight: 1.6, marginBottom: '1.5rem' }}>
-          Your current stakeholder account (<strong style={{ color: '#fff' }}>{user?.fullName || user?.username}</strong>, role:{' '}
+        <p style={{ fontSize: '0.90rem', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '1.5rem' }}>
+          Your current stakeholder account (<strong style={{ color: 'var(--text-main)' }}>{user?.fullName || user?.username}</strong>, role:{' '}
           <span style={{ color: '#fb7185', fontWeight: 700 }}>{roleName}</span>) does not possess authorization to access the{' '}
           <strong style={{ color: '#00A896' }}>{activeTab}</strong> module in this hospital system.
         </p>
@@ -88,7 +88,7 @@ function AccessDeniedView({ activeTab, user, onNavigate }) {
           border: '1px solid var(--border-card)',
           textAlign: 'left',
         }}>
-          <div style={{ fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: '#64748b', fontWeight: 700, marginBottom: '0.6rem' }}>
+          <div style={{ fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-muted)', fontWeight: 700, marginBottom: '0.6rem' }}>
             Authorized Modules for {roleName}:
           </div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
@@ -101,8 +101,8 @@ function AccessDeniedView({ activeTab, user, onNavigate }) {
                   padding: '0.35rem 0.65rem',
                   fontSize: '0.75rem',
                   borderRadius: '6px',
-                  backgroundColor: 'rgba(2, 128, 144, 0.15)',
-                  color: '#e2e8f0',
+                  backgroundColor: 'rgba(2, 128, 144, 0.12)',
+                  color: 'var(--text-main)',
                   border: '1px solid var(--border-card)',
                   cursor: 'pointer',
                   fontWeight: 600,

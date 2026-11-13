@@ -167,7 +167,7 @@ export default function StaffPage({ user, onNavigate }) {
       case 'Accountant':
         return { bg: 'rgba(240, 243, 189, 0.14)', text: '#F0F3BD', border: 'rgba(240, 243, 189, 0.4)' };
       default:
-        return { bg: 'rgba(138, 170, 187, 0.12)', text: '#cbd5e1', border: 'rgba(138, 170, 187, 0.25)' };
+        return { bg: 'rgba(138, 170, 187, 0.12)', text: 'var(--text-muted)', border: 'rgba(138, 170, 187, 0.25)' };
     }
   };
 
@@ -177,8 +177,8 @@ export default function StaffPage({ user, onNavigate }) {
       key: 'full_name',
       render: row => (
         <div>
-          <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.88rem' }}>{row.full_name}</div>
-          <div style={{ fontSize: '0.74rem', color: '#94a3b8' }}>
+          <div style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '0.88rem' }}>{row.full_name}</div>
+          <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>
             {row.gender} • Born {new Date(row.date_of_birth).toLocaleDateString()}
           </div>
         </div>
@@ -190,7 +190,7 @@ export default function StaffPage({ user, onNavigate }) {
       render: row => (
         <span style={{
           fontSize: '0.78rem',
-          color: '#e2e8f0',
+          color: 'var(--text-main)',
           backgroundColor: 'var(--bg-main)',
           padding: '0.2rem 0.6rem',
           borderRadius: '6px',
@@ -253,13 +253,13 @@ export default function StaffPage({ user, onNavigate }) {
       header: 'Contact Information', 
       key: 'phone',
       render: row => (
-        <div style={{ fontSize: '0.78rem', color: '#cbd5e1' }}>
+        <div style={{ fontSize: '0.78rem', color: 'var(--text-main)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
             <Phone size={12} color="#00A896" />
             <span>{row.phone}</span>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: '#8aaabb', fontSize: '0.74rem' }}>
-            <Mail size={12} color="#5c7e91" />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: 'var(--text-muted)', fontSize: '0.74rem' }}>
+            <Mail size={12} color="var(--text-dim)" />
             <span>{row.email}</span>
           </div>
         </div>
@@ -307,7 +307,7 @@ export default function StaffPage({ user, onNavigate }) {
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
-              <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: '#fff', margin: 0 }}>
+              <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: 'var(--text-main)', margin: 0 }}>
                 Hospital Staff Directory & RBAC Security
               </h2>
               <span style={{
@@ -326,7 +326,7 @@ export default function StaffPage({ user, onNavigate }) {
                 Administrator Governance
               </span>
             </div>
-            <p style={{ color: '#8aaabb', fontSize: '0.85rem', margin: '0.25rem 0 0 0' }}>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', margin: '0.25rem 0 0 0' }}>
               Management of clinical and administrative personnel, PostgreSQL user credentials, and multi-stakeholder role allocation.
             </p>
           </div>
@@ -592,7 +592,7 @@ export default function StaffPage({ user, onNavigate }) {
               <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#00A896', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                 2. User Account & RBAC Privileges
               </div>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', color: '#cbd5e1', cursor: 'pointer' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', color: 'var(--text-main)', cursor: 'pointer' }}>
                 <input 
                   type="checkbox" 
                   checked={staffForm.createAccount}

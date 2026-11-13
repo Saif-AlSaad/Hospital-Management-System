@@ -49,7 +49,11 @@
   --border-card: #d0e8e5;
   --border-focus: #00A896;
 
-  /* Typography */
+  /* Typography Tokens */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-heading: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', ui-monospace, Menlo, Monaco, Consolas, monospace;
+
   --text-main: #072a38;
   --text-muted: #4a7282;
   --text-dim: #7093a2;
@@ -113,13 +117,52 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-family: var(--font-sans);
   background-color: var(--bg-main);
   color: var(--text-main);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   overflow-x: hidden;
   transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* Headings & Brand Typography (Plus Jakarta Sans) */
+h1, h2, h3, h4, h5, h6,
+.page-title,
+.navbar-page-title,
+.sidebar-title,
+.modal-title,
+.card-title {
+  font-family: var(--font-heading);
+  letter-spacing: -0.025em;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+/* Tabular Numbers & Financial Data */
+.stat-value,
+.data-table td,
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Technical Monospace & Audit Logs (JetBrains Mono) */
+code, pre, kbd, samp,
+.font-mono,
+.explain-plan-box,
+[style*="fontFamily: 'monospace'"],
+[style*='font-family: monospace'],
+[style*="fontFamily: monospace"] {
+  font-family: var(--font-mono) !important;
+  font-feature-settings: 'tnum', 'zero';
+  letter-spacing: -0.015em;
+}
+
+input, select, textarea, button, .btn {
+  font-family: var(--font-sans);
 }
 
 /* Custom Scrollbar */
@@ -875,10 +918,14 @@ select.form-control {
 
 /* Typography Helpers */
 .font-mono {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+  font-family: var(--font-mono) !important;
+  font-feature-settings: 'tnum', 'zero';
 }
 .font-sans {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
+  font-family: var(--font-sans) !important;
+}
+.font-heading {
+  font-family: var(--font-heading) !important;
 }
 .font-normal { font-weight: 400; }
 .font-medium { font-weight: 500; }
