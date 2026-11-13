@@ -27,7 +27,6 @@ const QUICK_STAKEHOLDERS = [
     role: 'Administrator',
     roleTag: 'ADMIN',
     username: 'admin',
-    name: 'Saif Al Saad',
     workspace: 'Full Control & Audits',
     accentColor: '#05668D',
     accentGlow: 'rgba(5, 102, 141, 0.25)',
@@ -39,7 +38,6 @@ const QUICK_STAKEHOLDERS = [
     role: 'Doctor',
     roleTag: 'DOCTOR',
     username: 'doctor1',
-    name: 'Dr. Tanvir Ahmed',
     workspace: 'OPD Queue & Rx',
     accentColor: '#028090',
     accentGlow: 'rgba(2, 128, 144, 0.25)',
@@ -51,7 +49,6 @@ const QUICK_STAKEHOLDERS = [
     role: 'Receptionist',
     roleTag: 'RECEPTION',
     username: 'receptionist1',
-    name: 'Nusrat Jahan',
     workspace: 'Appointments & Beds',
     accentColor: '#008767',
     accentGlow: 'rgba(2, 195, 154, 0.25)',
@@ -63,7 +60,6 @@ const QUICK_STAKEHOLDERS = [
     role: 'Accountant',
     roleTag: 'FINANCE',
     username: 'accountant1',
-    name: 'Kamrul Hasan',
     workspace: 'Invoicing & MFS',
     accentColor: '#8a791a',
     accentGlow: 'rgba(240, 243, 189, 0.4)',
@@ -426,11 +422,12 @@ export default function LoginPage({ onLoginSuccess }) {
                     key={s.username}
                     type="button"
                     onClick={() => handleSelectStakeholder(s)}
+                    title={s.workspace}
                     style={{
                       display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'flex-start',
-                      padding: '0.65rem 0.75rem',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '0.65rem 0.85rem',
                       borderRadius: '10px',
                       backgroundColor: isSelected ? s.bgActive : '#fbfdfd',
                       border: `1.5px solid ${isSelected ? s.borderActive : '#d9ede9'}`,
@@ -440,51 +437,20 @@ export default function LoginPage({ onLoginSuccess }) {
                       boxShadow: isSelected ? `0 2px 10px ${s.accentGlow}` : 'none',
                     }}
                   >
-                    <div style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      width: '100%',
-                      marginBottom: '0.2rem',
-                    }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.55rem' }}>
+                      <Icon size={16} color={s.accentColor} />
                       <span style={{
-                        fontSize: '0.62rem',
+                        fontSize: '0.82rem',
                         fontWeight: 800,
-                        color: s.accentColor,
-                        letterSpacing: '0.05em',
+                        color: isSelected ? s.accentColor : '#072a38',
+                        letterSpacing: '0.04em',
                       }}>
                         {s.roleTag}
                       </span>
-                      {isSelected ? (
-                        <Check size={12} color={s.accentColor} strokeWidth={3} />
-                      ) : (
-                        <Icon size={12} color={s.accentColor} />
-                      )}
                     </div>
-
-                    <div style={{
-                      fontSize: '0.80rem',
-                      fontWeight: 700,
-                      color: '#072a38',
-                      width: '100%',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
-                    }}>
-                      {s.name}
-                    </div>
-
-                    <div style={{
-                      fontSize: '0.66rem',
-                      color: '#4a7282',
-                      marginTop: '0.1rem',
-                      width: '100%',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
-                    }}>
-                      {s.workspace}
-                    </div>
+                    {isSelected && (
+                      <Check size={14} color={s.accentColor} strokeWidth={3} />
+                    )}
                   </button>
                 );
               })}
